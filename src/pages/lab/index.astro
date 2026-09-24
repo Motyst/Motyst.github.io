@@ -11,10 +11,17 @@ import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
 import Question from '@/components/lab/Question.astro';
 import Choice from '@/components/lab/Choice.astro';
+import ProjectIcon from '@/components/ProjectIcon.astro';
 import { profile } from '@/data/profile';
+import { getProjects } from '@/lib/projects';
 
-const round = 2;
-const applied = ['Floating pill nav', 'Copyable email chip', 'What + result one-liners', 'GitHub and email in one place'];
+const round = 3;
+const applied = ['“Email me” + copy button', 'Colour glow background'];
+const projects = (await getProjects()).slice(0, 4);
+const headlines = {
+  a: 'I build AI bots and automations that take repetitive work off people’s plates.',
+  b: 'I turn repetitive work into bots and AI pipelines that run on their own.',
+};
 ---
 
 <Base title="Design lab" noindex>
@@ -33,45 +40,59 @@ const applied = ['Floating pill nav', 'Copyable email chip', 'What + result one-
       </p>
     </header>
 
-    <Question n={1} title="Email button text" why="Showing the address is handy, but it is also the part people may not want on display.">
-      <Choice label="Current" name="Full address" note="The address is readable at a glance. Click copies it." mine>
-        <div class="frame btns">
-          <span class="mbtn primary">See my work <Icon name="arrow-down" size={13} /></span>
-          <span class="mchip"><Icon name="mail" size={13} /> {profile.email} <i><Icon name="copy" size={11} /></i></span>
-          <span class="mround"><Icon name="github" size={14} /></span>
+    <Question n={1} title="Your photo" why="A face makes a portfolio feel personal and builds trust. You would send me a photo.">
+      <Choice label="Current" name="No photo" note="All about the work. Clean, but a bit anonymous.">
+        <div class="frame about">
+          <div class="txt"><p class="k">About</p><p class="h">A bit about me</p><i></i><i></i><i class="short"></i></div>
         </div>
       </Choice>
-      <Choice label="A" name="“Copy email” label" note="Shorter and tidier. The address only appears in the “Copied” message.">
-        <div class="frame btns">
-          <span class="mbtn primary">See my work <Icon name="arrow-down" size={13} /></span>
-          <span class="mchip"><Icon name="mail" size={13} /> Copy email <i><Icon name="copy" size={11} /></i></span>
-          <span class="mround"><Icon name="github" size={14} /></span>
+      <Choice label="A" name="Photo in About" note="A round photo next to your bio. The top of the page stays about the projects." mine>
+        <div class="frame about">
+          <span class="avatar big"><Icon name="user-check" size={26} /></span>
+          <div class="txt"><p class="k">About</p><p class="h">A bit about me</p><i></i><i></i><i class="short"></i></div>
         </div>
       </Choice>
-      <Choice label="B" name="Email me + copy" note="Two halves: the text opens the mail app, the icon copies the address.">
-        <div class="frame btns">
-          <span class="mbtn primary">See my work <Icon name="arrow-down" size={13} /></span>
-          <span class="msplit"><span><Icon name="mail" size={13} /> Email me</span><i><Icon name="copy" size={11} /></i></span>
-          <span class="mround"><Icon name="github" size={14} /></span>
+      <Choice label="B" name="Photo in the hero" note="A small photo right above your name. Personal from the first second.">
+        <div class="frame">
+          <div class="stub">
+            <span class="avatar"><Icon name="user-check" size={16} /></span>
+            <p class="k">AI Automation Developer · Dublin</p>
+            <p class="n">{profile.name}.</p>
+          </div>
         </div>
       </Choice>
     </Question>
 
-    <Question n={2} title="Page background" why="The page is plain dark. A little colour at the top could make it feel less empty.">
-      <Choice label="Current" name="Plain dark" note="Calm and neutral. The project icons carry all the colour.">
-        <div class="frame bg-cur">
-          <div class="stub"><p class="k">AI Automation Developer · Dublin</p><p class="n">{profile.name}.</p></div>
+    <Question n={2} title="Projects on phones" why="On phones the tiles are two columns, so the new, longer one-liners wrap into narrow blocks.">
+      <Choice label="Current" name="Two columns" note="App-style grid. Icons are big, but text gets squeezed.">
+        <div class="phone">
+          <ul class="grid2">
+            {projects.map((p) => (
+              <li><ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={24} /><b>{p.data.title}</b><small>{p.data.summary}</small></li>
+            ))}
+          </ul>
         </div>
       </Choice>
-      <Choice label="A" name="Colour glow" note="A soft glow in the project colours behind the top of the page, fading out as you scroll." mine>
-        <div class="frame bg-a">
-          <div class="stub"><p class="k">AI Automation Developer · Dublin</p><p class="n">{profile.name}.</p></div>
+      <Choice label="A" name="One-column rows" note="Icon on the left, the full line on the right. Easier to read, a bit shorter overall." mine>
+        <div class="phone">
+          <ul class="rows">
+            {projects.map((p) => (
+              <li><ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={26} /><span><b>{p.data.title}</b><small>{p.data.summary}</small></span></li>
+            ))}
+          </ul>
         </div>
       </Choice>
-      <Choice label="B" name="Dot grid" note="A faint technical dot grid that fades out. Structured, a bit “developer”.">
-        <div class="frame bg-b">
-          <div class="stub"><p class="k">AI Automation Developer · Dublin</p><p class="n">{profile.name}.</p></div>
-        </div>
+    </Question>
+
+    <Question n={3} title="Headline under your name" why="The first sentence people read. It could say more about the value, not just the tech.">
+      <Choice label="Current" name="What I build" note="Accurate and neutral. Lists the kinds of things you make.">
+        <div class="frame head"><p class="n">{profile.name}.</p><p class="lead">{profile.headline}</p></div>
+      </Choice>
+      <Choice label="A" name="Who it helps" note="Puts the people who use your bots first.">
+        <div class="frame head"><p class="n">{profile.name}.</p><p class="lead">{headlines.a}</p></div>
+      </Choice>
+      <Choice label="B" name="What it replaces" note="Short and outcome-first: manual work in, running system out." mine>
+        <div class="frame head"><p class="n">{profile.name}.</p><p class="lead">{headlines.b}</p></div>
       </Choice>
     </Question>
 
@@ -258,90 +279,126 @@ const applied = ['Floating pill nav', 'Copyable email chip', 'What + result one-
     margin-top: 4px;
   }
 
-  /* Background options */
-  .bg-cur {
-    background:
-      radial-gradient(40% 50% at 80% 40%, rgb(124 156 255 / 0.12), transparent),
-      var(--bg);
-  }
-  .bg-a {
-    background:
-      radial-gradient(45% 55% at 10% 0%, rgb(167 139 250 / 0.28), transparent 70%),
-      radial-gradient(40% 50% at 55% -10%, rgb(76 201 240 / 0.22), transparent 70%),
-      radial-gradient(40% 50% at 95% 10%, rgb(251 113 133 / 0.2), transparent 70%),
-      var(--bg);
-  }
-  .bg-b {
-    background: var(--bg);
-  }
-  .bg-b::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(rgb(255 255 255 / 0.14) 1px, transparent 1.3px) 0 0 / 14px 14px;
-    mask-image: linear-gradient(to bottom, #000, transparent 90%);
-  }
-
-  /* Mini hero buttons */
-  .frame.btns {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    padding: 0.8rem;
-    font-size: 0.78rem;
-  }
-  .mbtn,
-  .mchip,
-  .msplit,
-  .mround {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    height: 2.1rem;
-    border-radius: 999px;
-    border: 1px solid var(--line-strong);
-    white-space: nowrap;
-  }
-  .mbtn {
-    padding: 0 0.85rem;
-  }
-  .mbtn.primary {
-    background: var(--text);
-    color: var(--bg);
-    border-color: transparent;
-    font-weight: 500;
-  }
-  .mchip {
-    padding: 0 0.3rem 0 0.75rem;
-  }
-  .mchip i,
-  .msplit i {
+  .avatar {
     display: grid;
     place-items: center;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 8px;
     border-radius: 50%;
+    background: linear-gradient(135deg, #a78bfa, #4cc9f0);
+    color: rgb(255 255 255 / 0.85);
+    box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--line-strong);
+  }
+  .avatar.big {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    translate: 0 -50%;
+    width: 72px;
+    height: 72px;
+    margin: 0;
+  }
+
+  /* About mock */
+  .about .txt {
+    position: absolute;
+    inset: 22px 16px auto 16px;
+  }
+  .about .avatar.big + .txt {
+    left: 106px;
+  }
+  .txt .h {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 2px 0 10px;
+  }
+  .txt i {
+    display: block;
+    height: 6px;
+    margin-top: 7px;
+    border-radius: 4px;
     background: var(--bg-soft);
-    color: var(--text-dim);
   }
-  .msplit {
-    padding: 0 0.3rem 0 0;
+  .txt i.short {
+    width: 60%;
   }
-  .msplit > span {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    height: 100%;
-    padding: 0 0.6rem 0 0.75rem;
-    border-right: 1px solid var(--line-strong);
-    margin-right: 0.1rem;
+  .txt .k,
+  .stub .k {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-faint);
   }
-  .mround {
+
+  /* Headline mock */
+  .frame.head {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    width: 2.1rem;
+    gap: 6px;
+    padding: 0 16px;
+  }
+  .head .n {
+    font-size: 26px;
+    font-weight: 650;
+    letter-spacing: -0.05em;
+  }
+  .head .lead {
     color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  /* Phone mock */
+  .phone {
+    width: 220px;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: 22px;
+    background: var(--bg);
+  }
+  .phone ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .phone li {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg-elev);
+    padding: 8px;
+    min-width: 0;
+  }
+  .phone b {
+    display: block;
+    font-size: 9.5px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .phone small {
+    display: block;
+    font-size: 8.5px;
+    line-height: 1.35;
+    color: var(--text-dim);
+  }
+  .grid2 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .grid2 li {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .rows li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   /* Reply */

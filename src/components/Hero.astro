@@ -36,15 +36,16 @@ const spots = [
     <p class="lead reveal" style="--delay: 120ms">{profile.headline}</p>
     <div class="actions reveal" style="--delay: 180ms">
       <a href="#work" class="btn btn-primary">See my work <Icon name="arrow-down" size={16} /></a>
-      <button type="button" class="mailchip" data-copy-email={profile.email} title="Copy email address">
-        <Icon name="mail" size={16} />
-        <span>{profile.email}</span>
-        <span class="cp" aria-hidden="true">
+      <div class="mailchip">
+        <a href={`mailto:${profile.email}`} class="mail-go">
+          <Icon name="mail" size={16} /> Email me
+        </a>
+        <button type="button" class="cp" data-copy-email={profile.email} title="Copy email address" aria-label="Copy email address">
           <Icon name="copy" size={14} class="i-copy" />
           <Icon name="check" size={14} class="i-done" />
-        </span>
+        </button>
         <span class="toast" role="status"></span>
-      </button>
+      </div>
       {
         profile.socials.map((s) => (
           <a href={s.url} class="round" target="_blank" rel="noopener noreferrer" title={s.label} aria-label={s.label}>
@@ -99,15 +100,16 @@ const spots = [
 
   document.addEventListener('astro:page-load', () => {
     document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((b) => {
-      const toast = b.querySelector<HTMLElement>('.toast')!;
+      const chip = b.parentElement!;
+      const toast = chip.querySelector<HTMLElement>('.toast')!;
       let timer = 0;
       b.addEventListener('click', async () => {
         await copy(b.dataset.copyEmail!);
-        b.classList.add('copied');
-        toast.textContent = 'Copied';
+        chip.classList.add('copied');
+        toast.textContent = 'Email copied';
         clearTimeout(timer);
         timer = window.setTimeout(() => {
-          b.classList.remove('copied');
+          chip.classList.remove('copied');
           toast.textContent = '';
         }, 1800);
       });
@@ -182,42 +184,54 @@ const spots = [
     margin-top: 2rem;
   }
 
-  /* Email chip: click copies the address */
+  /* Email: the text opens the mail app, the icon copies the address */
   .mailchip {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.45rem 0.45rem 0.45rem 1rem;
+    padding: 0.3rem;
     border-radius: 999px;
     border: 1px solid var(--line-strong);
     background: rgb(255 255 255 / 0.02);
-    color: var(--text);
-    font: inherit;
     font-size: 0.92rem;
-    cursor: pointer;
-    transition:
-      border-color 0.2s,
-      transform 0.2s var(--ease);
+    transition: border-color 0.2s;
   }
   .mailchip:hover {
     border-color: rgb(255 255 255 / 0.3);
-    transform: translateY(-1px);
   }
-  .mailchip > :global(svg) {
+  .mail-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.4rem 0.9rem 0.4rem 0.75rem;
+    margin-right: 0.3rem;
+    border-radius: 999px;
+    transition: background 0.2s;
+  }
+  .mail-go :global(svg) {
     color: var(--text-dim);
+  }
+  .mail-go:hover {
+    background: rgb(255 255 255 / 0.06);
   }
   .cp {
     display: grid;
     place-items: center;
-    width: 2rem;
-    height: 2rem;
+    width: 2.1rem;
+    height: 2.1rem;
+    padding: 0;
+    border: 0;
     border-radius: 50%;
     background: var(--bg-soft);
     color: var(--text-dim);
+    cursor: pointer;
     transition:
       background 0.2s,
       color 0.2s;
+  }
+  .cp:hover {
+    color: var(--text);
+    background: rgb(255 255 255 / 0.1);
   }
   .cp :global(svg) {
     grid-area: 1 / 1;
@@ -232,7 +246,8 @@ const spots = [
   .mailchip.copied {
     border-color: rgb(34 197 94 / 0.5);
   }
-  .copied .cp {
+  .copied .cp,
+  .copied .cp:hover {
     background: #16a34a;
     color: #fff;
   }
@@ -247,6 +262,7 @@ const spots = [
     color: #fff;
     font-size: 0.75rem;
     font-weight: 600;
+    white-space: nowrap;
     opacity: 0;
     pointer-events: none;
     transition:
@@ -256,6 +272,14 @@ const spots = [
   .copied .toast {
     opacity: 1;
     translate: -50% 0;
+  }
+
+  /* Phones: main button on its own row, email + GitHub below */
+  @media (max-width: 480px) {
+    .actions .btn-primary {
+      flex-basis: 100%;
+      justify-content: center;
+    }
   }
 
   .round {

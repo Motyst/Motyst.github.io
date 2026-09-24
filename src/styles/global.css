@@ -47,13 +47,18 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Soft glow at the top of every page */
+/* Soft glow in the project colours at the top of every page.
+   Absolute, so it scrolls away with the top of the page. */
 body::before {
   content: '';
-  position: fixed;
-  inset: -40vh -20vw auto;
-  height: 80vh;
-  background: radial-gradient(ellipse at center, rgb(124 156 255 / 0.12), transparent 60%);
+  position: absolute;
+  inset: 0 0 auto;
+  height: 900px;
+  background:
+    radial-gradient(38% 55% at 8% 0%, rgb(167 139 250 / 0.26), transparent 70%),
+    radial-gradient(34% 50% at 52% -8%, rgb(76 201 240 / 0.18), transparent 70%),
+    radial-gradient(36% 55% at 94% 6%, rgb(251 113 133 / 0.19), transparent 70%);
+  mask-image: linear-gradient(to bottom, #000 40%, transparent);
   pointer-events: none;
   z-index: -1;
 }
