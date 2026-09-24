@@ -8,16 +8,20 @@ status: live
 role: Solo developer
 featured: true
 order: 1
-accent: '#34d399'
+accent: '#a78bfa'
 skills: [Python, Telegram Bot API, Async Python, SQLAlchemy, SQLite, Streamlit, Analytics, Gamification, Product Design, VPS Deployment, Linux]
 workflow:
   - title: Onboard
+    icon: target
     description: A two-minute placement test calibrates each new member and recommends a starting level.
   - title: Train
+    icon: dumbbell
     description: Word memorization drills in pairs or chains, training or timed test modes, from 5 to 100 words.
   - title: Score & reward
+    icon: trophy
     description: Fuzzy answer matching, XP per skill bar, 21 achievements, streaks and an opt-in leaderboard.
   - title: Analyse
+    icon: chart-column
     description: Engaged time and raw interactions feed a private Streamlit dashboard of where members stall.
 highlights:
   - Live for a paid community, gated by one-time access codes

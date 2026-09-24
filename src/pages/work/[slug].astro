@@ -161,10 +161,15 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
       next.id !== id && (
         <a href={`/work/${next.id}`} class="container next reveal" style={`--accent: ${next.data.accent}`}>
           <span class="eyebrow">Next project</span>
-          <span class="next-title">
-            {next.data.title} <span class="arrow">→</span>
+          <span class="next-row">
+            <ProjectIcon icon={next.data.icon} title={next.data.title} accent={next.data.accent} size={64} />
+            <span>
+              <span class="next-title">
+                {next.data.title} <span class="arrow">→</span>
+              </span>
+              <span class="next-tag">{next.data.summary ?? next.data.tagline}</span>
+            </span>
           </span>
-          <span class="next-tag">{next.data.tagline}</span>
         </a>
       )
     }
@@ -374,9 +379,15 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
     border-top: 1px solid var(--line);
   }
 
+  .next-row {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 1.75rem);
+  }
+
   .next-title {
     display: block;
-    font-size: clamp(2rem, 6vw, 4rem);
+    font-size: clamp(1.75rem, 5vw, 3.25rem);
     font-weight: 600;
     letter-spacing: -0.05em;
     line-height: 1.05;

@@ -41,7 +41,7 @@ const at = (i: number) => projects[(i + projects.length) % projects.length];
     </ul>
   </div>
 
-  {projects.map((p, i) => <ProjectModal project={p} prev={at(i - 1)} next={at(i + 1)} />)}
+  {projects.map((p, i) => <ProjectModal project={p} prev={at(i - 1)} next={at(i + 1)} all={projects} />)}
 </section>
 
 <script>

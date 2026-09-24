@@ -44,8 +44,9 @@ const projects = defineCollection({
     /** Skills/tools used. These build the site-wide Skills section automatically. */
     skills: z.array(z.string()).default([]),
     /** The workflow / pipeline behind the project, step by step. */
+    /** Step icons are keys from src/data/step-icons.ts. */
     workflow: z
-      .array(z.object({ title: z.string(), description: z.string() }))
+      .array(z.object({ title: z.string(), description: z.string(), icon: z.string().optional() }))
       .default([]),
     /** Short outcome bullets or numbers (e.g. "Cut build time by 60%"). */
     highlights: z.array(z.string()).default([]),

@@ -7,17 +7,21 @@ year: 2026
 status: live
 role: Solo developer
 order: 3
-accent: '#38bdf8'
+accent: '#14b8a6'
 private: true
 skills: [Python, Web Scraping, LLMs, Prompt Engineering, Telegram Bot API, Scheduling, Linux, VPS Deployment, Automation]
 workflow:
   - title: Scrape
+    icon: globe
     description: Every day it collects new posts from Reddit, Hacker News, RSS feeds, X and YouTube.
   - title: Filter
+    icon: funnel
     description: It drops noise and duplicates and keeps what is relevant to AI development.
   - title: Summarise
+    icon: sparkles
     description: An LLM writes a concise, readable briefing from the day's material.
   - title: Deliver
+    icon: send
     description: The briefing is published to Telegram, fully unattended.
 highlights:
   - Runs unattended on a Linux VPS

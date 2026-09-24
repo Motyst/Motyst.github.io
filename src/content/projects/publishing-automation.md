@@ -8,19 +8,24 @@ status: completed
 role: Solo developer
 featured: true
 order: 2
-accent: '#f472b6'
+accent: '#4cc9f0'
 private: true
 skills: [Python, FastAPI, React, TypeScript, LLMs, Whisper, REST APIs, Scheduling, Automation, Human-in-the-loop]
 workflow:
   - title: Upload
+    icon: upload
     description: A video is uploaded once, in one place.
   - title: Transcribe
+    icon: audio-lines
     description: Speech is transcribed automatically so every caption is grounded in what was actually said.
   - title: Draft captions
+    icon: pen-line
     description: An LLM drafts captions for each network, ready to review and edit.
   - title: Schedule
+    icon: calendar-clock
     description: Posts are queued per network on a publishing schedule.
   - title: Publish
+    icon: send
     description: The system posts to all eight networks automatically.
 highlights:
   - Publishes to eight social networks from a single upload

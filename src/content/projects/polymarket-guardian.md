@@ -7,18 +7,23 @@ year: 2026
 status: completed
 role: Solo developer
 order: 8
-accent: '#60a5fa'
+accent: '#3b82f6'
 skills: [Python, WebSockets, REST APIs, Real-time Systems, Automation]
 workflow:
   - title: Sync
+    icon: download
     description: Fetches your open orders through the REST API.
   - title: Subscribe
+    icon: radio
     description: Opens a WebSocket and subscribes to live order book updates for each token.
   - title: Detect
+    icon: crosshair
     description: On every update, checks whether a buy equals the best bid or a sell equals the best ask.
   - title: Cancel & notify
+    icon: bell-ring
     description: Cancels the order instantly and sends a desktop notification.
   - title: Re-sync
+    icon: repeat
     description: Re-syncs every 60 seconds to pick up new orders and auto-reconnects on drops.
 highlights:
   - Reacts in milliseconds, compared with 3–5 seconds when polling
