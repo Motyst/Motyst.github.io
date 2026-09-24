@@ -12,7 +12,7 @@ interface Props {
 const { n, title, why } = Astro.props;
 ---
 
-<section class="cmp" data-q={title}>
+<section class="cmp" data-q={title} data-n={n}>
   <div class="cmp-head">
     <span class="num">{n}</span>
     <div>
