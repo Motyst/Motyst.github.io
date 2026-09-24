@@ -2,339 +2,247 @@
 /**
  * Design lab: a temporary, unlisted page comparing the live design with
  * new ideas side by side. Not linked anywhere, excluded from search/sitemap.
- * Replace the sections below with whatever is being compared next.
+ *
+ * Click an option to choose it, add comments, then copy the generated reply
+ * into the chat. For the next round, bump `round`, update `applied` and swap
+ * the <Question> blocks.
  */
 import Base from '@/layouts/Base.astro';
-import ProjectIcon from '@/components/ProjectIcon.astro';
 import Icon from '@/components/Icon.astro';
-import { getProjects } from '@/lib/projects';
+import Question from '@/components/lab/Question.astro';
+import Choice from '@/components/lab/Choice.astro';
 import { profile } from '@/data/profile';
 
-const projects = await getProjects();
-
-// Idea A: one line that says what it does and the result.
-const lineA: Record<string, string> = {
-  'mental-training-bot': 'Gamified memory drills on Telegram, live for a paid community',
-  'publishing-automation': 'Turns one video into scheduled posts on eight networks',
-  'ai-research-bot': 'Reads five sources daily and delivers one AI briefing',
-  'video-to-x-posts': "Turns YouTube videos into X posts in the creator's voice",
-  'polymarket-guardian': 'Cancels at-risk orders in milliseconds, not seconds',
-};
-
-// Idea B: a plain-language line plus a result badge.
-const lineB: Record<string, { line: string; badge: string }> = {
-  'mental-training-bot': { line: 'Memory training with XP, streaks and achievements', badge: 'Live · paid community' },
-  'publishing-automation': { line: 'Upload a video once, publish it everywhere', badge: '1 video → 8 networks' },
-  'ai-research-bot': { line: 'The day in AI, summarised into one Telegram message', badge: '5 sources → 1 briefing' },
-  'video-to-x-posts': { line: 'YouTube videos become X posts in the creator’s voice', badge: 'Human-approved' },
-  'polymarket-guardian': { line: 'Pulls orders the instant they reach the top of the book', badge: 'Millisecond reaction' },
-};
-
-const first = profile.name;
+const round = 2;
+const applied = ['Floating pill nav', 'Copyable email chip', 'What + result one-liners', 'GitHub and email in one place'];
 ---
 
 <Base title="Design lab" noindex>
-  <div class="container lab">
+  <div class="container lab" data-round={round}>
     <header class="intro">
-      <span class="eyebrow">Design lab · temporary page</span>
-      <h1>Current vs new ideas</h1>
-      <p>
-        Each row shows the live design on the left and new ideas next to it. Reply with your picks, for example{' '}
-        <em>“Nav: A, Buttons: B, One-liners: current”</em>.
+      <span class="eyebrow">Design lab · round {round}</span>
+      <h1>Pick what you like</h1>
+      <ol class="how">
+        <li>Click an option to choose it</li>
+        <li>Add a comment if you want</li>
+        <li>Copy the reply and paste it into the chat</li>
+      </ol>
+      <p class="applied">
+        <span>Applied from round {round - 1}:</span>
+        {applied.map((a) => <em><Icon name="check" size={13} /> {a}</em>)}
       </p>
     </header>
 
-    <!-- 1. Navigation -->
-    <section class="cmp">
-      <div class="cmp-head">
-        <span class="num">1</span>
-        <div>
-          <h2>Top navigation</h2>
-          <p>With only three sections, the full bar is more chrome than the page needs.</p>
+    <Question n={1} title="Email button text" why="Showing the address is handy, but it is also the part people may not want on display.">
+      <Choice label="Current" name="Full address" note="The address is readable at a glance. Click copies it." mine>
+        <div class="frame btns">
+          <span class="mbtn primary">See my work <Icon name="arrow-down" size={13} /></span>
+          <span class="mchip"><Icon name="mail" size={13} /> {profile.email} <i><Icon name="copy" size={11} /></i></span>
+          <span class="mround"><Icon name="github" size={14} /></span>
         </div>
-      </div>
-      <div class="cols">
-        <figure class="opt">
-          <figcaption><b>Current</b> Full-width bar</figcaption>
-          <div class="frame">
-            <div class="nav-bar">
-              <span class="brand"><i></i>{first}</span>
-              <span class="links">Work Skills About <em>Contact</em></span>
-            </div>
-            <div class="stub"><p class="k">AI Automation Developer · Dublin</p><p class="n">{first}.</p></div>
-          </div>
-          <p class="note">Always visible, full width. Clear but heavy for a short page.</p>
-        </figure>
-
-        <figure class="opt pick">
-          <figcaption><b>Idea A</b> Floating pill <span class="tag">My pick</span></figcaption>
-          <div class="frame">
-            <div class="nav-pill">
-              <span class="av">AV</span>
-              <span>Work</span><span>Skills</span><span>About</span>
-              <span class="sep"></span>
-              <Icon name="github" size={13} />
-              <Icon name="mail" size={13} />
-            </div>
-            <div class="stub"><p class="k">AI Automation Developer · Dublin</p><p class="n">{first}.</p></div>
-          </div>
-          <p class="note">A small glass pill in the centre. Hides while scrolling down, comes back on scroll up.</p>
-        </figure>
-
-        <figure class="opt">
-          <figcaption><b>Idea B</b> No navigation</figcaption>
-          <div class="frame">
-            <div class="stub top"><p class="k">AI Automation Developer · Dublin</p><p class="n">{first}.</p></div>
-          </div>
-          <p class="note">Nothing at the top. The hero buttons (row 2) carry GitHub and email. Cleanest.</p>
-        </figure>
-      </div>
-    </section>
-
-    <!-- 2. Hero buttons -->
-    <section class="cmp">
-      <div class="cmp-head">
-        <span class="num">2</span>
-        <div>
-          <h2>Buttons under your name</h2>
-          <p>“Get in touch” opens an email app, which many visitors on laptops don’t have set up.</p>
+      </Choice>
+      <Choice label="A" name="“Copy email” label" note="Shorter and tidier. The address only appears in the “Copied” message.">
+        <div class="frame btns">
+          <span class="mbtn primary">See my work <Icon name="arrow-down" size={13} /></span>
+          <span class="mchip"><Icon name="mail" size={13} /> Copy email <i><Icon name="copy" size={11} /></i></span>
+          <span class="mround"><Icon name="github" size={14} /></span>
         </div>
-      </div>
-      <div class="cols">
-        <figure class="opt">
-          <figcaption><b>Current</b> Two pills</figcaption>
-          <div class="frame btns">
-            <a class="btn btn-primary" href="#">See my work <span class="arrow">↘</span></a>
-            <a class="btn" href="#">Get in touch</a>
-          </div>
-          <p class="note">Simple and clear. The email address itself is never shown.</p>
-        </figure>
-
-        <figure class="opt">
-          <figcaption><b>Idea A</b> Primary + icon buttons</figcaption>
-          <div class="frame btns">
-            <a class="btn btn-primary" href="#">See my work <Icon name="arrow-down" size={15} /></a>
-            <a class="round" href="#" title="GitHub" aria-label="GitHub"><Icon name="github" size={18} /></a>
-            <a class="round" href="#" title="Email" aria-label="Email"><Icon name="mail" size={18} /></a>
-          </div>
-          <p class="note">One clear action plus quiet icon links. Also works well if the top bar is removed.</p>
-        </figure>
-
-        <figure class="opt pick">
-          <figcaption><b>Idea B</b> Copyable email <span class="tag">My pick</span></figcaption>
-          <div class="frame btns">
-            <a class="btn btn-primary" href="#">See my work <Icon name="arrow-down" size={15} /></a>
-            <button type="button" class="mailchip" data-copy={profile.email}>
-              <Icon name="mail" size={15} />
-              <span>{profile.email}</span>
-              <span class="cp" data-cp><Icon name="copy" size={14} /></span>
-            </button>
-            <a class="round" href="#" title="GitHub" aria-label="GitHub"><Icon name="github" size={18} /></a>
-          </div>
-          <p class="note">Shows the email and copies it in one click (try it). Recruiters paste it straight into their mail.</p>
-        </figure>
-      </div>
-    </section>
-
-    <!-- 3. One-liners -->
-    <section class="cmp">
-      <div class="cmp-head">
-        <span class="num">3</span>
-        <div>
-          <h2>Project one-liners</h2>
-          <p>Each line should say what the project does and what it achieves.</p>
+      </Choice>
+      <Choice label="B" name="Email me + copy" note="Two halves: the text opens the mail app, the icon copies the address.">
+        <div class="frame btns">
+          <span class="mbtn primary">See my work <Icon name="arrow-down" size={13} /></span>
+          <span class="msplit"><span><Icon name="mail" size={13} /> Email me</span><i><Icon name="copy" size={11} /></i></span>
+          <span class="mround"><Icon name="github" size={14} /></span>
         </div>
-      </div>
-      <div class="cols">
-        <figure class="opt">
-          <figcaption><b>Current</b> Short summary</figcaption>
-          <ul class="tiles">
-            {
-              projects.map((p) => (
-                <li class="tile">
-                  <ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={40} />
-                  <span>
-                    <b>{p.data.title}</b>
-                    <small>{p.data.summary}</small>
-                  </span>
-                </li>
-              ))
-            }
-          </ul>
-          <p class="note">Short, but some lines describe the topic rather than the outcome.</p>
-        </figure>
+      </Choice>
+    </Question>
 
-        <figure class="opt">
-          <figcaption><b>Idea A</b> What it does + result</figcaption>
-          <ul class="tiles">
-            {
-              projects.map((p) => (
-                <li class="tile">
-                  <ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={40} />
-                  <span>
-                    <b>{p.data.title}</b>
-                    <small>{lineA[p.id] ?? p.data.summary}</small>
-                  </span>
-                </li>
-              ))
-            }
-          </ul>
-          <p class="note">One sentence, verb first, ending on the outcome.</p>
-        </figure>
+    <Question n={2} title="Page background" why="The page is plain dark. A little colour at the top could make it feel less empty.">
+      <Choice label="Current" name="Plain dark" note="Calm and neutral. The project icons carry all the colour.">
+        <div class="frame bg-cur">
+          <div class="stub"><p class="k">AI Automation Developer · Dublin</p><p class="n">{profile.name}.</p></div>
+        </div>
+      </Choice>
+      <Choice label="A" name="Colour glow" note="A soft glow in the project colours behind the top of the page, fading out as you scroll." mine>
+        <div class="frame bg-a">
+          <div class="stub"><p class="k">AI Automation Developer · Dublin</p><p class="n">{profile.name}.</p></div>
+        </div>
+      </Choice>
+      <Choice label="B" name="Dot grid" note="A faint technical dot grid that fades out. Structured, a bit “developer”.">
+        <div class="frame bg-b">
+          <div class="stub"><p class="k">AI Automation Developer · Dublin</p><p class="n">{profile.name}.</p></div>
+        </div>
+      </Choice>
+    </Question>
 
-        <figure class="opt pick">
-          <figcaption><b>Idea B</b> Plain line + result badge <span class="tag">My pick</span></figcaption>
-          <ul class="tiles">
-            {
-              projects.map((p) => (
-                <li class="tile" style={`--c: ${p.data.accent}`}>
-                  <ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={40} />
-                  <span>
-                    <b>{p.data.title}</b>
-                    <small>{lineB[p.id]?.line ?? p.data.summary}</small>
-                    {lineB[p.id] && <em class="badge">{lineB[p.id].badge}</em>}
-                  </span>
-                </li>
-              ))
-            }
-          </ul>
-          <p class="note">The line explains it in plain words; the badge shows the result at a glance.</p>
-        </figure>
-      </div>
+    <section class="reply">
+      <h2>Your reply</h2>
+      <textarea data-overall rows="2" placeholder="Anything else? Other ideas, things you'd like to see compared next…"></textarea>
+      <pre data-out></pre>
+      <button type="button" class="copy-btn" data-copy-reply>
+        <Icon name="copy" size={16} /> <span>Copy reply</span>
+      </button>
     </section>
+  </div>
+
+  <div class="bar">
+    <span data-count></span>
+    <button type="button" class="copy-btn" data-copy-reply>
+      <Icon name="copy" size={16} /> <span>Copy reply</span>
+    </button>
   </div>
 </Base>
 
 <script>
-  document.addEventListener('astro:page-load', () => {
-    document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) =>
-      b.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(b.dataset.copy!);
-        } catch {
-          return;
-        }
-        b.classList.add('copied');
-        setTimeout(() => b.classList.remove('copied'), 1600);
+  function initLab() {
+    const lab = document.querySelector<HTMLElement>('.lab[data-round]');
+    if (!lab) return;
+    const key = `design-lab-${lab.dataset.round}`;
+    const questions = [...lab.querySelectorAll<HTMLElement>('[data-q]')];
+    const overall = lab.querySelector<HTMLTextAreaElement>('[data-overall]')!;
+    const out = lab.querySelector<HTMLElement>('[data-out]')!;
+    const count = document.querySelector<HTMLElement>('[data-count]')!;
+
+    const build = () => {
+      const lines = [`Design lab round ${lab.dataset.round} picks:`];
+      let picked = 0;
+      questions.forEach((q, i) => {
+        const c = q.querySelector<HTMLElement>('.opt.chosen');
+        if (c) picked++;
+        lines.push(`${i + 1}. ${q.dataset.q}: ${c ? `${c.dataset.label} (${c.dataset.name})` : 'no pick'}`);
+        const note = q.querySelector<HTMLTextAreaElement>('[data-comment]')!.value.trim();
+        if (note) lines.push(`   Comment: ${note}`);
+      });
+      if (overall.value.trim()) lines.push(`Overall: ${overall.value.trim()}`);
+      out.textContent = lines.join('\n');
+      count.textContent = `${picked} of ${questions.length} chosen`;
+      save();
+    };
+
+    // Remember picks and comments in this browser (nice to have only).
+    const save = () => {
+      try {
+        const state = questions.map((q) => ({
+          pick: q.querySelector<HTMLElement>('.opt.chosen')?.dataset.label ?? null,
+          note: q.querySelector<HTMLTextAreaElement>('[data-comment]')!.value,
+        }));
+        localStorage.setItem(key, JSON.stringify({ state, overall: overall.value }));
+      } catch {}
+    };
+    const choose = (opt: HTMLElement) => {
+      const q = opt.closest('[data-q]')!;
+      const was = opt.classList.contains('chosen');
+      q.querySelectorAll<HTMLElement>('.opt').forEach((o) => {
+        o.classList.remove('chosen');
+        o.querySelector('[data-choose]')!.setAttribute('aria-pressed', 'false');
+      });
+      if (!was) {
+        opt.classList.add('chosen');
+        opt.querySelector('[data-choose]')!.setAttribute('aria-pressed', 'true');
+      }
+    };
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(key) ?? 'null');
+      saved?.state?.forEach((s: { pick: string | null; note: string }, i: number) => {
+        const q = questions[i];
+        if (!q) return;
+        const opt = s.pick && q.querySelector<HTMLElement>(`.opt[data-label="${s.pick}"]`);
+        if (opt) choose(opt);
+        q.querySelector<HTMLTextAreaElement>('[data-comment]')!.value = s.note ?? '';
+      });
+      if (saved?.overall) overall.value = saved.overall;
+    } catch {}
+
+    lab.querySelectorAll<HTMLElement>('.opt').forEach((opt) =>
+      opt.addEventListener('click', () => {
+        choose(opt);
+        build();
       }),
     );
-  });
+    lab.addEventListener('input', build);
+
+    document.querySelectorAll<HTMLButtonElement>('[data-copy-reply]').forEach((b) =>
+      b.addEventListener('click', async () => {
+        const text = out.textContent ?? '';
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const t = document.createElement('textarea');
+          t.value = text;
+          t.style.position = 'fixed';
+          t.style.opacity = '0';
+          document.body.append(t);
+          t.select();
+          document.execCommand('copy');
+          t.remove();
+        }
+        const label = b.querySelector('span')!;
+        b.classList.add('done');
+        label.textContent = 'Copied, paste it in the chat';
+        setTimeout(() => {
+          b.classList.remove('done');
+          label.textContent = 'Copy reply';
+        }, 2200);
+      }),
+    );
+
+    build();
+  }
+  document.addEventListener('astro:page-load', initLab);
 </script>
 
 <style>
   .lab {
-    padding-block: clamp(2.5rem, 6vw, 4rem) 3rem;
+    padding-block: clamp(2rem, 5vw, 3rem) 6rem;
   }
   .intro h1 {
     font-size: clamp(2rem, 5vw, 3rem);
   }
-  .intro p {
-    margin-top: 0.75rem;
+  .how {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 0.9rem 0 0;
+    padding-left: 1.1rem;
     color: var(--text-dim);
-    max-width: 62ch;
   }
-  .intro em {
-    color: var(--text);
-    font-style: normal;
+  .how li::marker {
+    color: var(--text-faint);
   }
-
-  .cmp {
-    margin-top: 3.5rem;
-  }
-  .cmp-head {
+  .applied {
     display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    margin-bottom: 1.25rem;
-  }
-  .num {
-    display: grid;
-    place-items: center;
-    flex: none;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    background: var(--text);
-    color: var(--bg);
-    font-weight: 700;
-    font-size: 0.9rem;
-  }
-  .cmp-head h2 {
-    font-size: 1.35rem;
-    letter-spacing: -0.02em;
-  }
-  .cmp-head p {
-    color: var(--text-dim);
-    font-size: 0.95rem;
-  }
-
-  .cols {
-    display: grid;
-    gap: 1rem;
-  }
-  @media (min-width: 960px) {
-    .cols {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-  .opt {
-    margin: 0;
-    padding: 1rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    background: var(--bg-elev);
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-  .opt.pick {
-    border-color: rgb(124 156 255 / 0.45);
-    box-shadow: 0 0 0 1px rgb(124 156 255 / 0.15);
-  }
-  figcaption {
-    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    color: var(--text-dim);
-  }
-  figcaption b {
-    color: var(--text);
-  }
-  .tag {
-    margin-left: auto;
-    padding: 0.15rem 0.55rem;
-    border-radius: 999px;
-    background: rgb(124 156 255 / 0.15);
-    color: var(--accent);
-    font-size: 0.72rem;
-    font-weight: 600;
-  }
-  .note {
+    gap: 0.45rem;
+    margin-top: 1.25rem;
     font-size: 0.85rem;
     color: var(--text-faint);
-    margin-top: auto;
+  }
+  .applied em {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid rgb(34 197 94 / 0.3);
+    color: #86efac;
+    font-style: normal;
   }
 
   /* Mini page frame */
   .frame {
     position: relative;
-    height: 170px;
+    height: 150px;
     border-radius: 12px;
     border: 1px solid var(--line);
-    background:
-      radial-gradient(80% 60% at 50% 0%, rgb(124 156 255 / 0.1), transparent 70%),
-      var(--bg);
+    background: var(--bg);
     overflow: hidden;
   }
   .stub {
     position: absolute;
     left: 16px;
     bottom: 22px;
-  }
-  .stub.top {
-    bottom: auto;
-    top: 42px;
   }
   .stub .k {
     font-family: var(--font-mono);
@@ -344,181 +252,184 @@ const first = profile.name;
     color: var(--text-faint);
   }
   .stub .n {
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 650;
     letter-spacing: -0.05em;
     margin-top: 4px;
   }
 
-  .nav-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 34px;
-    padding: 0 12px;
-    border-bottom: 1px solid var(--line);
-    background: rgb(9 9 11 / 0.6);
-    font-size: 10.5px;
+  /* Background options */
+  .bg-cur {
+    background:
+      radial-gradient(40% 50% at 80% 40%, rgb(124 156 255 / 0.12), transparent),
+      var(--bg);
   }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 600;
+  .bg-a {
+    background:
+      radial-gradient(45% 55% at 10% 0%, rgb(167 139 250 / 0.28), transparent 70%),
+      radial-gradient(40% 50% at 55% -10%, rgb(76 201 240 / 0.22), transparent 70%),
+      radial-gradient(40% 50% at 95% 10%, rgb(251 113 133 / 0.2), transparent 70%),
+      var(--bg);
   }
-  .brand i {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
+  .bg-b {
+    background: var(--bg);
   }
-  .links {
-    color: var(--text-dim);
-    word-spacing: 8px;
-  }
-  .links em {
-    font-style: normal;
-    color: var(--text);
-    border: 1px solid var(--line-strong);
-    border-radius: 999px;
-    padding: 2px 8px;
-    word-spacing: normal;
-  }
-
-  .nav-pill {
+  .bg-b::before {
+    content: '';
     position: absolute;
-    top: 10px;
-    left: 50%;
-    translate: -50% 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 5px 12px 5px 5px;
-    border-radius: 999px;
-    border: 1px solid var(--line-strong);
-    background: rgb(23 23 27 / 0.7);
-    backdrop-filter: blur(8px);
-    font-size: 10.5px;
-    color: var(--text-dim);
-    white-space: nowrap;
-  }
-  .av {
-    display: grid;
-    place-items: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--text);
-    color: var(--bg);
-    font-weight: 700;
-    font-size: 8.5px;
-  }
-  .sep {
-    width: 1px;
-    height: 12px;
-    background: var(--line-strong);
+    inset: 0;
+    background: radial-gradient(rgb(255 255 255 / 0.14) 1px, transparent 1.3px) 0 0 / 14px 14px;
+    mask-image: linear-gradient(to bottom, #000, transparent 90%);
   }
 
+  /* Mini hero buttons */
   .frame.btns {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 0.6rem;
-    height: auto;
-    min-height: 170px;
-    padding: 1rem;
+    gap: 0.45rem;
+    padding: 0.8rem;
+    font-size: 0.78rem;
   }
-  .btn :global(svg) {
-    margin-left: -2px;
-  }
-  .round {
-    display: grid;
-    place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 50%;
-    border: 1px solid var(--line-strong);
-    color: var(--text-dim);
-    transition:
-      color 0.2s,
-      border-color 0.2s;
-  }
-  .round:hover {
-    color: var(--text);
-    border-color: var(--text-dim);
-  }
-  .mailchip {
+  .mbtn,
+  .mchip,
+  .msplit,
+  .mround {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
-    padding: 0.5rem 0.5rem 0.5rem 0.9rem;
+    gap: 0.4rem;
+    height: 2.1rem;
     border-radius: 999px;
     border: 1px solid var(--line-strong);
-    background: none;
-    color: var(--text);
-    font: inherit;
-    font-size: 0.88rem;
-    cursor: pointer;
+    white-space: nowrap;
   }
-  .mailchip:hover {
-    border-color: var(--text-dim);
+  .mbtn {
+    padding: 0 0.85rem;
   }
-  .cp {
+  .mbtn.primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: transparent;
+    font-weight: 500;
+  }
+  .mchip {
+    padding: 0 0.3rem 0 0.75rem;
+  }
+  .mchip i,
+  .msplit i {
     display: grid;
     place-items: center;
-    width: 1.75rem;
-    height: 1.75rem;
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: 50%;
     background: var(--bg-soft);
     color: var(--text-dim);
   }
-  .mailchip.copied .cp {
+  .msplit {
+    padding: 0 0.3rem 0 0;
+  }
+  .msplit > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 100%;
+    padding: 0 0.6rem 0 0.75rem;
+    border-right: 1px solid var(--line-strong);
+    margin-right: 0.1rem;
+  }
+  .mround {
+    justify-content: center;
+    width: 2.1rem;
+    color: var(--text-dim);
+  }
+
+  /* Reply */
+  .reply {
+    margin-top: 4rem;
+    padding: 1.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elev);
+  }
+  .reply h2 {
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+  }
+  .reply textarea {
+    display: block;
+    width: 100%;
+    margin-top: 0.9rem;
+    padding: 0.75rem 0.95rem;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    field-sizing: content;
+    min-height: 4rem;
+  }
+  .reply textarea:focus {
+    outline: none;
+    border-color: var(--line-strong);
+  }
+  pre {
+    margin: 0.9rem 0;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    background: var(--bg);
+    border: 1px dashed var(--line-strong);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--text-dim);
+    white-space: pre-wrap;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.1rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .copy-btn:hover {
+    background: #fff;
+  }
+  .copy-btn.done {
     background: #16a34a;
     color: #fff;
   }
 
-  .tiles {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 0.5rem;
-  }
-  .tile {
+  /* Sticky bar at the bottom of the screen */
+  .bar {
+    position: fixed;
+    left: 50%;
+    bottom: 1rem;
+    translate: -50% 0;
+    z-index: 40;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.7rem 0.8rem;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: var(--bg);
-  }
-  .tile > span {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    min-width: 0;
-  }
-  .tile b {
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-  .tile small {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    line-height: 1.35;
-  }
-  .badge {
-    align-self: flex-start;
-    margin-top: 0.3rem;
-    padding: 0.15rem 0.55rem;
+    gap: 1rem;
+    padding: 0.4rem 0.4rem 0.4rem 1.1rem;
     border-radius: 999px;
-    font-style: normal;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: color-mix(in oklab, var(--c) 75%, white);
-    background: color-mix(in oklab, var(--c) 16%, transparent);
-    border: 1px solid color-mix(in oklab, var(--c) 35%, transparent);
+    border: 1px solid var(--line-strong);
+    background: rgb(23 23 27 / 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 16px 40px -16px rgb(0 0 0 / 0.9);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    white-space: nowrap;
   }
 </style>

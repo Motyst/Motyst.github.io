@@ -17,7 +17,7 @@ npm run preview        # serve the built site
 
 | What                            | File                              |
 | ------------------------------- | --------------------------------- |
-| Your name, bio, links, timeline | `src/data/profile.ts`             |
+| Your name, bio, email, GitHub   | `src/data/profile.ts`             |
 | Projects                        | `src/content/projects/*.md`       |
 | Project screenshots/videos      | `public/media/<project>/`         |
 | Skill groups shown on homepage  | `src/data/skills.ts`              |
@@ -34,7 +34,7 @@ npm run preview        # serve the built site
 ```yaml
 ---
 title: My App
-summary: Short line for the tile  # shown under the title on the homepage
+summary: What it does + the result  # one line under the title on the homepage
 icon: brain             # key from src/data/icons.ts (falls back to a letter)
 tagline: One sentence that sells it, shown in the project window.
 year: 2026
@@ -77,6 +77,14 @@ The homepage Skills section only shows skills listed in `src/data/skills.ts`
 (in that order, max 6 per group). Every skill is still shown in its project window.
 
 Set `draft: true` to hide a project without deleting it.
+
+## Design lab
+
+`/lab/` is an unlisted page (not linked, not indexed) for comparing design
+ideas side by side. Click the options you like, add comments and press
+**Copy reply** to paste your picks into the chat. To start a new round, edit
+`src/pages/lab/index.astro`: bump `round`, update `applied` and swap the
+`<Question>` / `<Choice>` blocks.
 
 ## Deploying
 

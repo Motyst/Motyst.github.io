@@ -1,0 +1,87 @@
+---
+/**
+ * One comparison row in the design lab: a heading, the options (slot) and a
+ * comment box. The lab script turns the chosen options into a reply to copy.
+ */
+interface Props {
+  n: number;
+  title: string;
+  why: string;
+}
+
+const { n, title, why } = Astro.props;
+---
+
+<section class="cmp" data-q={title}>
+  <div class="cmp-head">
+    <span class="num">{n}</span>
+    <div>
+      <h2>{title}</h2>
+      <p>{why}</p>
+    </div>
+  </div>
+  <div class="cols">
+    <slot />
+  </div>
+  <textarea data-comment rows="1" placeholder="Optional comment on this one…"></textarea>
+</section>
+
+<style>
+  .cmp {
+    margin-top: 3.5rem;
+  }
+  .cmp-head {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+  .num {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--text);
+    color: var(--bg);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+  }
+  .cmp-head p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+  }
+  .cols {
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 960px) {
+    .cols {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  textarea {
+    display: block;
+    width: 100%;
+    margin-top: 0.8rem;
+    padding: 0.75rem 0.95rem;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg-elev);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    field-sizing: content;
+    min-height: 2.9rem;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: var(--line-strong);
+  }
+</style>

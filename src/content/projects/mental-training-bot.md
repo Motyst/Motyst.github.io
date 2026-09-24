@@ -1,6 +1,6 @@
 ---
 title: Mental Training Bot
-summary: Gamified memory training on Telegram
+summary: Gamified memory drills on Telegram, live for a paid community
 icon: brain
 tagline: A gamified Telegram bot for memory training, built for a paid community and running live.
 year: 2026

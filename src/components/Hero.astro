@@ -1,5 +1,6 @@
 ---
 import ProjectIcon from './ProjectIcon.astro';
+import Icon from './Icon.astro';
 import { profile } from '@/data/profile';
 import type { Project } from '@/lib/projects';
 
@@ -34,8 +35,23 @@ const spots = [
     <h1 class="reveal" style="--delay: 60ms">{profile.name}<span class="accent">.</span></h1>
     <p class="lead reveal" style="--delay: 120ms">{profile.headline}</p>
     <div class="actions reveal" style="--delay: 180ms">
-      <a href="#work" class="btn btn-primary">See my work <span class="arrow">↘</span></a>
-      <a href={`mailto:${profile.email}`} class="btn">Get in touch</a>
+      <a href="#work" class="btn btn-primary">See my work <Icon name="arrow-down" size={16} /></a>
+      <button type="button" class="mailchip" data-copy-email={profile.email} title="Copy email address">
+        <Icon name="mail" size={16} />
+        <span>{profile.email}</span>
+        <span class="cp" aria-hidden="true">
+          <Icon name="copy" size={14} class="i-copy" />
+          <Icon name="check" size={14} class="i-done" />
+        </span>
+        <span class="toast" role="status"></span>
+      </button>
+      {
+        profile.socials.map((s) => (
+          <a href={s.url} class="round" target="_blank" rel="noopener noreferrer" title={s.label} aria-label={s.label}>
+            <Icon name={s.label.toLowerCase()} size={19} />
+          </a>
+        ))
+      }
       {
         profile.resume && (
           <a href={profile.resume} class="btn" target="_blank" rel="noopener">
@@ -63,6 +79,41 @@ const spots = [
     }
   </div>
 </section>
+
+<script>
+  async function copy(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Fallback for non-https previews
+      const t = document.createElement('textarea');
+      t.value = text;
+      t.style.position = 'fixed';
+      t.style.opacity = '0';
+      document.body.append(t);
+      t.select();
+      document.execCommand('copy');
+      t.remove();
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-copy-email]').forEach((b) => {
+      const toast = b.querySelector<HTMLElement>('.toast')!;
+      let timer = 0;
+      b.addEventListener('click', async () => {
+        await copy(b.dataset.copyEmail!);
+        b.classList.add('copied');
+        toast.textContent = 'Copied';
+        clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          b.classList.remove('copied');
+          toast.textContent = '';
+        }, 1800);
+      });
+    });
+  });
+</script>
 
 <style>
   .hero {
@@ -126,8 +177,104 @@ const spots = [
   .actions {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 0.75rem;
     margin-top: 2rem;
+  }
+
+  /* Email chip: click copies the address */
+  .mailchip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0.45rem 0.45rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: rgb(255 255 255 / 0.02);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      transform 0.2s var(--ease);
+  }
+  .mailchip:hover {
+    border-color: rgb(255 255 255 / 0.3);
+    transform: translateY(-1px);
+  }
+  .mailchip > :global(svg) {
+    color: var(--text-dim);
+  }
+  .cp {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--bg-soft);
+    color: var(--text-dim);
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+  .cp :global(svg) {
+    grid-area: 1 / 1;
+  }
+  .cp :global(.i-done),
+  .copied .cp :global(.i-copy) {
+    display: none;
+  }
+  .copied .cp :global(.i-done) {
+    display: block;
+  }
+  .mailchip.copied {
+    border-color: rgb(34 197 94 / 0.5);
+  }
+  .copied .cp {
+    background: #16a34a;
+    color: #fff;
+  }
+  .toast {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    translate: -50% 4px;
+    padding: 0.2rem 0.6rem;
+    border-radius: 8px;
+    background: #16a34a;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.2s,
+      translate 0.2s var(--ease);
+  }
+  .copied .toast {
+    opacity: 1;
+    translate: -50% 0;
+  }
+
+  .round {
+    display: grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    color: var(--text-dim);
+    transition:
+      color 0.2s,
+      border-color 0.2s,
+      transform 0.2s var(--ease);
+  }
+  .round:hover {
+    color: var(--text);
+    border-color: rgb(255 255 255 / 0.3);
+    transform: translateY(-1px);
   }
 
   /* Floating project icons */

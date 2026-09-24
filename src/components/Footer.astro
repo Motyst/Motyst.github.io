@@ -8,17 +8,6 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="bottom">
       <span>© {year} {profile.name}</span>
-      <ul>
-        {
-          profile.socials.map((s) => (
-            <li>
-              <a href={s.url} target="_blank" rel="noopener noreferrer">
-                {s.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
     </div>
   </div>
 </footer>
@@ -37,17 +26,5 @@ const year = new Date().getFullYear();
     border-top: 1px solid var(--line);
     font-size: 0.85rem;
     color: var(--text-faint);
-  }
-
-  ul {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul a:hover {
-    color: var(--text);
   }
 </style>

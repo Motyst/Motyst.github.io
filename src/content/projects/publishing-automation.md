@@ -1,6 +1,6 @@
 ---
 title: Publishing Automation
-summary: One video in, eight networks out
+summary: Turns one video into scheduled posts on eight networks
 icon: broadcast
 tagline: One video in, eight social networks out. Transcription, captions, scheduling and posting on autopilot.
 year: 2026

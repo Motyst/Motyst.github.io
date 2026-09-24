@@ -1,0 +1,142 @@
+---
+/**
+ * One option inside a lab Question. Click the card (or its button) to
+ * choose it. `mine` marks Claude's recommendation.
+ */
+interface Props {
+  /** 'Current', 'A', 'B'… Shown big on the card and used in the reply. */
+  label: string;
+  name: string;
+  note: string;
+  mine?: boolean;
+}
+
+const { label, name, note, mine = false } = Astro.props;
+---
+
+<figure class="opt" data-label={label} data-name={name}>
+  <figcaption>
+    <span class="key" class:list={{ cur: label === 'Current' }}>{label}</span>
+    <b>{name}</b>
+    {mine && <span class="tag">My pick</span>}
+  </figcaption>
+  <div class="preview">
+    <slot />
+  </div>
+  <p class="note">{note}</p>
+  <button type="button" class="choose" data-choose aria-pressed="false">
+    <span class="box" aria-hidden="true"></span>
+    <span class="off">Choose {label}</span>
+    <span class="on">Chosen</span>
+  </button>
+</figure>
+
+<style>
+  .opt {
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elev);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .opt:hover {
+    border-color: var(--line-strong);
+  }
+  .opt.chosen {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgb(34 197 94 / 0.18);
+  }
+  figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.92rem;
+  }
+  .key {
+    display: grid;
+    place-items: center;
+    min-width: 1.9rem;
+    height: 1.9rem;
+    padding: 0 0.5rem;
+    border-radius: 9px;
+    background: var(--text);
+    color: var(--bg);
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .key.cur {
+    background: var(--bg-soft);
+    color: var(--text-dim);
+    border: 1px solid var(--line-strong);
+  }
+  .tag {
+    margin-left: auto;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: rgb(124 156 255 / 0.15);
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .preview {
+    cursor: auto;
+  }
+  .note {
+    font-size: 0.85rem;
+    color: var(--text-faint);
+    margin-top: auto;
+  }
+  .choose {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.6rem;
+    border-radius: 12px;
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--text-dim);
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s;
+  }
+  .choose:hover {
+    color: var(--text);
+    border-color: var(--text-dim);
+  }
+  .box {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+  }
+  .choose .on,
+  .chosen .choose .off {
+    display: none;
+  }
+  .chosen .choose .on {
+    display: inline;
+  }
+  .chosen .choose {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+  }
+  .chosen .box {
+    border-width: 5px;
+    border-color: #fff;
+  }
+</style>

@@ -1,6 +1,6 @@
 ---
 title: AI Research Briefing
-summary: A daily AI briefing, written by an LLM
+summary: Reads five sources daily and delivers one AI briefing
 icon: radar
 tagline: A bot that reads Reddit, Hacker News, RSS, X and YouTube every day and sends me an LLM-written briefing on Telegram.
 year: 2026
