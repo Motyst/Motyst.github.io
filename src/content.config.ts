@@ -21,8 +21,12 @@ const projects = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
-    /** One line that sells the project. Shown on cards. */
+    /** Very short line shown under the title on the project tile. */
+    summary: z.string().optional(),
+    /** One sentence that sells the project. Shown in the project window. */
     tagline: z.string(),
+    /** Icon key from src/data/icons.ts. Falls back to the first letter. */
+    icon: z.string().optional(),
     year: z.number().int(),
     status: z.enum(['live', 'completed', 'in-progress', 'archived', 'concept']).default('live'),
     /** Your role on the project, e.g. "Solo developer" or "Frontend lead". */

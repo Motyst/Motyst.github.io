@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { categoryOrder, skillCategories } from '@/data/skills';
+import { categoryOrder, maxPerGroup, skillCategories } from '@/data/skills';
 
 export type Project = CollectionEntry<'projects'>;
 
@@ -27,40 +27,30 @@ export interface SkillGroup {
   skills: SkillSummary[];
 }
 
-const categoryOf = new Map<string, string>(
-  Object.entries(skillCategories).flatMap(([category, skills]) =>
-    skills.map((skill) => [skill.toLowerCase(), category] as const),
-  ),
-);
-
 /**
- * Builds the Skills section from project data: every skill, the projects
- * that used it, grouped by category and sorted by how often it was used.
+ * Builds the homepage Skills section from project data: skills grouped and
+ * ordered as in src/data/skills.ts, capped at `maxPerGroup` per group.
  */
 export function groupSkills(projects: Project[]): SkillGroup[] {
-  const bySkill = new Map<string, SkillSummary>();
+  const used = new Map<string, SkillSummary>();
   for (const project of projects) {
     for (const name of project.data.skills) {
       const slug = slugify(name);
-      const entry = bySkill.get(slug) ?? { name, slug, projects: [] };
+      const entry = used.get(slug) ?? { name, slug, projects: [] };
       entry.projects.push(project);
-      bySkill.set(slug, entry);
+      used.set(slug, entry);
     }
   }
 
-  const groups = new Map<string, SkillSummary[]>();
-  for (const skill of bySkill.values()) {
-    const category = categoryOf.get(skill.name.toLowerCase()) ?? 'Other';
-    groups.set(category, [...(groups.get(category) ?? []), skill]);
-  }
-
-  const rank = (c: string) => (c === 'Other' ? Infinity : categoryOrder.indexOf(c) === -1 ? 999 : categoryOrder.indexOf(c));
-  return [...groups.entries()]
-    .sort(([a], [b]) => rank(a) - rank(b))
-    .map(([category, skills]) => ({
+  return categoryOrder
+    .map((category) => ({
       category,
-      skills: skills.sort((a, b) => b.projects.length - a.projects.length || a.name.localeCompare(b.name)),
-    }));
+      skills: skillCategories[category]
+        .map((name) => used.get(slugify(name)))
+        .filter((s): s is SkillSummary => Boolean(s))
+        .slice(0, maxPerGroup),
+    }))
+    .filter((g) => g.skills.length > 0);
 }
 
 export const statusLabel: Record<Project['data']['status'], string> = {

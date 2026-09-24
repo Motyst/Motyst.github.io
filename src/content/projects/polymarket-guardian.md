@@ -1,5 +1,7 @@
 ---
 title: Polymarket Liquidity Guardian
+summary: Real-time order protection bot
+icon: shield-chart
 tagline: A real-time bot that cancels liquidity orders the instant they reach the top of the Polymarket order book.
 year: 2026
 status: completed

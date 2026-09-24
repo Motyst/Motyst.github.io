@@ -103,7 +103,7 @@ p {
 }
 
 .section {
-  padding-block: clamp(4rem, 10vw, 8rem);
+  padding-block: clamp(2.5rem, 5vw, 4rem);
 }
 
 .section-head {
@@ -112,11 +112,11 @@ p {
   justify-content: space-between;
   gap: 1.5rem;
   flex-wrap: wrap;
-  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
 }
 
 .section-head h2 {
-  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-size: clamp(1.9rem, 4.5vw, 2.9rem);
 }
 
 .section-head p {

@@ -20,7 +20,8 @@ npm run preview        # serve the built site
 | Your name, bio, links, timeline | `src/data/profile.ts`             |
 | Projects                        | `src/content/projects/*.md`       |
 | Project screenshots/videos      | `public/media/<project>/`         |
-| Skill categories                | `src/data/skills.ts`              |
+| Skill groups shown on homepage  | `src/data/skills.ts`              |
+| Project icons                   | `src/data/icons.ts`               |
 | Project fields (schema)         | `src/content.config.ts`           |
 | Colors, fonts, spacing          | `src/styles/global.css` (`:root`) |
 
@@ -33,11 +34,12 @@ npm run preview        # serve the built site
 ```yaml
 ---
 title: My App
-tagline: One line that sells it.
+summary: Short line for the tile  # shown under the title on the homepage
+icon: brain             # key from src/data/icons.ts (falls back to a letter)
+tagline: One sentence that sells it, shown in the project window.
 year: 2026
 status: live            # live | in-progress | archived | concept
 role: Solo developer
-featured: true          # bigger card on the home page
 order: 1                # lower = shown first
 accent: '#34d399'       # project color
 cover:                  # optional — a generated cover is used if omitted
@@ -67,8 +69,12 @@ links:
 Write the story of the project here in Markdown.
 ```
 
-Skills are collected automatically. To choose which category a new skill appears
-in, add it to `src/data/skills.ts` (otherwise it shows under "Other").
+Clicking a project on the homepage opens its window (media, story, workflow,
+skills, links). Each project also has a full page at `/work/<file-name>`, and
+`/?project=<file-name>` opens its window directly, which is handy for sharing.
+
+The homepage Skills section only shows skills listed in `src/data/skills.ts`
+(in that order, max 6 per group). Every skill is still shown in its project window.
 
 Set `draft: true` to hide a project without deleting it.
 

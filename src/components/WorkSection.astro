@@ -1,27 +1,14 @@
 ---
-import ProjectCard from './ProjectCard.astro';
-import { slugify, type Project } from '@/lib/projects';
+import ProjectIcon from './ProjectIcon.astro';
+import ProjectModal from './ProjectModal.astro';
+import type { Project } from '@/lib/projects';
 
 interface Props {
   projects: Project[];
 }
 
 const { projects } = Astro.props;
-
-// Filter chips: the most-used skills across all projects.
-const counts = new Map<string, { name: string; count: number }>();
-for (const p of projects) {
-  for (const s of p.data.skills) {
-    const slug = slugify(s);
-    const entry = counts.get(slug) ?? { name: s, count: 0 };
-    entry.count++;
-    counts.set(slug, entry);
-  }
-}
-const filters = [...counts.entries()]
-  .sort(([, a], [, b]) => b.count - a.count || a.name.localeCompare(b.name))
-  .slice(0, 12)
-  .map(([slug, { name }]) => ({ slug, name }));
+const at = (i: number) => projects[(i + projects.length) % projects.length];
 ---
 
 <section class="section" id="work">
@@ -31,135 +18,197 @@ const filters = [...counts.entries()]
         <span class="eyebrow">Selected work · {projects.length} projects</span>
         <h2>Things I've built</h2>
       </div>
-      <p>Apps, tools and experiments. Open any project to see it in action, how it works, and what it taught me.</p>
+      <p>Tap a project to see how it works, the stack behind it and what it looks like.</p>
     </div>
 
-    {
-      filters.length > 1 && (
-        <div class="filters reveal" role="toolbar" aria-label="Filter projects by skill">
-          <button class="chip is-active" data-filter="all" type="button">
-            All
-          </button>
-          {filters.map((f) => (
-            <button class="chip" data-filter={f.slug} type="button">
-              {f.name}
+    <ul class="tiles">
+      {
+        projects.map((p, i) => (
+          <li class="reveal" style={`--delay: ${(i % 3) * 70}ms`}>
+            <button type="button" class="tile" data-open={p.id} style={`--c: ${p.data.accent}`}>
+              <ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={60} />
+              <span class="txt">
+                <span class="t">{p.data.title}</span>
+                <span class="s">{p.data.summary ?? p.data.tagline}</span>
+              </span>
+              <span class="go" aria-hidden="true">
+                ↗
+              </span>
             </button>
-          ))}
-        </div>
-      )
-    }
-
-    <div class="grid">
-      {projects.map((p, i) => <ProjectCard project={p} size={p.data.featured ? 'large' : 'normal'} index={i} />)}
-    </div>
-    <p class="empty" hidden>No projects with that skill yet.</p>
+          </li>
+        ))
+      }
+    </ul>
   </div>
+
+  {projects.map((p, i) => <ProjectModal project={p} prev={at(i - 1)} next={at(i + 1)} />)}
 </section>
 
 <script>
-  function initWork() {
-    const section = document.getElementById('work');
-    if (!section) return;
-    const buttons = section.querySelectorAll<HTMLButtonElement>('[data-filter]');
-    const cards = section.querySelectorAll<HTMLElement>('.card');
-    const empty = section.querySelector<HTMLElement>('.empty');
+  // Project windows: any [data-open="<id>"] opens #project-<id>.
+  // The open project is kept in the URL (?project=<id>) so it can be shared.
+  function initProjects() {
+    const setParam = (id: string | null) => {
+      const url = new URL(location.href);
+      if (id) url.searchParams.set('project', id);
+      else url.searchParams.delete('project');
+      history.replaceState(history.state, '', url);
+    };
 
-    function apply(filter: string) {
-      let visible = 0;
-      cards.forEach((card) => {
-        const match = filter === 'all' || (card.dataset.skills ?? '').split(' ').includes(filter);
-        card.classList.toggle('is-hidden', !match);
-        if (match) {
-          visible++;
-          card.classList.add('is-visible');
-        }
-      });
-      buttons.forEach((b) => {
-        const active = b.dataset.filter === filter;
-        b.classList.toggle('is-active', active);
-        b.setAttribute('aria-pressed', String(active));
-      });
-      if (empty) empty.hidden = visible > 0;
-    }
+    const open = (id: string) => {
+      const dialog = document.getElementById(`project-${id}`) as HTMLDialogElement | null;
+      if (!dialog) return;
+      document.querySelectorAll<HTMLDialogElement>('dialog.modal[open]').forEach((d) => d !== dialog && d.close());
+      if (!dialog.open) dialog.showModal();
+      document.documentElement.style.overflow = 'hidden';
+      dialog.querySelector<HTMLElement>('.scroll')?.scrollTo(0, 0);
+      setParam(id);
+    };
 
-    buttons.forEach((b) =>
-      b.addEventListener('click', () => {
-        const filter = b.dataset.filter ?? 'all';
-        apply(filter);
-        const url = new URL(location.href);
-        if (filter === 'all') url.searchParams.delete('skill');
-        else url.searchParams.set('skill', filter);
-        history.replaceState(history.state, '', url);
-      }),
+    document.querySelectorAll<HTMLElement>('[data-open]').forEach((el) =>
+      el.addEventListener('click', () => open(el.dataset.open!)),
     );
 
-    // Support deep links like /?skill=python#work (used by the Skills section).
-    const initial = new URLSearchParams(location.search).get('skill');
-    if (initial) apply(initial);
+    document.querySelectorAll<HTMLDialogElement>('dialog.modal').forEach((dialog) => {
+      dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+      // A click on the backdrop (outside the sheet) closes the window.
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) dialog.close();
+      });
+      dialog.addEventListener('close', () => {
+        dialog.querySelectorAll('video').forEach((v) => v.pause());
+        if (!document.querySelector('dialog.modal[open]')) {
+          document.documentElement.style.overflow = '';
+          setParam(null);
+        }
+      });
 
-    // Cover videos play while hovered.
-    cards.forEach((card) => {
-      const video = card.querySelector<HTMLVideoElement>('video[data-hover-play]');
-      if (!video) return;
-      card.addEventListener('mouseenter', () => void video.play().catch(() => {}));
-      card.addEventListener('mouseleave', () => video.pause());
+      // Media strip: arrows + counter
+      const strip = dialog.querySelector<HTMLElement>('[data-strip]');
+      const count = dialog.querySelector<HTMLElement>('[data-strip-count]');
+      if (strip) {
+        const total = strip.children.length;
+        dialog.querySelectorAll<HTMLButtonElement>('[data-strip-go]').forEach((b) =>
+          b.addEventListener('click', () =>
+            strip.scrollBy({ left: Number(b.dataset.stripGo) * strip.clientWidth, behavior: 'smooth' }),
+          ),
+        );
+        strip.addEventListener('scroll', () => {
+          if (count) count.textContent = `${Math.round(strip.scrollLeft / strip.clientWidth) + 1} / ${total}`;
+        });
+      }
     });
+
+    const initial = new URLSearchParams(location.search).get('project');
+    if (initial) open(initial);
   }
 
-  document.addEventListener('astro:page-load', initWork);
+  document.addEventListener('astro:page-load', initProjects);
 </script>
 
 <style>
-  .filters {
+  /* Flex so the last row always stretches to full width */
+  .tiles {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
+    gap: 0.9rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
-  .filters button {
+  .tiles > li {
+    flex: 1 1 320px;
+  }
+
+  .tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    width: 100%;
+    height: 100%;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(90% 140% at 0% 50%, color-mix(in oklab, var(--c) 9%, transparent), transparent 60%),
+      var(--bg-elev);
+    color: inherit;
     font: inherit;
-    font-size: 0.82rem;
+    text-align: left;
     cursor: pointer;
+    overflow: hidden;
+    transition:
+      border-color 0.25s,
+      transform 0.35s var(--ease),
+      background 0.25s;
+  }
+  .tile:hover {
+    border-color: color-mix(in oklab, var(--c) 50%, transparent);
+    transform: translateY(-2px);
+  }
+  .tile :global(.icon) {
+    transition: transform 0.4s var(--ease);
+  }
+  .tile:hover :global(.icon) {
+    transform: scale(1.06) rotate(-3deg);
   }
 
-  .filters :global(.chip.is-active) {
-    background: var(--text);
-    color: var(--bg);
-    border-color: var(--text);
+  .txt {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
   }
-
-  .grid {
-    display: grid;
-    gap: 1.25rem;
-    grid-template-columns: 1fr;
-    grid-auto-flow: dense;
+  .t {
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.015em;
   }
-
-  @media (min-width: 700px) {
-    .grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  /* On wide screens use flex so every row fills its full width,
-     whatever mix of featured and regular cards it contains. */
-  @media (min-width: 1000px) {
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-    }
-    .grid > :global(.card) {
-      flex: 1 1 calc(33.333% - 1.25rem);
-    }
-    .grid > :global(.card.large) {
-      flex: 1 1 calc(50% - 1.25rem);
-    }
-  }
-
-  .empty {
+  .s {
+    font-size: 0.88rem;
     color: var(--text-dim);
-    padding: 3rem 0;
-    text-align: center;
+    line-height: 1.4;
+  }
+
+  .go {
+    margin-left: auto;
+    align-self: flex-start;
+    color: var(--text-faint);
+    transition:
+      color 0.2s,
+      transform 0.3s var(--ease);
+  }
+  .tile:hover .go {
+    color: var(--c);
+    transform: translate(2px, -2px);
+  }
+
+  /* Phones: two columns of app-style tiles so every project fits on screen */
+  @media (max-width: 560px) {
+    .tiles {
+      gap: 0.6rem;
+    }
+    .tiles > li {
+      flex: 1 1 calc(50% - 0.3rem);
+    }
+    .tile {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.8rem;
+      padding: 1rem;
+    }
+    .t {
+      font-size: 0.95rem;
+    }
+    .s {
+      font-size: 0.8rem;
+    }
+    .go {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.9rem;
+    }
   }
 </style>

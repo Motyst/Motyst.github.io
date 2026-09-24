@@ -7,44 +7,26 @@ interface Props {
 
 const { projects } = Astro.props;
 const groups = groupSkills(projects);
-const max = Math.max(1, ...groups.flatMap((g) => g.skills.map((s) => s.projects.length)));
 ---
 
 <section class="section" id="skills">
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <span class="eyebrow">Skills · earned through projects</span>
-        <h2>What I can do</h2>
+        <span class="eyebrow">Skills</span>
+        <h2>What I work with</h2>
       </div>
-      <p>
-        Every skill here comes straight from real work. The dots are the projects it was used in — click a skill to see
-        them.
-      </p>
+      <p>The core of my toolkit, all used in the projects above.</p>
     </div>
 
     <div class="groups">
       {
-        groups.map((group, gi) => (
-          <div class="group reveal" style={`--delay: ${(gi % 3) * 80}ms`}>
-            <h3 class="eyebrow">{group.category}</h3>
+        groups.map((g, i) => (
+          <div class="group reveal" style={`--delay: ${i * 60}ms`}>
+            <h3>{g.category}</h3>
             <ul>
-              {group.skills.map((skill) => (
-                <li>
-                  <a href={`/?skill=${skill.slug}#work`} class="skill">
-                    <span class="name">{skill.name}</span>
-                    <span class="dots" aria-hidden="true">
-                      {skill.projects.map((p) => (
-                        <i style={`--c: ${p.data.accent}`} title={p.data.title} />
-                      ))}
-                    </span>
-                    <span class="bar" style={`--w: ${(skill.projects.length / max) * 100}%`} aria-hidden="true" />
-                    <span class="sr-only">
-                      Used in {skill.projects.length} project{skill.projects.length === 1 ? '' : 's'}:{' '}
-                      {skill.projects.map((p) => p.data.title).join(', ')}
-                    </span>
-                  </a>
-                </li>
+              {g.skills.map((s) => (
+                <li>{s.name}</li>
               ))}
             </ul>
           </div>
@@ -57,71 +39,38 @@ const max = Math.max(1, ...groups.flatMap((g) => g.skills.map((s) => s.projects.
 <style>
   .groups {
     display: grid;
-    gap: 1.25rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 0.9rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
   }
 
   .group {
-    padding: 1.5rem;
+    padding: 1.25rem 1.35rem;
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     background: var(--bg-elev);
   }
 
+  h3 {
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.8rem;
+  }
+
   ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  li + li {
-    border-top: 1px solid var(--line);
-  }
-
-  .skill {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.7rem 0;
-  }
-
-  .name {
-    transition: transform 0.3s var(--ease), color 0.2s;
-  }
-
-  .skill:hover .name {
-    transform: translateX(4px);
-    color: #fff;
-  }
-
-  .dots {
-    display: flex;
-    gap: 4px;
-  }
-
-  .dots i {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--c);
-    opacity: 0.85;
-  }
-
-  .bar {
-    position: absolute;
-    left: 0;
-    bottom: -1px;
-    height: 1px;
-    width: var(--w);
-    background: linear-gradient(90deg, var(--accent), transparent);
-    transform-origin: left;
-    transform: scaleX(0);
-    transition: transform 0.5s var(--ease);
-  }
-
-  .skill:hover .bar {
-    transform: scaleX(1);
+  li {
+    padding: 0.28em 0.7em;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: rgb(255 255 255 / 0.02);
+    font-size: 0.8rem;
+    color: var(--text-dim);
   }
 </style>

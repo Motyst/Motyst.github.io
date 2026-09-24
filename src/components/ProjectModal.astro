@@ -1,0 +1,492 @@
+---
+/**
+ * The pop-up window for one project: header, media, story, workflow,
+ * skills and links. Opened by any element with data-open="<project id>".
+ */
+import { render } from 'astro:content';
+import ProjectIcon from './ProjectIcon.astro';
+import ProjectBanner from './ProjectBanner.astro';
+import Media from './Media.astro';
+import type { Project } from '@/lib/projects';
+
+interface Props {
+  project: Project;
+  prev: Project;
+  next: Project;
+}
+
+const { project, prev, next } = Astro.props;
+const { data, id } = project;
+const { Content } = await render(project);
+
+// Cover first, then the gallery, without showing the same file twice.
+const media = [data.cover, ...data.gallery].filter(
+  (m, i, all): m is NonNullable<typeof m> => !!m && all.findIndex((o) => o?.src === m.src) === i,
+);
+const linkIcon: Record<string, string> = { live: '↗', repo: '⌥', download: '↓', video: '▶', docs: '¶', other: '↗' };
+---
+
+<dialog class="modal" id={`project-${id}`} aria-labelledby={`project-${id}-title`} style={`--c: ${data.accent}`}>
+  <div class="sheet">
+    <header class="head">
+      <ProjectIcon icon={data.icon} title={data.title} accent={data.accent} size={60} />
+      <div class="head-text">
+        <p class="meta mono">{data.year}{data.role && ` · ${data.role}`}</p>
+        <h2 id={`project-${id}-title`}>{data.title}</h2>
+      </div>
+      <button type="button" class="close" data-close aria-label="Close">✕</button>
+    </header>
+
+    <div class="scroll" tabindex="-1" autofocus>
+      <p class="tagline">{data.tagline}</p>
+
+      <div class="media">
+        {
+          media.length === 0 ? (
+            <ProjectBanner icon={data.icon} title={data.title} accent={data.accent} />
+          ) : (
+            <div class="strip" data-strip>
+              {media.map((m) => (
+                <figure>
+                  <Media item={m} title={data.title} accent={data.accent} mode="full" />
+                  {m.caption && <figcaption>{m.caption}</figcaption>}
+                </figure>
+              ))}
+            </div>
+          )
+        }
+        {
+          media.length > 1 && (
+            <div class="strip-nav">
+              <button type="button" data-strip-go="-1" aria-label="Previous">←</button>
+              <span class="mono" data-strip-count>
+                1 / {media.length}
+              </span>
+              <button type="button" data-strip-go="1" aria-label="Next">→</button>
+            </div>
+          )
+        }
+      </div>
+
+      {
+        data.links.length > 0 && (
+          <div class="links">
+            {data.links.map((l, i) => (
+              <a href={l.url} class:list={['btn', { 'btn-primary': i === 0 }]} target="_blank" rel="noopener noreferrer">
+                {l.label} <span class="arrow">{linkIcon[l.kind]}</span>
+              </a>
+            ))}
+          </div>
+        )
+      }
+
+      <div class="cols">
+        <div class="prose">
+          <Content />
+        </div>
+
+        <aside class="side">
+          {
+            data.highlights.length > 0 && (
+              <section>
+                <h3 class="eyebrow">Highlights</h3>
+                <ul class="highlights">
+                  {data.highlights.map((h) => (
+                    <li>{h}</li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+          <section>
+            <h3 class="eyebrow">Skills</h3>
+            <ul class="skills">
+              {data.skills.map((s) => (
+                <li class="chip">{s}</li>
+              ))}
+            </ul>
+          </section>
+          {
+            data.private && (
+              <p class="private">Private codebase. A walkthrough is available on request.</p>
+            )
+          }
+        </aside>
+      </div>
+
+      {
+        data.workflow.length > 0 && (
+          <section class="flow">
+            <h3 class="eyebrow">How it works</h3>
+            <ol>
+              {data.workflow.map((s, i) => (
+                <li>
+                  <span class="n mono">{String(i + 1).padStart(2, '0')}</span>
+                  <span>
+                    <strong>{s.title}</strong>
+                    {s.description}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )
+      }
+    </div>
+
+    <footer class="foot">
+      {
+        prev.id !== id && (
+          <button type="button" class="nav" data-open={prev.id}>
+            ← <span>{prev.data.title}</span>
+          </button>
+        )
+      }
+      <a href={`/work/${id}`} class="full mono">Full page ↗</a>
+      {
+        next.id !== id && (
+          <button type="button" class="nav next" data-open={next.id}>
+            <span>{next.data.title}</span> →
+          </button>
+        )
+      }
+    </footer>
+  </div>
+</dialog>
+
+<style>
+  .modal {
+    width: min(920px, 100vw - 2rem);
+    max-height: min(90vh, 900px);
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elev);
+    color: var(--text);
+    overflow: hidden;
+    box-shadow:
+      0 40px 120px -30px rgb(0 0 0 / 0.8),
+      0 0 0 1px rgb(255 255 255 / 0.02);
+  }
+  .modal[open] {
+    display: flex;
+    animation: pop 0.35s var(--ease);
+  }
+  .modal::backdrop {
+    background: rgb(4 4 6 / 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    animation: fade 0.3s ease;
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .sheet {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: inherit;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(60% 200% at 0% 0%, color-mix(in oklab, var(--c) 14%, transparent), transparent 70%),
+      var(--bg-elev);
+  }
+  .head-text {
+    min-width: 0;
+    flex: 1;
+  }
+  .meta {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+  h2 {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    letter-spacing: -0.03em;
+    margin-top: 0.15rem;
+  }
+  .close {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition:
+      color 0.2s,
+      border-color 0.2s;
+  }
+  .close:hover {
+    color: var(--text);
+    border-color: var(--text-dim);
+  }
+
+  .scroll {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1.5rem;
+    display: grid;
+    grid-auto-rows: max-content;
+    gap: 1.5rem;
+    outline: none;
+  }
+
+  .tagline {
+    font-size: clamp(1.05rem, 2vw, 1.2rem);
+    color: var(--text-dim);
+    max-width: 60ch;
+  }
+
+  .media {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--bg-soft);
+  }
+  .strip {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .strip::-webkit-scrollbar {
+    display: none;
+  }
+  .strip figure {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    margin: 0;
+  }
+  .strip :global(.media.full) {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+  }
+  figcaption {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    border-top: 1px solid var(--line);
+  }
+  .strip-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+  .strip-nav button {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--text-dim);
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .cols {
+    display: grid;
+    gap: 1.75rem;
+  }
+  @media (min-width: 760px) {
+    .cols {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 2.5rem;
+    }
+  }
+  .prose {
+    color: var(--text-dim);
+    font-size: 0.98rem;
+  }
+  .prose :global(p + p),
+  .prose :global(ul),
+  .prose :global(pre) {
+    margin-top: 0.9rem;
+  }
+  .prose :global(h2) {
+    color: var(--text);
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .prose :global(strong) {
+    color: var(--text);
+  }
+  .prose :global(a) {
+    color: var(--text);
+    border-bottom: 1px solid var(--c);
+  }
+  .prose :global(ul) {
+    padding-left: 1.1rem;
+  }
+  .prose :global(li + li) {
+    margin-top: 0.3rem;
+  }
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    padding: 0.1em 0.35em;
+    border-radius: 5px;
+    background: var(--bg-soft);
+  }
+
+  .side {
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+  }
+  .eyebrow {
+    margin-bottom: 0.6rem;
+  }
+  .highlights li {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--line);
+    font-size: 0.92rem;
+  }
+  .highlights li::before {
+    content: '✦';
+    color: var(--c);
+  }
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .skills .chip {
+    font-size: 0.75rem;
+  }
+  .highlights,
+  .skills,
+  .flow ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .private {
+    padding: 0.75rem 0.9rem;
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  .flow ol {
+    display: grid;
+    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  }
+  .flow li {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg);
+    font-size: 0.86rem;
+    color: var(--text-dim);
+  }
+  .flow strong {
+    display: block;
+    color: var(--text);
+    font-size: 0.92rem;
+  }
+  .n {
+    color: var(--c);
+    font-size: 0.75rem;
+    padding-top: 0.15rem;
+  }
+
+  .foot {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.5rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem;
+  }
+  .nav {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--text-dim);
+    font: inherit;
+    cursor: pointer;
+    max-width: 40%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav:hover,
+  .full:hover {
+    color: var(--text);
+  }
+  .full {
+    margin-inline: auto;
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+  .nav.next {
+    text-align: right;
+  }
+
+  /* Phones: a full-height bottom sheet */
+  @media (max-width: 640px) {
+    .modal {
+      width: 100vw;
+      max-width: 100vw;
+      max-height: 94dvh;
+      margin: auto 0 0;
+      border-radius: 20px 20px 0 0;
+      border-bottom: 0;
+    }
+    .modal[open] {
+      animation: slide 0.35s var(--ease);
+    }
+    .head,
+    .scroll {
+      padding-inline: 1rem;
+    }
+    .foot {
+      padding-inline: 1rem;
+    }
+    .nav span {
+      display: none;
+    }
+  }
+  @keyframes slide {
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+  }
+</style>

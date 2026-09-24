@@ -1,5 +1,7 @@
 ---
 title: YouTube → X Post Bot
+summary: YouTube videos into on-voice X posts
+icon: video-to-post
 tagline: Turns a creator's YouTube videos into X posts in their own voice, with every draft approved in Telegram first.
 year: 2026
 status: completed

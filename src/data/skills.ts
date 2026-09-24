@@ -1,46 +1,26 @@
 /**
- * Skill categories. Skills themselves come from the `skills` list of each
- * project — this file only decides which group a skill appears in.
- * Any skill not listed here lands in "Other", so nothing is ever lost.
+ * Skill groups for the homepage. Skills come from each project's `skills`
+ * list; this file decides the group and the order (first = most important).
+ * The homepage shows at most `maxPerGroup` per group; every skill is still
+ * listed inside its project window. Unlisted skills are left off the homepage.
  */
 export const skillCategories: Record<string, string[]> = {
-  Languages: ['Python', 'C++', 'TypeScript', 'JavaScript', 'HTML', 'CSS', 'SQL', 'Solidity'],
   'AI & LLMs': ['Claude API', 'LLMs', 'Prompt Engineering', 'Whisper', 'Claude Code', 'AI Workflow Design'],
-  'Backend & APIs': [
-    'FastAPI',
-    'REST APIs',
-    'WebSockets',
+  'Bots & Automation': [
     'Telegram Bot API',
-    'X API',
-    'SQLite',
-    'SQLAlchemy',
-    'Async Python',
-    'Web Scraping',
-  ],
-  Frontend: ['React', 'Astro', 'SVG', 'Streamlit'],
-  'Systems & CS': [
-    'Algorithms',
-    'Data Structures',
-    'Interpreters',
-    'Parsing',
-    'OOP',
-    'Information Retrieval',
-    'Geo Projection',
-    'Unit Testing',
-    'Real-time Systems',
-  ],
-  'Infra & Tooling': ['Linux', 'VPS Deployment', 'Git', 'Scheduling', 'CLI Tools', 'ffmpeg', 'yt-dlp'],
-  'Product & Process': [
     'Automation',
     'Human-in-the-loop',
-    'Product Design',
+    'Web Scraping',
+    'Scheduling',
+    'X API',
     'Gamification',
     'Analytics',
-    'Content Operations',
-    'Technical Writing',
-    'UX Design',
   ],
+  'Backend & Data': ['Python', 'FastAPI', 'Async Python', 'REST APIs', 'WebSockets', 'SQLite', 'SQLAlchemy', 'Real-time Systems'],
+  'Frontend & Ops': ['TypeScript', 'React', 'Streamlit', 'Linux', 'VPS Deployment', 'Product Design'],
 };
 
-/** Order the categories appear in. Unlisted categories go last. */
+export const maxPerGroup = 6;
+
+/** Order the categories appear in. */
 export const categoryOrder = Object.keys(skillCategories);

@@ -2,6 +2,8 @@
 import { render } from 'astro:content';
 import Base from '@/layouts/Base.astro';
 import Media from '@/components/Media.astro';
+import ProjectIcon from '@/components/ProjectIcon.astro';
+import ProjectBanner from '@/components/ProjectBanner.astro';
 import Gallery from '@/components/Gallery.astro';
 import Workflow from '@/components/Workflow.astro';
 import { getProjects, slugify, statusLabel, type Project } from '@/lib/projects';
@@ -51,7 +53,10 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
         }
         {data.role && <><span>·</span><span>{data.role}</span></>}
       </div>
-      <h1 transition:name={`title-${id}`}>{data.title}</h1>
+      <div class="title-row">
+        <ProjectIcon icon={data.icon} title={data.title} accent={data.accent} size={72} />
+        <h1>{data.title}</h1>
+      </div>
       <p class="tagline">{data.tagline}</p>
 
       {
@@ -68,8 +73,14 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
     </header>
 
     <div class="container">
-      <div class="hero-media" transition:name={`cover-${id}`}>
-        <Media item={data.cover} title={data.title} accent={data.accent} autoplay eager />
+      <div class:list={['hero-media', { 'has-cover': data.cover }]}>
+        {
+          data.cover ? (
+            <Media item={data.cover} title={data.title} accent={data.accent} autoplay eager />
+          ) : (
+            <ProjectBanner icon={data.icon} title={data.title} accent={data.accent} />
+          )
+        }
       </div>
     </div>
 
@@ -187,9 +198,15 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
     color: var(--accent);
   }
 
-  h1 {
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.5vw, 1.5rem);
     margin-top: 1rem;
-    font-size: clamp(2.75rem, 9vw, 6.5rem);
+  }
+
+  h1 {
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
     letter-spacing: -0.055em;
     line-height: 0.95;
   }
@@ -208,9 +225,12 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
     margin-top: 2rem;
   }
 
+  .hero-media.has-cover {
+    aspect-ratio: 16 / 9;
+  }
+
   .hero-media {
     position: relative;
-    aspect-ratio: 16 / 9;
     border-radius: var(--radius-lg);
     overflow: hidden;
     border: 1px solid var(--line);
