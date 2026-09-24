@@ -1,0 +1,80 @@
+# Portfolio
+
+A minimal, modern portfolio built with [Astro](https://astro.build). Projects are
+plain Markdown files; the Skills section is generated from them automatically.
+
+## Run it
+
+```bash
+source ~/.nvm/nvm.sh   # only needed if `node` isn't on your PATH
+npm install
+npm run dev            # http://localhost:4321 (also reachable on your LAN)
+npm run build          # type-check + build static site into dist/
+npm run preview        # serve the built site
+```
+
+## Where things live
+
+| What                            | File                              |
+| ------------------------------- | --------------------------------- |
+| Your name, bio, links, timeline | `src/data/profile.ts`             |
+| Projects                        | `src/content/projects/*.md`       |
+| Project screenshots/videos      | `public/media/<project>/`         |
+| Skill categories                | `src/data/skills.ts`              |
+| Project fields (schema)         | `src/content.config.ts`           |
+| Colors, fonts, spacing          | `src/styles/global.css` (`:root`) |
+
+## Adding a project
+
+1. Create `src/content/projects/my-app.md` (the file name becomes the URL: `/work/my-app`).
+2. Put media in `public/media/my-app/`.
+3. Fill in the frontmatter:
+
+```yaml
+---
+title: My App
+tagline: One line that sells it.
+year: 2026
+status: live            # live | in-progress | archived | concept
+role: Solo developer
+featured: true          # bigger card on the home page
+order: 1                # lower = shown first
+accent: '#34d399'       # project color
+cover:                  # optional — a generated cover is used if omitted
+  type: video           # image | video | youtube
+  src: /media/my-app/demo.mp4
+  poster: /media/my-app/poster.jpg
+gallery:
+  - type: image
+    src: /media/my-app/screen-1.png
+    caption: The main screen.
+  - type: youtube
+    src: VIDEO_ID       # just the ID after "v="
+  - type: embed         # any iframe-able URL (Figma, CodePen, live demo…)
+    src: https://example.com
+skills: [TypeScript, React, Docker]
+workflow:
+  - title: Step one
+    description: What happens here.
+highlights:
+  - A measurable outcome
+links:
+  - label: Try it
+    url: https://example.com
+    kind: live          # live | repo | download | video | docs | other
+---
+
+Write the story of the project here in Markdown.
+```
+
+Skills are collected automatically. To choose which category a new skill appears
+in, add it to `src/data/skills.ts` (otherwise it shows under "Other").
+
+The four example projects are placeholders — delete or replace them.
+Set `draft: true` to hide a project without deleting it.
+
+## Deploying
+
+`npm run build` outputs a static site in `dist/` that can be hosted anywhere
+(GitHub Pages, Netlify, Cloudflare Pages, Vercel, or Nginx on the Pi).
+Set `site` in `astro.config.mjs` to your real domain.

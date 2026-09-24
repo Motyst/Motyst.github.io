@@ -1,0 +1,356 @@
+---
+import { render } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import Media from '@/components/Media.astro';
+import Gallery from '@/components/Gallery.astro';
+import Workflow from '@/components/Workflow.astro';
+import { getProjects, slugify, statusLabel, type Project } from '@/lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+
+const { project, next } = Astro.props;
+const { data, id } = project;
+const { Content } = await render(project);
+
+const linkIcon: Record<string, string> = {
+  live: '↗',
+  repo: '⌥',
+  download: '↓',
+  video: '▶',
+  docs: '¶',
+  other: '↗',
+};
+const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.poster;
+---
+
+<Base title={data.title} description={data.tagline} image={ogImage}>
+  <article style={`--accent: ${data.accent}`}>
+    <header class="container head">
+      <a href="/#work" class="back mono">← All work</a>
+      <div class="meta mono">
+        <span>{data.year}</span>
+        <span>·</span>
+        <span>{statusLabel[data.status]}</span>
+        {data.role && <><span>·</span><span>{data.role}</span></>}
+      </div>
+      <h1 transition:name={`title-${id}`}>{data.title}</h1>
+      <p class="tagline">{data.tagline}</p>
+
+      {
+        data.links.length > 0 && (
+          <div class="links">
+            {data.links.map((link, i) => (
+              <a href={link.url} class:list={['btn', { 'btn-primary': i === 0 }]} target="_blank" rel="noopener noreferrer">
+                {link.label} <span class="arrow">{linkIcon[link.kind]}</span>
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    <div class="container">
+      <div class="hero-media" transition:name={`cover-${id}`}>
+        <Media item={data.cover} title={data.title} accent={data.accent} autoplay eager />
+      </div>
+    </div>
+
+    <div class="container body">
+      <div class="prose reveal">
+        <span class="eyebrow">Overview</span>
+        <Content />
+      </div>
+
+      <aside class="side reveal" style="--delay: 120ms">
+        {
+          data.highlights.length > 0 && (
+            <section>
+              <h2 class="eyebrow">Highlights</h2>
+              <ul class="highlights">
+                {data.highlights.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+        {
+          data.skills.length > 0 && (
+            <section>
+              <h2 class="eyebrow">Skills used</h2>
+              <ul class="skills">
+                {data.skills.map((s) => (
+                  <li>
+                    <a class="chip" href={`/?skill=${slugify(s)}#work`}>
+                      {s}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </aside>
+    </div>
+
+    {
+      data.workflow.length > 0 && (
+        <section class="container block">
+          <div class="section-head reveal">
+            <div>
+              <span class="eyebrow">Workflow</span>
+              <h2>How it works</h2>
+            </div>
+          </div>
+          <Workflow steps={data.workflow} />
+        </section>
+      )
+    }
+
+    {
+      data.gallery.length > 0 && (
+        <section class="container block">
+          <div class="section-head reveal">
+            <div>
+              <span class="eyebrow">Gallery</span>
+              <h2>See it in action</h2>
+            </div>
+          </div>
+          <Gallery items={data.gallery} title={data.title} accent={data.accent} />
+        </section>
+      )
+    }
+
+    {
+      next.id !== id && (
+        <a href={`/work/${next.id}`} class="container next reveal" style={`--accent: ${next.data.accent}`}>
+          <span class="eyebrow">Next project</span>
+          <span class="next-title">
+            {next.data.title} <span class="arrow">→</span>
+          </span>
+          <span class="next-tag">{next.data.tagline}</span>
+        </a>
+      )
+    }
+  </article>
+</Base>
+
+<style>
+  .head {
+    padding-top: clamp(2.5rem, 7vw, 5rem);
+    padding-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  .back {
+    display: inline-block;
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    margin-bottom: 2.5rem;
+    transition: color 0.2s, transform 0.3s var(--ease);
+  }
+
+  .back:hover {
+    color: var(--text);
+    transform: translateX(-3px);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--accent);
+  }
+
+  h1 {
+    margin-top: 1rem;
+    font-size: clamp(2.75rem, 9vw, 6.5rem);
+    letter-spacing: -0.055em;
+    line-height: 0.95;
+  }
+
+  .tagline {
+    margin-top: 1.5rem;
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    color: var(--text-dim);
+    max-width: 48ch;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .hero-media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 40px 120px -40px color-mix(in oklab, var(--accent) 45%, transparent);
+  }
+
+  .body {
+    display: grid;
+    gap: 3rem;
+    padding-block: clamp(3.5rem, 8vw, 6rem);
+  }
+
+  @media (min-width: 900px) {
+    .body {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 5rem;
+    }
+    .side {
+      position: sticky;
+      top: 6rem;
+      align-self: start;
+    }
+  }
+
+  .prose {
+    font-size: 1.075rem;
+    color: var(--text-dim);
+    max-width: 68ch;
+  }
+
+  .prose :global(p + p),
+  .prose :global(ul),
+  .prose :global(ol),
+  .prose :global(blockquote),
+  .prose :global(pre) {
+    margin-top: 1.1rem;
+  }
+
+  .prose :global(h2),
+  .prose :global(h3) {
+    color: var(--text);
+    margin: 2.25rem 0 0.75rem;
+    font-size: 1.4rem;
+  }
+
+  .prose :global(strong) {
+    color: var(--text);
+  }
+
+  .prose :global(a) {
+    color: var(--text);
+    border-bottom: 1px solid var(--accent);
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    padding: 0.1em 0.35em;
+    border-radius: 6px;
+    background: var(--bg-soft);
+  }
+
+  .prose :global(pre) {
+    padding: 1.1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    overflow-x: auto;
+  }
+
+  .prose :global(pre code) {
+    padding: 0;
+    background: none;
+  }
+
+  .prose :global(li + li) {
+    margin-top: 0.4rem;
+  }
+
+  .prose :global(img) {
+    border-radius: var(--radius);
+    margin-block: 1.5rem;
+  }
+
+  .side {
+    display: grid;
+    gap: 2.25rem;
+  }
+
+  .highlights {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .highlights li {
+    padding: 0.8rem 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .highlights li::before {
+    content: '✦';
+    color: var(--accent);
+  }
+
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .block {
+    padding-bottom: clamp(3.5rem, 8vw, 6rem);
+  }
+
+  .block .section-head h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .next {
+    display: block;
+    padding-block: clamp(3rem, 8vw, 5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .next-title {
+    display: block;
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 1.05;
+    transition: color 0.3s;
+  }
+
+  .next:hover .next-title {
+    color: var(--accent);
+  }
+
+  .next .arrow {
+    display: inline-block;
+    transition: transform 0.3s var(--ease);
+  }
+
+  .next:hover .arrow {
+    transform: translateX(8px);
+  }
+
+  .next-tag {
+    display: block;
+    margin-top: 0.75rem;
+    color: var(--text-dim);
+  }
+</style>

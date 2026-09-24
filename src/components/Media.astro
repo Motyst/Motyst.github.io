@@ -1,0 +1,93 @@
+---
+import type { Project } from '@/lib/projects';
+import GeneratedCover from './GeneratedCover.astro';
+
+type MediaItem = NonNullable<Project['data']['cover']>;
+
+interface Props {
+  item?: MediaItem;
+  title: string;
+  accent: string;
+  /**
+   * cover: silent, fills its box (cards + page headers). Videos autoplay muted
+   *        (or on hover inside a card), YouTube shows its thumbnail.
+   * full:  interactive (gallery). Videos get controls, YouTube/embeds are iframes.
+   */
+  mode?: 'cover' | 'full';
+  /** Autoplay cover videos immediately instead of on hover. */
+  autoplay?: boolean;
+  eager?: boolean;
+}
+
+const { item, title, accent, mode = 'cover', autoplay = false, eager = false } = Astro.props;
+const alt = item?.alt ?? item?.caption ?? title;
+const loading = eager ? 'eager' : 'lazy';
+---
+
+{
+  !item || (mode === 'cover' && item.type === 'embed') ? (
+    <GeneratedCover title={title} accent={accent} />
+  ) : item.type === 'image' ? (
+    <img class={`media ${mode}`} src={item.src} alt={alt} loading={loading} decoding="async" />
+  ) : item.type === 'video' ? (
+    mode === 'cover' ? (
+      <video
+        class="media cover"
+        src={item.src}
+        poster={item.poster}
+        muted
+        loop
+        playsinline
+        preload={autoplay ? 'auto' : 'metadata'}
+        autoplay={autoplay}
+        data-hover-play={autoplay ? undefined : ''}
+        aria-label={alt}
+      />
+    ) : (
+      <video class="media full" src={item.src} poster={item.poster} controls playsinline preload="metadata" aria-label={alt} />
+    )
+  ) : item.type === 'youtube' ? (
+    mode === 'cover' ? (
+      <img
+        class="media cover"
+        src={item.poster ?? `https://i.ytimg.com/vi/${item.src}/maxresdefault.jpg`}
+        alt={alt}
+        loading={loading}
+      />
+    ) : (
+      <iframe
+        class="media full frame"
+        src={`https://www.youtube-nocookie.com/embed/${item.src}`}
+        title={alt}
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      />
+    )
+  ) : (
+    <iframe class="media full frame" src={item.src} title={alt} loading="lazy" allowfullscreen />
+  )
+}
+
+<style>
+  .media {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-soft);
+  }
+
+  .media.cover {
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+  }
+
+  .media.full {
+    height: auto;
+  }
+
+  .frame {
+    aspect-ratio: 16 / 9;
+    border: 0;
+  }
+</style>

@@ -1,0 +1,165 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import { slugify, type Project } from '@/lib/projects';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+
+// Filter chips: the most-used skills across all projects.
+const counts = new Map<string, { name: string; count: number }>();
+for (const p of projects) {
+  for (const s of p.data.skills) {
+    const slug = slugify(s);
+    const entry = counts.get(slug) ?? { name: s, count: 0 };
+    entry.count++;
+    counts.set(slug, entry);
+  }
+}
+const filters = [...counts.entries()]
+  .sort(([, a], [, b]) => b.count - a.count || a.name.localeCompare(b.name))
+  .slice(0, 12)
+  .map(([slug, { name }]) => ({ slug, name }));
+---
+
+<section class="section" id="work">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Selected work · {projects.length} projects</span>
+        <h2>Things I've built</h2>
+      </div>
+      <p>Apps, tools and experiments. Open any project to see it in action, how it works, and what it taught me.</p>
+    </div>
+
+    {
+      filters.length > 1 && (
+        <div class="filters reveal" role="toolbar" aria-label="Filter projects by skill">
+          <button class="chip is-active" data-filter="all" type="button">
+            All
+          </button>
+          {filters.map((f) => (
+            <button class="chip" data-filter={f.slug} type="button">
+              {f.name}
+            </button>
+          ))}
+        </div>
+      )
+    }
+
+    <div class="grid">
+      {projects.map((p, i) => <ProjectCard project={p} size={p.data.featured ? 'large' : 'normal'} index={i} />)}
+    </div>
+    <p class="empty" hidden>No projects with that skill yet.</p>
+  </div>
+</section>
+
+<script>
+  function initWork() {
+    const section = document.getElementById('work');
+    if (!section) return;
+    const buttons = section.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const cards = section.querySelectorAll<HTMLElement>('.card');
+    const empty = section.querySelector<HTMLElement>('.empty');
+
+    function apply(filter: string) {
+      let visible = 0;
+      cards.forEach((card) => {
+        const match = filter === 'all' || (card.dataset.skills ?? '').split(' ').includes(filter);
+        card.classList.toggle('is-hidden', !match);
+        if (match) {
+          visible++;
+          card.classList.add('is-visible');
+        }
+      });
+      buttons.forEach((b) => {
+        const active = b.dataset.filter === filter;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+      if (empty) empty.hidden = visible > 0;
+    }
+
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        const filter = b.dataset.filter ?? 'all';
+        apply(filter);
+        const url = new URL(location.href);
+        if (filter === 'all') url.searchParams.delete('skill');
+        else url.searchParams.set('skill', filter);
+        history.replaceState(history.state, '', url);
+      }),
+    );
+
+    // Support deep links like /?skill=python#work (used by the Skills section).
+    const initial = new URLSearchParams(location.search).get('skill');
+    if (initial) apply(initial);
+
+    // Cover videos play while hovered.
+    cards.forEach((card) => {
+      const video = card.querySelector<HTMLVideoElement>('video[data-hover-play]');
+      if (!video) return;
+      card.addEventListener('mouseenter', () => void video.play().catch(() => {}));
+      card.addEventListener('mouseleave', () => video.pause());
+    });
+  }
+
+  document.addEventListener('astro:page-load', initWork);
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .filters button {
+    font: inherit;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+
+  .filters :global(.chip.is-active) {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+    grid-auto-flow: dense;
+  }
+
+  @media (min-width: 700px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* On wide screens use flex so every row fills its full width,
+     whatever mix of featured and regular cards it contains. */
+  @media (min-width: 1000px) {
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .grid > :global(.card) {
+      flex: 1 1 calc(33.333% - 1.25rem);
+    }
+    .grid > :global(.card.large) {
+      flex: 2 1 calc(58% - 1.25rem);
+    }
+  }
+
+  .empty {
+    color: var(--text-dim);
+    padding: 3rem 0;
+    text-align: center;
+  }
+</style>

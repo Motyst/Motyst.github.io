@@ -1,0 +1,84 @@
+---
+import { profile } from '@/data/profile';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="cta reveal">
+      <span class="eyebrow">Contact</span>
+      <h2>Have something in mind?<br /><span class="dim">Let's build it.</span></h2>
+      <a class="email" href={`mailto:${profile.email}`}>{profile.email} <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <div class="bottom">
+      <span>© {year} {profile.name}</span>
+      <ul>
+        {
+          profile.socials.map((s) => (
+            <li>
+              <a href={s.url} target="_blank" rel="noopener noreferrer">
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-top: clamp(4rem, 10vw, 7rem);
+  }
+
+  h2 {
+    font-size: clamp(2.25rem, 7vw, 5rem);
+    letter-spacing: -0.045em;
+  }
+
+  .dim {
+    color: var(--text-faint);
+  }
+
+  .email {
+    display: inline-block;
+    margin-top: 2rem;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 0.2rem;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .email:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: clamp(4rem, 10vw, 7rem);
+    padding-block: 2rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem;
+    color: var(--text-faint);
+  }
+
+  ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul a:hover {
+    color: var(--text);
+  }
+</style>

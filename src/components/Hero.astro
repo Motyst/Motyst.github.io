@@ -1,0 +1,206 @@
+---
+import { profile } from '@/data/profile';
+import type { Project } from '@/lib/projects';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+const skills = [...new Set(projects.flatMap((p) => p.data.skills))];
+const firstYear = Math.min(...projects.map((p) => p.data.year), new Date().getFullYear());
+const years = Math.max(1, new Date().getFullYear() - firstYear + 1);
+
+const stats = [
+  { value: projects.length, label: 'Projects shipped & shown' },
+  { value: skills.length, label: 'Skills put to real use' },
+  { value: years, label: years === 1 ? 'Year building' : 'Years building' },
+];
+---
+
+<section class="hero">
+  <div class="container">
+    {
+      profile.availability && (
+        <span class="pill reveal">
+          <i /> {profile.availability}
+        </span>
+      )
+    }
+    <h1 class="reveal" style="--delay: 80ms">
+      {profile.name}<span class="accent">.</span>
+      <span class="role">{profile.role}</span>
+    </h1>
+    <p class="lead reveal" style="--delay: 160ms">{profile.headline}</p>
+
+    <div class="actions reveal" style="--delay: 240ms">
+      <a href="#work" class="btn btn-primary">See my work <span class="arrow">↘</span></a>
+      <a href={`mailto:${profile.email}`} class="btn">Get in touch</a>
+      {
+        profile.resume && (
+          <a href={profile.resume} class="btn" target="_blank" rel="noopener">
+            Résumé <span class="arrow">↗</span>
+          </a>
+        )
+      }
+    </div>
+
+    <dl class="stats reveal" style="--delay: 320ms">
+      {
+        stats.map((s) => (
+          <div>
+            <dt>{s.label}</dt>
+            <dd>{s.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  {
+    skills.length > 0 && (
+      <div class="marquee" aria-hidden="true">
+        <div class="track">
+          {[...skills, ...skills].map((s) => (
+            <span>{s}</span>
+          ))}
+        </div>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .hero {
+    padding-top: clamp(4rem, 14vw, 10rem);
+    overflow: hidden;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.35rem 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    background: rgb(255 255 255 / 0.02);
+  }
+
+  .pill i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 0 rgb(74 222 128 / 0.6);
+    animation: pulse 2.2s infinite;
+  }
+
+  @keyframes pulse {
+    70% {
+      box-shadow: 0 0 0 8px rgb(74 222 128 / 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgb(74 222 128 / 0);
+    }
+  }
+
+  h1 {
+    margin-top: 1.75rem;
+    font-size: clamp(3rem, 11vw, 8.5rem);
+    letter-spacing: -0.055em;
+    line-height: 0.92;
+    font-weight: 650;
+  }
+
+  .accent {
+    color: var(--accent);
+  }
+
+  .role {
+    display: block;
+    color: var(--text-faint);
+    font-weight: 500;
+  }
+
+  .lead {
+    margin-top: 2rem;
+    max-width: 38ch;
+    font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: clamp(4rem, 9vw, 6rem) 0 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .stats div {
+    padding: 1.5rem 1rem 1.5rem 0;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.35rem;
+  }
+
+  .stats div + div {
+    padding-left: clamp(1rem, 3vw, 2rem);
+    border-left: 1px solid var(--line);
+  }
+
+  dd {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  dt {
+    color: var(--text-faint);
+    font-size: 0.82rem;
+  }
+
+  .marquee {
+    border-block: 1px solid var(--line);
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+
+  .track {
+    display: flex;
+    width: max-content;
+    animation: scroll 40s linear infinite;
+  }
+
+  .track span {
+    padding: 1.1rem 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-faint);
+    white-space: nowrap;
+  }
+
+  .track span::before {
+    content: '✦';
+    margin-right: 1.75rem;
+    color: var(--accent);
+    opacity: 0.6;
+  }
+
+  @keyframes scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+</style>

@@ -1,0 +1,27 @@
+---
+import Base from '@/layouts/Base.astro';
+---
+
+<Base title="Not found">
+  <section class="container nf">
+    <span class="eyebrow">404</span>
+    <h1>This page wandered off.</h1>
+    <a href="/" class="btn btn-primary">Back home <span class="arrow">↗</span></a>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    letter-spacing: -0.05em;
+  }
+</style>

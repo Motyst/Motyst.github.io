@@ -1,0 +1,76 @@
+---
+/**
+ * A tasteful fallback cover for projects without screenshots yet:
+ * an accent-colored glow, a fine grid and the project's monogram.
+ */
+interface Props {
+  title: string;
+  accent: string;
+}
+
+const { title, accent } = Astro.props;
+const monogram = title
+  .split(/\s+/)
+  .slice(0, 2)
+  .map((w) => w[0]?.toUpperCase() ?? '')
+  .join('');
+---
+
+<div class="cover" style={`--c: ${accent}`} aria-hidden="true">
+  <div class="grid"></div>
+  <div class="orb"></div>
+  <span class="mono-text">{monogram}</span>
+</div>
+
+<style>
+  .cover {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 90% at 100% 0%, color-mix(in oklab, var(--c) 35%, transparent), transparent 60%),
+      radial-gradient(80% 80% at 0% 100%, color-mix(in oklab, var(--c) 18%, transparent), transparent 70%),
+      var(--bg-soft);
+  }
+
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+  }
+
+  .orb {
+    position: absolute;
+    width: 45%;
+    aspect-ratio: 1;
+    right: 12%;
+    top: 18%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff 0%, var(--c) 35%, transparent 70%);
+    filter: blur(2px);
+    opacity: 0.55;
+    animation: drift 14s ease-in-out infinite alternate;
+  }
+
+  .mono-text {
+    position: absolute;
+    left: 7%;
+    bottom: 6%;
+    font-size: clamp(3rem, 9vw, 7rem);
+    font-weight: 700;
+    letter-spacing: -0.06em;
+    line-height: 1;
+    color: rgb(255 255 255 / 0.9);
+    mix-blend-mode: overlay;
+  }
+
+  @keyframes drift {
+    to {
+      transform: translate(-18%, 14%) scale(1.15);
+    }
+  }
+</style>

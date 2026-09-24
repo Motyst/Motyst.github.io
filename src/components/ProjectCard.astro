@@ -1,0 +1,188 @@
+---
+import Media from './Media.astro';
+import { slugify, statusLabel, type Project } from '@/lib/projects';
+
+interface Props {
+  project: Project;
+  size?: 'large' | 'normal';
+  index?: number;
+}
+
+const { project, size = 'normal', index = 0 } = Astro.props;
+const { data, id } = project;
+const skillSlugs = data.skills.map(slugify).join(' ');
+const shownSkills = data.skills.slice(0, 4);
+---
+
+<article
+  class:list={['card reveal', size]}
+  style={`--accent: ${data.accent}; --delay: ${(index % 3) * 80}ms`}
+  data-skills={skillSlugs}
+>
+  <a href={`/work/${id}`} class="link" aria-label={`View ${data.title}`}>
+    <div class="visual" transition:name={`cover-${id}`}>
+      <Media item={data.cover} title={data.title} accent={data.accent} eager={index < 2} />
+      <span class="status"><i class={data.status}></i>{statusLabel[data.status]}</span>
+      <span class="open" aria-hidden="true">↗</span>
+    </div>
+    <div class="body">
+      <div class="meta mono">
+        <span>{data.year}</span>
+        {data.role && <span>· {data.role}</span>}
+      </div>
+      <h3 transition:name={`title-${id}`}>{data.title}</h3>
+      <p>{data.tagline}</p>
+      <ul class="skills" aria-label="Skills">
+        {shownSkills.map((s) => <li class="chip">{s}</li>)}
+        {data.skills.length > shownSkills.length && <li class="chip more">+{data.skills.length - shownSkills.length}</li>}
+      </ul>
+    </div>
+  </a>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    border-radius: var(--radius-lg);
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    transition:
+      border-color 0.3s,
+      transform 0.5s var(--ease),
+      opacity 0.8s var(--ease);
+  }
+
+  .card:hover {
+    border-color: color-mix(in oklab, var(--accent) 45%, transparent);
+  }
+
+  .card.is-hidden {
+    display: none;
+  }
+
+  .link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .visual {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .visual :global(.media),
+  .visual :global(.cover) {
+    transition: transform 0.9s var(--ease);
+  }
+
+  .card:hover .visual :global(.media),
+  .card:hover .visual :global(.cover) {
+    transform: scale(1.04);
+  }
+
+  .status {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    background: rgb(9 9 11 / 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--line);
+  }
+
+  .status i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-faint);
+  }
+
+  .status i.live {
+    background: #4ade80;
+    box-shadow: 0 0 8px #4ade80;
+  }
+
+  .status i.in-progress {
+    background: #facc15;
+  }
+
+  .open {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--text);
+    color: var(--bg);
+    opacity: 0;
+    transform: scale(0.8) translate(-4px, 4px);
+    transition:
+      opacity 0.3s,
+      transform 0.4s var(--ease);
+  }
+
+  .card:hover .open {
+    opacity: 1;
+    transform: none;
+  }
+
+  .body {
+    padding: 1.4rem 1.5rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    flex: 1;
+  }
+
+  .meta {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  h3 {
+    font-size: 1.35rem;
+  }
+
+  .large h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .body p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+  }
+
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    margin: auto 0 0;
+    padding: 0.6rem 0 0;
+  }
+
+  .skills .chip {
+    font-size: 0.72rem;
+  }
+
+  @media (min-width: 900px) {
+    .large .visual {
+      aspect-ratio: 16 / 9;
+    }
+  }
+</style>
