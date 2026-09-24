@@ -7,7 +7,9 @@ import ProjectBanner from '@/components/ProjectBanner.astro';
 import LinkButton from '@/components/LinkButton.astro';
 import Gallery from '@/components/Gallery.astro';
 import Workflow from '@/components/Workflow.astro';
-import { getProjects, slugify, statusLabel, type Project } from '@/lib/projects';
+import { getProjects, statusLabel, type Project } from '@/lib/projects';
+import Icon from '@/components/Icon.astro';
+import { skillIcon } from '@/data/ui-icons';
 import { profile } from '@/data/profile';
 
 export async function getStaticPaths() {
@@ -108,9 +110,10 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
               <ul class="skills">
                 {data.skills.map((s) => (
                   <li>
-                    <a class="chip" href={`/?skill=${slugify(s)}#work`}>
+                    <span class="chip">
+                      {skillIcon[s] && <Icon name={skillIcon[s]} size={13} class="si" />}
                       {s}
-                    </a>
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -344,6 +347,10 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
 
   .highlights li::before {
     content: '✦';
+    color: var(--accent);
+  }
+
+  .skills :global(.si) {
     color: var(--accent);
   }
 
