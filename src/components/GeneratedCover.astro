@@ -11,6 +11,7 @@ interface Props {
 const { title, accent } = Astro.props;
 const monogram = title
   .split(/\s+/)
+  .filter((w) => /^[a-z0-9]/i.test(w))
   .slice(0, 2)
   .map((w) => w[0]?.toUpperCase() ?? '')
   .join('');

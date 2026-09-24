@@ -65,6 +65,7 @@ export function groupSkills(projects: Project[]): SkillGroup[] {
 
 export const statusLabel: Record<Project['data']['status'], string> = {
   live: 'Live',
+  completed: 'Completed',
   'in-progress': 'In progress',
   archived: 'Archived',
   concept: 'Concept',

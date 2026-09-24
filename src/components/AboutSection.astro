@@ -15,6 +15,14 @@ import { profile } from '@/data/profile';
           <dt>Based in</dt>
           <dd>{profile.location}</dd>
         </div>
+        {
+          profile.languages.length > 0 && (
+            <div>
+              <dt>Speaks</dt>
+              <dd>{profile.languages.join(' · ')}</dd>
+            </div>
+          )
+        }
         <div>
           <dt>Elsewhere</dt>
           <dd>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" font-family="JetBrains Mono, DejaVu Sans Mono, monospace" font-size="22">
+<defs><radialGradient id="g" cx="90%" cy="0%" r="80%"><stop offset="0" stop-color="#a78bfa" stop-opacity=".22"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient></defs>
+<rect width="1600" height="1000" fill="#0c0c0e"/><rect width="1600" height="1000" fill="url(#g)"/>
+<rect width="1600" height="56" fill="#17171b"/><circle cx="36" cy="28" r="8" fill="#ff5f57"/><circle cx="64" cy="28" r="8" fill="#febc2e"/><circle cx="92" cy="28" r="8" fill="#28c840"/>
+<text x="800.0" y="35" fill="#71717a" font-size="18" text-anchor="middle">mython — run</text>
+<text x="60" y="120" xml:space="preserve"><tspan fill="#a78bfa">$ </tspan><tspan fill="#e4e4e7">./mython &lt; demo.my</tspan></text>
+<text x="60" y="154" fill="#52525b" xml:space="preserve">parse::TestSimpleAssignment OK</text>
+<text x="60" y="188" fill="#52525b" xml:space="preserve">parse::TestKeywords OK</text>
+<text x="60" y="222" fill="#52525b" xml:space="preserve">parse::TestNumbers OK</text>
+<text x="60" y="256" fill="#52525b" xml:space="preserve">parse::TestIds OK</text>
+<text x="60" y="290" fill="#52525b" xml:space="preserve">parse::TestStrings OK</text>
+<text x="60" y="324" fill="#52525b" xml:space="preserve">parse::TestOperations OK</text>
+<text x="60" y="358" fill="#52525b" xml:space="preserve">parse::TestIndentsAndNewlines OK</text>
+<text x="60" y="392" fill="#52525b" xml:space="preserve">parse::TestEmptyLinesAreIgnored OK</text>
+<text x="60" y="426" fill="#52525b" xml:space="preserve">parse::TestExpect OK</text>
+<text x="60" y="460" fill="#52525b" xml:space="preserve">parse::TestExpectNext OK</text>
+<text x="60" y="494" fill="#52525b" xml:space="preserve">parse::TestMythonProgram OK</text>
+<text x="60" y="528" fill="#52525b" xml:space="preserve">parse::TestAlwaysEmitsNewlineAtTheEndOfNonemptyLine OK</text>
+<text x="60" y="562" fill="#52525b" xml:space="preserve">parse::TestCommentsAreIgnored OK</text>
+<text x="60" y="596" fill="#52525b" xml:space="preserve">runtime::TestNonowning OK</text>
+<text x="60" y="630" fill="#52525b" xml:space="preserve">... 43 more tests OK</text>
+<text x="60" y="664" fill="#52525b" xml:space="preserve"></text>
+<text x="60" y="698" fill="#a78bfa" xml:space="preserve">Rect: area 12</text>
+<text x="60" y="732" fill="#a78bfa" xml:space="preserve">Circle: area 75</text>
+</svg>

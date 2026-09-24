@@ -74,6 +74,13 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
 
       <aside class="side reveal" style="--delay: 120ms">
         {
+          data.private && (
+            <p class="private">
+              <span aria-hidden="true">◌</span> Private codebase. A walkthrough is available on request.
+            </p>
+          )
+        }
+        {
           data.highlights.length > 0 && (
             <section>
               <h2 class="eyebrow">Highlights</h2>
@@ -283,6 +290,20 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
   .side {
     display: grid;
     gap: 2.25rem;
+  }
+
+  .private {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.9rem 1rem;
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius);
+    font-size: 0.88rem;
+    color: var(--text-dim);
+  }
+
+  .private span {
+    color: var(--accent);
   }
 
   .highlights {

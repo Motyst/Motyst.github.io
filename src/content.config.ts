@@ -24,7 +24,7 @@ const projects = defineCollection({
     /** One line that sells the project. Shown on cards. */
     tagline: z.string(),
     year: z.number().int(),
-    status: z.enum(['live', 'in-progress', 'archived', 'concept']).default('live'),
+    status: z.enum(['live', 'completed', 'in-progress', 'archived', 'concept']).default('live'),
     /** Your role on the project, e.g. "Solo developer" or "Frontend lead". */
     role: z.string().optional(),
     /** Featured projects get large cards at the top of the grid. */
@@ -54,6 +54,8 @@ const projects = defineCollection({
         }),
       )
       .default([]),
+    /** Private/client work: shows a note that the code isn't public. */
+    private: z.boolean().default(false),
     /** Set to true to hide a project without deleting it. */
     draft: z.boolean().default(false),
   }),

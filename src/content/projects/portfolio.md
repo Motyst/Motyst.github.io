@@ -4,7 +4,7 @@ tagline: The site you're looking at — a content-driven portfolio built with As
 year: 2026
 status: live
 role: Designer & developer
-order: 4
+order: 12
 accent: '#7c9cff'
 skills: [Astro, TypeScript, CSS, Product Design]
 workflow:
@@ -17,10 +17,6 @@ workflow:
 highlights:
   - Static, fast and hostable anywhere
   - Add a project by adding one file
-links:
-  - label: Source code
-    url: https://github.com/your-handle/portfolio-website
-    kind: repo
 ---
 
 A minimal, modern portfolio designed so the **work speaks first**. Each project gets its own page with media, the workflow behind it and the skills it demanded.

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1600 1000"><rect width="1600" height="1000" fill="#fafaf9"/>
+  <polyline points="1260.64,90 1121.21,247.374 1049.43,534.512 1065.99,694.646 980.404,910 1065.99,694.646 1049.43,534.512 1121.21,247.374 1260.64,90" fill="none" stroke="rgb(217,119,6)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="90,450.303 607.677,581.448 805.084,559.36 992.828,595.253 1128.11,617.34 1475.99,821.65 1128.11,617.34 992.828,595.253 805.084,559.36 607.677,581.448 90,450.303" fill="none" stroke="rgb(79,110,247)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="805.084,228.047 1121.21,247.374 1049.43,534.512 1065.99,694.646 1106.03,860.303 1065.99,694.646 1049.43,534.512 1121.21,247.374 805.084,228.047" fill="none" stroke="rgb(5,150,105)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="1362.79,676.7 1481.52,559.36 1049.43,534.512 1128.11,617.34 1362.79,676.7" fill="none" stroke="rgb(219,39,119)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1260.64" y="90" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">16</text>
+  <text fill="rgb(217,119,6)" x="1260.64" y="90" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">16</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="980.404" y="910" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">16</text>
+  <text fill="rgb(217,119,6)" x="980.404" y="910" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">16</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="90" y="450.303" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">46A</text>
+  <text fill="rgb(79,110,247)" x="90" y="450.303" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">46A</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1475.99" y="821.65" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">46A</text>
+  <text fill="rgb(79,110,247)" x="1475.99" y="821.65" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">46A</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="805.084" y="228.047" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">83</text>
+  <text fill="rgb(5,150,105)" x="805.084" y="228.047" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">83</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1106.03" y="860.303" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">83</text>
+  <text fill="rgb(5,150,105)" x="1106.03" y="860.303" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">83</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1362.79" y="676.7" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">C1</text>
+  <text fill="rgb(219,39,119)" x="1362.79" y="676.7" dx="9" dy="18" font-size="26" font-family="Verdana" font-weight="bold">C1</text>
+  <circle cx="1475.99" cy="821.65" r="6" fill="white"/>
+  <circle cx="1481.52" cy="559.36" r="6" fill="white"/>
+  <circle cx="1121.21" cy="247.374" r="6" fill="white"/>
+  <circle cx="805.084" cy="228.047" r="6" fill="white"/>
+  <circle cx="1362.79" cy="676.7" r="6" fill="white"/>
+  <circle cx="607.677" cy="581.448" r="6" fill="white"/>
+  <circle cx="1049.43" cy="534.512" r="6" fill="white"/>
+  <circle cx="90" cy="450.303" r="6" fill="white"/>
+  <circle cx="1106.03" cy="860.303" r="6" fill="white"/>
+  <circle cx="980.404" cy="910" r="6" fill="white"/>
+  <circle cx="805.084" cy="559.36" r="6" fill="white"/>
+  <circle cx="1065.99" cy="694.646" r="6" fill="white"/>
+  <circle cx="992.828" cy="595.253" r="6" fill="white"/>
+  <circle cx="1128.11" cy="617.34" r="6" fill="white"/>
+  <circle cx="1260.64" cy="90" r="6" fill="white"/>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1475.99" y="821.65" dx="9" dy="-5" font-size="17" font-family="Verdana">Ballsbridge</text>
+  <text fill="black" x="1475.99" y="821.65" dx="9" dy="-5" font-size="17" font-family="Verdana">Ballsbridge</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1481.52" y="559.36" dx="9" dy="-5" font-size="17" font-family="Verdana">Docklands</text>
+  <text fill="black" x="1481.52" y="559.36" dx="9" dy="-5" font-size="17" font-family="Verdana">Docklands</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1121.21" y="247.374" dx="9" dy="-5" font-size="17" font-family="Verdana">Drumcondra</text>
+  <text fill="black" x="1121.21" y="247.374" dx="9" dy="-5" font-size="17" font-family="Verdana">Drumcondra</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="805.084" y="228.047" dx="9" dy="-5" font-size="17" font-family="Verdana">Glasnevin</text>
+  <text fill="black" x="805.084" y="228.047" dx="9" dy="-5" font-size="17" font-family="Verdana">Glasnevin</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1362.79" y="676.7" dx="9" dy="-5" font-size="17" font-family="Verdana">Grand Canal Dock</text>
+  <text fill="black" x="1362.79" y="676.7" dx="9" dy="-5" font-size="17" font-family="Verdana">Grand Canal Dock</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="607.677" y="581.448" dx="9" dy="-5" font-size="17" font-family="Verdana">Heuston</text>
+  <text fill="black" x="607.677" y="581.448" dx="9" dy="-5" font-size="17" font-family="Verdana">Heuston</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1049.43" y="534.512" dx="9" dy="-5" font-size="17" font-family="Verdana">O'Connell Street</text>
+  <text fill="black" x="1049.43" y="534.512" dx="9" dy="-5" font-size="17" font-family="Verdana">O'Connell Street</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="90" y="450.303" dx="9" dy="-5" font-size="17" font-family="Verdana">Phoenix Park</text>
+  <text fill="black" x="90" y="450.303" dx="9" dy="-5" font-size="17" font-family="Verdana">Phoenix Park</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1106.03" y="860.303" dx="9" dy="-5" font-size="17" font-family="Verdana">Ranelagh</text>
+  <text fill="black" x="1106.03" y="860.303" dx="9" dy="-5" font-size="17" font-family="Verdana">Ranelagh</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="980.404" y="910" dx="9" dy="-5" font-size="17" font-family="Verdana">Rathmines</text>
+  <text fill="black" x="980.404" y="910" dx="9" dy="-5" font-size="17" font-family="Verdana">Rathmines</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="805.084" y="559.36" dx="9" dy="-5" font-size="17" font-family="Verdana">Smithfield</text>
+  <text fill="black" x="805.084" y="559.36" dx="9" dy="-5" font-size="17" font-family="Verdana">Smithfield</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1065.99" y="694.646" dx="9" dy="-5" font-size="17" font-family="Verdana">St Stephen's Green</text>
+  <text fill="black" x="1065.99" y="694.646" dx="9" dy="-5" font-size="17" font-family="Verdana">St Stephen's Green</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="992.828" y="595.253" dx="9" dy="-5" font-size="17" font-family="Verdana">Temple Bar</text>
+  <text fill="black" x="992.828" y="595.253" dx="9" dy="-5" font-size="17" font-family="Verdana">Temple Bar</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1128.11" y="617.34" dx="9" dy="-5" font-size="17" font-family="Verdana">Trinity College</text>
+  <text fill="black" x="1128.11" y="617.34" dx="9" dy="-5" font-size="17" font-family="Verdana">Trinity College</text>
+  <text fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.85)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" x="1260.64" y="90" dx="9" dy="-5" font-size="17" font-family="Verdana">Whitehall</text>
+  <text fill="black" x="1260.64" y="90" dx="9" dy="-5" font-size="17" font-family="Verdana">Whitehall</text>
+</svg>

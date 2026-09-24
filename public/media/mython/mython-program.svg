@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1268" font-family="JetBrains Mono, DejaVu Sans Mono, monospace" font-size="22">
+<defs><radialGradient id="g" cx="90%" cy="0%" r="80%"><stop offset="0" stop-color="#a78bfa" stop-opacity=".22"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient></defs>
+<rect width="1600" height="1268" fill="#0c0c0e"/><rect width="1600" height="1268" fill="url(#g)"/>
+<rect width="1600" height="56" fill="#17171b"/><circle cx="36" cy="28" r="8" fill="#ff5f57"/><circle cx="64" cy="28" r="8" fill="#febc2e"/><circle cx="92" cy="28" r="8" fill="#28c840"/>
+<text x="800.0" y="35" fill="#71717a" font-size="18" text-anchor="middle">mython — demo.my</text>
+<text x="60" y="120" xml:space="preserve"><tspan fill="#a78bfa">$ </tspan><tspan fill="#e4e4e7">cat demo.my</tspan></text>
+<text x="60" y="154" fill="#d4d4d8" xml:space="preserve">class Shape:</text>
+<text x="60" y="188" fill="#d4d4d8" xml:space="preserve">  def __init__(name):</text>
+<text x="60" y="222" fill="#d4d4d8" xml:space="preserve">    self.name = name</text>
+<text x="60" y="256" fill="#d4d4d8" xml:space="preserve"></text>
+<text x="60" y="290" fill="#d4d4d8" xml:space="preserve">  def area():</text>
+<text x="60" y="324" fill="#d4d4d8" xml:space="preserve">    return 0</text>
+<text x="60" y="358" fill="#d4d4d8" xml:space="preserve"></text>
+<text x="60" y="392" fill="#d4d4d8" xml:space="preserve">  def describe():</text>
+<text x="60" y="426" fill="#d4d4d8" xml:space="preserve">    return self.name + ': area ' + str(self.area())</text>
+<text x="60" y="460" fill="#d4d4d8" xml:space="preserve"></text>
+<text x="60" y="494" fill="#d4d4d8" xml:space="preserve">class Rect(Shape):</text>
+<text x="60" y="528" fill="#d4d4d8" xml:space="preserve">  def __init__(w, h):</text>
+<text x="60" y="562" fill="#d4d4d8" xml:space="preserve">    self.name = 'Rect'</text>
+<text x="60" y="596" fill="#d4d4d8" xml:space="preserve">    self.w = w</text>
+<text x="60" y="630" fill="#d4d4d8" xml:space="preserve">    self.h = h</text>
+<text x="60" y="664" fill="#d4d4d8" xml:space="preserve"></text>
+<text x="60" y="698" fill="#d4d4d8" xml:space="preserve">  def area():</text>
+<text x="60" y="732" fill="#d4d4d8" xml:space="preserve">    return self.w * self.h</text>
+<text x="60" y="766" fill="#d4d4d8" xml:space="preserve"></text>
+<text x="60" y="800" fill="#d4d4d8" xml:space="preserve">class Circle(Shape):</text>
+<text x="60" y="834" fill="#d4d4d8" xml:space="preserve">  def __init__(r):</text>
+<text x="60" y="868" fill="#d4d4d8" xml:space="preserve">    self.name = 'Circle'</text>
+<text x="60" y="902" fill="#d4d4d8" xml:space="preserve">    self.r = r</text>
+<text x="60" y="936" fill="#d4d4d8" xml:space="preserve"></text>
+<text x="60" y="970" fill="#d4d4d8" xml:space="preserve">  def area():</text>
+<text x="60" y="1004" fill="#d4d4d8" xml:space="preserve">    return 3 * self.r * self.r</text>
+<text x="60" y="1038" fill="#d4d4d8" xml:space="preserve"></text>
+<text x="60" y="1072" fill="#d4d4d8" xml:space="preserve">rect = Rect(3, 4)</text>
+<text x="60" y="1106" fill="#d4d4d8" xml:space="preserve">circle = Circle(5)</text>
+<text x="60" y="1140" fill="#d4d4d8" xml:space="preserve">print rect.describe()</text>
+<text x="60" y="1174" fill="#d4d4d8" xml:space="preserve">print circle.describe()</text>
+</svg>

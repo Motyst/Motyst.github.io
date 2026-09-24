@@ -8,13 +8,12 @@ interface Props {
 
 const { projects } = Astro.props;
 const skills = [...new Set(projects.flatMap((p) => p.data.skills))];
-const firstYear = Math.min(...projects.map((p) => p.data.year), new Date().getFullYear());
-const years = Math.max(1, new Date().getFullYear() - firstYear + 1);
+const live = projects.filter((p) => p.data.status === 'live').length;
 
 const stats = [
-  { value: projects.length, label: 'Projects shipped & shown' },
+  { value: projects.length, label: 'Projects shown' },
   { value: skills.length, label: 'Skills put to real use' },
-  { value: years, label: years === 1 ? 'Year building' : 'Years building' },
+  { value: live, label: 'Running live right now' },
 ];
 ---
 
