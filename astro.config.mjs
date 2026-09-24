@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   // Set this to your real domain once deployed (used for sitemap + social cards).
-  site: 'https://example.com',
+  site: 'https://motyst.github.io',
   integrations: [sitemap()],
   prefetch: { prefetchAll: true },
 });

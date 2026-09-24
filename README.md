@@ -70,11 +70,9 @@ Write the story of the project here in Markdown.
 Skills are collected automatically. To choose which category a new skill appears
 in, add it to `src/data/skills.ts` (otherwise it shows under "Other").
 
-The four example projects are placeholders — delete or replace them.
 Set `draft: true` to hide a project without deleting it.
 
 ## Deploying
 
-`npm run build` outputs a static site in `dist/` that can be hosted anywhere
-(GitHub Pages, Netlify, Cloudflare Pages, Vercel, or Nginx on the Pi).
-Set `site` in `astro.config.mjs` to your real domain.
+Live at **https://motyst.github.io**. Every push to `main` builds and deploys
+automatically via GitHub Actions (`.github/workflows/deploy.yml`).
