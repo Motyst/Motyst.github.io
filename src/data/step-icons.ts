@@ -1,5 +1,5 @@
 /**
- * Icons for workflow steps (24×24, 2px round strokes — Lucide style).
+ * Icons for workflow steps (24×24, 2px round strokes: Lucide style).
  * All from https://lucide.dev (ISC). To add one, copy the inner SVG of any
  * Lucide icon here and reference it from a workflow step with `icon: <key>`.
  */

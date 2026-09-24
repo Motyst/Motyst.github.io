@@ -34,20 +34,8 @@ links:
     kind: repo
 ---
 
-A Telegram bot for **brain training**, built as a product for a mental-training community. Members practise memorisation drills, and the bot keeps them coming back through a full gamification layer.
+A Telegram bot for **brain training**, built as a product for a mental-training community and running live. Members practise memorisation drills, and a full gamification layer of XP, streaks, achievements and a leaderboard keeps them coming back.
 
-## The exercises
+The main exercise is **Word Memorization**: word pairs or word chains, a study-only training mode or a timed test mode, three difficulty tiers and anywhere from 5 to 100 words. Answers use fuzzy matching with a short grace window, and members can retry mistakes or level up in one tap. A second exercise, narrated **Audio Visualization** stories, ships behind a feature flag.
 
-**Word Memorization** is the main exercise. You can study pairs, where you recall each word's partner, or word lists, where each word prompts the next. It has a study-only training mode and a test mode where the words disappear on a timer before the quiz. Three difficulty tiers change the vocabulary, and counts go from 5 up to 100 words.
-
-Answers are matched with fuzzy matching (Levenshtein distance ≤ 2, turned off for short words). A 2-second grace window catches answers typed just after the timer runs out. You can also retry your mistakes, run a reverse quiz, or level up in one tap.
-
-**Audio Visualization** is narrated stories that members listen to and visualise, with an optional detail quiz and a focus check afterwards. It ships behind a feature flag, and adding a new story is as simple as dropping in an `.mp3`, with no restart.
-
-## Under the hood
-
-- Async throughout: `python-telegram-bot` with async SQLAlchemy, concurrent updates enabled
-- SQLite through `aiosqlite` in WAL mode, with a PostgreSQL migration planned
-- A modular exercise system, so a new exercise is one module plus a registry entry
-- Runtime feature flags stored in the database and toggled from an `/admin` panel
-- A private Streamlit dashboard showing time on task, commitment vs improvement, engagement and per-member drilldowns
+Under the hood it's async throughout (`python-telegram-bot` with async SQLAlchemy on SQLite), with a modular exercise system, runtime feature flags toggled from an admin panel, and a private **Streamlit dashboard** showing time on task, engagement and where members stall.

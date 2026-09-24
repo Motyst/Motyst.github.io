@@ -39,7 +39,7 @@ const projects = defineCollection({
     accent: z.string().default('#7c9cff'),
     /** Media used on the card + page header. Falls back to a generated cover. */
     cover: media.optional(),
-    /** Screenshots, videos, demos — shown in the gallery on the project page. */
+    /** Screenshots, videos, demos, shown in the gallery on the project page. */
     gallery: z.array(media).default([]),
     /** Skills/tools used. These build the site-wide Skills section automatically. */
     skills: z.array(z.string()).default([]),

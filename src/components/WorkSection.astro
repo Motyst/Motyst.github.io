@@ -1,6 +1,6 @@
 ---
 import ProjectIcon from './ProjectIcon.astro';
-import ProjectModal from './ProjectModal.astro';
+import ProjectDialog from './ProjectDialog.astro';
 import type { Project } from '@/lib/projects';
 
 interface Props {
@@ -8,7 +8,6 @@ interface Props {
 }
 
 const { projects } = Astro.props;
-const at = (i: number) => projects[(i + projects.length) % projects.length];
 ---
 
 <section class="section" id="work">
@@ -41,70 +40,9 @@ const at = (i: number) => projects[(i + projects.length) % projects.length];
     </ul>
   </div>
 
-  {projects.map((p, i) => <ProjectModal project={p} prev={at(i - 1)} next={at(i + 1)} all={projects} />)}
+  <ProjectDialog projects={projects} />
 </section>
 
-<script>
-  // Project windows: any [data-open="<id>"] opens #project-<id>.
-  // The open project is kept in the URL (?project=<id>) so it can be shared.
-  function initProjects() {
-    const setParam = (id: string | null) => {
-      const url = new URL(location.href);
-      if (id) url.searchParams.set('project', id);
-      else url.searchParams.delete('project');
-      history.replaceState(history.state, '', url);
-    };
-
-    const open = (id: string) => {
-      const dialog = document.getElementById(`project-${id}`) as HTMLDialogElement | null;
-      if (!dialog) return;
-      document.querySelectorAll<HTMLDialogElement>('dialog.modal[open]').forEach((d) => d !== dialog && d.close());
-      if (!dialog.open) dialog.showModal();
-      document.documentElement.style.overflow = 'hidden';
-      dialog.querySelector<HTMLElement>('.scroll')?.scrollTo(0, 0);
-      setParam(id);
-    };
-
-    document.querySelectorAll<HTMLElement>('[data-open]').forEach((el) =>
-      el.addEventListener('click', () => open(el.dataset.open!)),
-    );
-
-    document.querySelectorAll<HTMLDialogElement>('dialog.modal').forEach((dialog) => {
-      dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
-      // A click on the backdrop (outside the sheet) closes the window.
-      dialog.addEventListener('click', (e) => {
-        if (e.target === dialog) dialog.close();
-      });
-      dialog.addEventListener('close', () => {
-        dialog.querySelectorAll('video').forEach((v) => v.pause());
-        if (!document.querySelector('dialog.modal[open]')) {
-          document.documentElement.style.overflow = '';
-          setParam(null);
-        }
-      });
-
-      // Media strip: arrows + counter
-      const strip = dialog.querySelector<HTMLElement>('[data-strip]');
-      const count = dialog.querySelector<HTMLElement>('[data-strip-count]');
-      if (strip) {
-        const total = strip.children.length;
-        dialog.querySelectorAll<HTMLButtonElement>('[data-strip-go]').forEach((b) =>
-          b.addEventListener('click', () =>
-            strip.scrollBy({ left: Number(b.dataset.stripGo) * strip.clientWidth, behavior: 'smooth' }),
-          ),
-        );
-        strip.addEventListener('scroll', () => {
-          if (count) count.textContent = `${Math.round(strip.scrollLeft / strip.clientWidth) + 1} / ${total}`;
-        });
-      }
-    });
-
-    const initial = new URLSearchParams(location.search).get('project');
-    if (initial) open(initial);
-  }
-
-  document.addEventListener('astro:page-load', initProjects);
-</script>
 
 <style>
   /* Flex so the last row always stretches to full width */

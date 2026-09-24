@@ -4,6 +4,7 @@ import Base from '@/layouts/Base.astro';
 import Media from '@/components/Media.astro';
 import ProjectIcon from '@/components/ProjectIcon.astro';
 import ProjectBanner from '@/components/ProjectBanner.astro';
+import LinkButton from '@/components/LinkButton.astro';
 import Gallery from '@/components/Gallery.astro';
 import Workflow from '@/components/Workflow.astro';
 import { getProjects, slugify, statusLabel, type Project } from '@/lib/projects';
@@ -26,14 +27,6 @@ const { project, next } = Astro.props;
 const { data, id } = project;
 const { Content } = await render(project);
 
-const linkIcon: Record<string, string> = {
-  live: '↗',
-  repo: '⌥',
-  download: '↓',
-  video: '▶',
-  docs: '¶',
-  other: '↗',
-};
 const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.poster;
 ---
 
@@ -62,10 +55,8 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
       {
         data.links.length > 0 && (
           <div class="links">
-            {data.links.map((link, i) => (
-              <a href={link.url} class:list={['btn', { 'btn-primary': i === 0 }]} target="_blank" rel="noopener noreferrer">
-                {link.label} <span class="arrow">{linkIcon[link.kind]}</span>
-              </a>
+            {data.links.map((link) => (
+              <LinkButton {...link} />
             ))}
           </div>
         )

@@ -2,7 +2,7 @@
 title: Publishing Automation
 summary: One video in, eight networks out
 icon: broadcast
-tagline: One video in, eight social networks out — transcription, captions, scheduling and posting on autopilot.
+tagline: One video in, eight social networks out. Transcription, captions, scheduling and posting on autopilot.
 year: 2026
 status: completed
 role: Solo developer

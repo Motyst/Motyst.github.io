@@ -1,0 +1,41 @@
+---
+/**
+ * Renders a named icon from src/data/ui-icons.ts or src/data/step-icons.ts.
+ * Brand logos are filled, outline icons are stroked; both use currentColor.
+ */
+import { brand, line } from '@/data/ui-icons';
+import { stepIcons } from '@/data/step-icons';
+
+interface Props {
+  name: string;
+  size?: number | string;
+  class?: string;
+}
+
+const { name, size = '1em', class: className } = Astro.props;
+const px = typeof size === 'number' ? `${size}px` : size;
+const path = brand[name];
+const outline = line[name] ?? stepIcons[name];
+---
+
+{
+  path ? (
+    <svg class={className} viewBox="0 0 24 24" width={px} height={px} fill="currentColor" aria-hidden="true">
+      <path d={path} />
+    </svg>
+  ) : outline ? (
+    <svg
+      class={className}
+      viewBox="0 0 24 24"
+      width={px}
+      height={px}
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      set:html={outline}
+    />
+  ) : null
+}

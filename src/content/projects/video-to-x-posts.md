@@ -37,12 +37,6 @@ links:
 
 A Telegram bot that watches a YouTube channel and turns each new video into **X posts written in the creator's own voice**. Nothing is published without a human saying yes.
 
-## How it stays on-voice
+Every idea comes in two versions: the *original*, in the creator's exact vocabulary and tone, and a *trend angle* reframed around what performs well on X. Each approved post is saved as a **style example** and fed back into future Claude prompts, so the drafts get better the more the bot is used.
 
-Every idea comes in two versions. The *original* keeps the creator's exact vocabulary and tone. The *trend angle* reframes the same idea around patterns that perform well on X.
-
-Every post the creator approves is saved as a **style example** and fed back into future Claude prompts, so the bot gets better the more it's used. Once a month it also re-reads old transcripts with the newer style examples to find ideas it missed.
-
-## Built with
-
-Python, the Anthropic API, `yt-dlp` and `youtube-transcript-api` for transcripts, `faster-whisper` as a local fallback, `tweepy` for posting, SQLite and APScheduler. Scheduling options run from +1h to +24h or a custom time, and every scheduled post can be cancelled.
+Built with Python, the Anthropic API, `yt-dlp` and `youtube-transcript-api` for transcripts, `faster-whisper` as a local fallback, `tweepy` for posting, SQLite and APScheduler. It also writes long-form articles and promo copy on request.

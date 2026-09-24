@@ -1,5 +1,7 @@
 ---
+import Icon from './Icon.astro';
 import { groupSkills, type Project } from '@/lib/projects';
+import { groupStyle, skillIcon } from '@/data/ui-icons';
 
 interface Props {
   projects: Project[];
@@ -21,16 +23,27 @@ const groups = groupSkills(projects);
 
     <div class="groups">
       {
-        groups.map((g, i) => (
-          <div class="group reveal" style={`--delay: ${i * 60}ms`}>
-            <h3>{g.category}</h3>
-            <ul>
-              {g.skills.map((s) => (
-                <li>{s.name}</li>
-              ))}
-            </ul>
-          </div>
-        ))
+        groups.map((g, i) => {
+          const style = groupStyle[g.category] ?? { icon: 'sparkles', color: '#7c9cff' };
+          return (
+            <div class="group reveal" style={`--delay: ${i * 60}ms; --g: ${style.color}`}>
+              <div class="group-head">
+                <span class="badge">
+                  <Icon name={style.icon} size={20} />
+                </span>
+                <h3>{g.category}</h3>
+              </div>
+              <ul>
+                {g.skills.map((s) => (
+                  <li>
+                    {skillIcon[s.name] && <Icon name={skillIcon[s.name]} size={14} class="si" />}
+                    {s.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })
       }
     </div>
   </div>
@@ -40,20 +53,53 @@ const groups = groupSkills(projects);
   .groups {
     display: grid;
     gap: 0.9rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   }
 
   .group {
-    padding: 1.25rem 1.35rem;
+    position: relative;
+    overflow: hidden;
+    padding: 1.25rem 1.3rem 1.35rem;
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
-    background: var(--bg-elev);
+    background:
+      radial-gradient(120% 60% at 0% 0%, color-mix(in oklab, var(--g) 12%, transparent), transparent 70%),
+      var(--bg-elev);
+    transition: border-color 0.3s;
+  }
+  /* Thin colour line along the top edge */
+  .group::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--g), transparent);
+    opacity: 0.6;
+  }
+  .group:hover {
+    border-color: color-mix(in oklab, var(--g) 35%, transparent);
   }
 
+  .group-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .badge {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    color: var(--g);
+    background: color-mix(in oklab, var(--g) 14%, var(--bg-elev));
+    border: 1px solid color-mix(in oklab, var(--g) 40%, transparent);
+    box-shadow: 0 8px 22px -12px var(--g);
+  }
   h3 {
-    font-size: 0.95rem;
+    font-size: 1rem;
     letter-spacing: -0.01em;
-    margin-bottom: 0.8rem;
   }
 
   ul {
@@ -66,11 +112,25 @@ const groups = groupSkills(projects);
   }
 
   li {
-    padding: 0.28em 0.7em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.32em 0.7em;
     border-radius: 999px;
     border: 1px solid var(--line);
-    background: rgb(255 255 255 / 0.02);
+    background: rgb(255 255 255 / 0.025);
     font-size: 0.8rem;
     color: var(--text-dim);
+    transition:
+      border-color 0.2s,
+      color 0.2s;
+  }
+  li:hover {
+    border-color: color-mix(in oklab, var(--g) 50%, transparent);
+    color: var(--text);
+  }
+  li :global(.si) {
+    flex: none;
+    color: var(--g);
   }
 </style>

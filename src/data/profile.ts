@@ -1,5 +1,5 @@
 /**
- * Everything about you lives here. Edit freely — the whole site reads from it.
+ * Everything about you lives here. Edit freely, the whole site reads from it.
  */
 export const profile = {
   name: 'Andris Volkovs',

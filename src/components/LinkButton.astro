@@ -1,0 +1,66 @@
+---
+/**
+ * A project link (source code, live demo, download…) with a fitting icon.
+ * Live demos get the solid style; everything else a tinted outline.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  label: string;
+  url: string;
+  kind: 'live' | 'repo' | 'download' | 'video' | 'docs' | 'other';
+}
+
+const { label, url, kind } = Astro.props;
+const icon = { live: 'arrow-up-right', repo: 'github', download: 'download', video: 'play', docs: 'book-open', other: 'external-link' }[kind];
+const external = /^https?:/.test(url);
+---
+
+<a
+  href={url}
+  class:list={['lb', { solid: kind === 'live' }]}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+>
+  {kind !== 'live' && <Icon name={icon} size={16} />}
+  <span>{label}</span>
+  {kind === 'live' && <Icon name={icon} size={16} class="tail" />}
+</a>
+
+<style>
+  .lb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.6rem 1.05rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    background: color-mix(in oklab, var(--c, var(--accent)) 10%, var(--bg-elev));
+    border: 1px solid color-mix(in oklab, var(--c, var(--accent)) 35%, var(--line));
+    transition:
+      background 0.2s,
+      border-color 0.2s,
+      transform 0.2s var(--ease);
+  }
+  .lb:hover {
+    background: color-mix(in oklab, var(--c, var(--accent)) 18%, var(--bg-elev));
+    border-color: color-mix(in oklab, var(--c, var(--accent)) 60%, transparent);
+    transform: translateY(-1px);
+  }
+  .lb.solid {
+    background: var(--text);
+    color: var(--bg);
+    border-color: transparent;
+  }
+  .lb.solid:hover {
+    background: #fff;
+  }
+  .lb :global(.tail) {
+    transition: transform 0.2s var(--ease);
+  }
+  .lb:hover :global(.tail) {
+    transform: translate(2px, -2px);
+  }
+</style>
