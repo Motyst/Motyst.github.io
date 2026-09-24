@@ -1,6 +1,7 @@
 ---
 import Media from './Media.astro';
 import { slugify, statusLabel, type Project } from '@/lib/projects';
+import { profile } from '@/data/profile';
 
 interface Props {
   project: Project;
@@ -22,7 +23,14 @@ const shownSkills = data.skills.slice(0, 4);
   <a href={`/work/${id}`} class="link" aria-label={`View ${data.title}`}>
     <div class="visual" transition:name={`cover-${id}`}>
       <Media item={data.cover} title={data.title} accent={data.accent} eager={index < 2} />
-      <span class="status"><i class={data.status}></i>{statusLabel[data.status]}</span>
+      {
+        profile.showProjectStatus && (
+          <span class="status">
+            <i class={data.status} />
+            {statusLabel[data.status]}
+          </span>
+        )
+      }
       <span class="open" aria-hidden="true">↗</span>
     </div>
     <div class="body">

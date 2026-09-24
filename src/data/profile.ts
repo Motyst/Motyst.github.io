@@ -14,7 +14,9 @@ export const profile = {
     'Four years in Trust & Safety at Accenture gave me habits I bring to every system: accuracy, process discipline, clear documentation and sound judgement under SLA pressure.',
   ],
   /** Shown as a small status pill in the hero. Set to '' to hide. */
-  availability: 'Open to new opportunities',
+  availability: '',
+  /** Show Live / Completed labels on projects. */
+  showProjectStatus: false,
   email: 'anvolkovs@gmail.com',
   /** Optional: path to a PDF in /public, e.g. '/cv.pdf'. Set to '' to hide. */
   resume: '',

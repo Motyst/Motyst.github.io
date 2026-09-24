@@ -5,6 +5,7 @@ import Media from '@/components/Media.astro';
 import Gallery from '@/components/Gallery.astro';
 import Workflow from '@/components/Workflow.astro';
 import { getProjects, slugify, statusLabel, type Project } from '@/lib/projects';
+import { profile } from '@/data/profile';
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -40,8 +41,14 @@ const ogImage = data.cover?.type === 'image' ? data.cover.src : data.cover?.post
       <a href="/#work" class="back mono">← All work</a>
       <div class="meta mono">
         <span>{data.year}</span>
-        <span>·</span>
-        <span>{statusLabel[data.status]}</span>
+        {
+          profile.showProjectStatus && (
+            <>
+              <span>·</span>
+              <span>{statusLabel[data.status]}</span>
+            </>
+          )
+        }
         {data.role && <><span>·</span><span>{data.role}</span></>}
       </div>
       <h1 transition:name={`title-${id}`}>{data.title}</h1>

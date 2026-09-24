@@ -8,12 +8,11 @@ interface Props {
 
 const { projects } = Astro.props;
 const skills = [...new Set(projects.flatMap((p) => p.data.skills))];
-const live = projects.filter((p) => p.data.status === 'live').length;
 
 const stats = [
   { value: projects.length, label: 'Projects shown' },
   { value: skills.length, label: 'Skills put to real use' },
-  { value: live, label: 'Running live right now' },
+  { value: 4, label: 'LLM platforms used daily' },
 ];
 ---
 

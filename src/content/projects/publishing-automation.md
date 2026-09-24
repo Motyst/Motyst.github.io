@@ -27,4 +27,4 @@ highlights:
 
 A system that takes a video from **upload to published posts on eight networks**. It transcribes the video, drafts captions, schedules everything and posts it, so one piece of content becomes a full publishing run without manual copy-pasting.
 
-The backend is **FastAPI** and the dashboard is **React**. It grew out of the same ideas as my [YouTube → X Post Bot](/work/video-to-x-posts): ground everything in the transcript, keep a human in control, and automate the rest.
+The backend is **FastAPI** and the dashboard is **React**. It works as part of the same system as my [YouTube → X Post Bot](/work/video-to-x-posts): ground everything in the transcript, keep a human in control, and automate the rest.
