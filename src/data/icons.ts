@@ -95,4 +95,21 @@ export const icons: Record<string, ProjectIconArt> = {
       <circle cx="49" cy="49" r="8" fill="#f43f5e" stroke="#0b1f5c" stroke-width="2.5" />
       <path d="M46 46l6 6M52 46l-6 6" stroke="#fff" stroke-width="2.3" stroke-linecap="round" />`,
   },
+  /** Privet: a matryoshka saying hello out loud. */
+  matryoshka: {
+    bg: 'linear-gradient(150deg, #f59e0b 0%, #7c2d12 100%)',
+    art: `
+      <ellipse cx="27" cy="43" rx="15.5" ry="15" fill="#e11d48" />
+      <circle cx="27" cy="23" r="12" fill="#e11d48" />
+      <circle cx="27" cy="24" r="8" fill="#fff1e6" />
+      <path d="M19.2 22.5c1.5-4.5 4.4-6.5 7.8-6.5s6.3 2 7.8 6.5c-2.6-1.6-5.2-2.3-7.8-2.3s-5.2.7-7.8 2.3z" fill="#7c2d12" />
+      <circle cx="24" cy="24.5" r="1.1" fill="#1f2937" /><circle cx="30" cy="24.5" r="1.1" fill="#1f2937" />
+      <circle cx="22.6" cy="27.6" r="1.5" fill="#fb7185" opacity=".7" /><circle cx="31.4" cy="27.6" r="1.5" fill="#fb7185" opacity=".7" />
+      <path d="M25.3 28.6q1.7 1.3 3.4 0" fill="none" stroke="#be123c" stroke-width="1.2" stroke-linecap="round" />
+      <ellipse cx="27" cy="45" rx="9.5" ry="10.5" fill="#fff7ed" />
+      <g fill="#f59e0b"><circle cx="27" cy="40.6" r="2.6" /><circle cx="31.2" cy="44.2" r="2.6" /><circle cx="27" cy="47.8" r="2.6" /><circle cx="22.8" cy="44.2" r="2.6" /></g>
+      <circle cx="27" cy="44.2" r="2.2" fill="#e11d48" />
+      <path d="M40 7h15a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5h-7l-5 4.5V25h-3a5 5 0 0 1-5-5v-8a5 5 0 0 1 5-5z" fill="#fff" />
+      <g stroke="#e11d48" stroke-width="2.4" stroke-linecap="round"><path d="M41.5 14v4M45.5 11.5v9M49.5 13v6M53.5 15v2" /></g>`,
+  },
 };
