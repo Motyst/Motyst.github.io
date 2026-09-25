@@ -94,8 +94,8 @@ import Icon from '../Icon.astro';
     const siblings = (opt: HTMLElement) => [...opt.closest('[data-q]')!.querySelectorAll<HTMLElement>('.opt[data-preview]')];
 
     const url = (opt: HTMLElement) => {
-      const anchor = opt.closest<HTMLElement>('[data-q]')?.dataset.anchor;
-      return opt.dataset.preview + (anchor ? `#${anchor}` : '');
+      // The anchor is scrolled to by toAnchor(), so the URL stays clean.
+      return opt.dataset.preview!;
     };
 
     // Scroll the page inside the frame back to the section being compared.
@@ -107,7 +107,7 @@ import Icon from '../Icon.astro';
       doc.documentElement.style.scrollbarWidth = mode === 'mobile' ? 'none' : '';
       if (!anchor) return;
       doc.documentElement.style.scrollBehavior = 'auto';
-      doc.getElementById(anchor)?.scrollIntoView();
+      doc.getElementById(anchor)?.scrollIntoView({ block: 'start' });
       doc.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
     }
 
@@ -153,6 +153,20 @@ import Icon from '../Icon.astro';
     frame.addEventListener('load', () => {
       device.classList.remove('is-loading');
       toAnchor();
+      setTimeout(toAnchor, 400);
+      // The page inside may grab focus (e.g. an open project window), so take
+      // Esc and ← / → back from it: they belong to this preview window.
+      frame.contentWindow?.addEventListener(
+        'keydown',
+        (e) => {
+          if (!['Escape', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          if (e.key === 'Escape') dialog!.close();
+          else step(e.key === 'ArrowRight' ? 1 : -1);
+        },
+        true,
+      );
     });
 
     document.querySelectorAll<HTMLElement>('.opt[data-preview]').forEach((opt) => {

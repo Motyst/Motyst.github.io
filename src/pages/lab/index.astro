@@ -9,9 +9,22 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-// import Question from '@/components/lab/Question.astro';
-// import Choice from '@/components/lab/Choice.astro';
+import Question from '@/components/lab/Question.astro';
+import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
+import Workflow from '@/components/Workflow.astro';
+import ProjectIcon from '@/components/ProjectIcon.astro';
+import { getProjects, type Project } from '@/lib/projects';
+import { brand, skillIcon } from '@/data/ui-icons';
+
+const projects = await getProjects();
+const mtb = projects.find((p) => p.id === 'mental-training-bot') ?? projects[0];
+const pair = [mtb, projects.find((p) => p.id === 'polymarket-guardian') ?? projects[1]];
+const tech = (p: Project) =>
+  p.data.skills
+    .filter((s) => skillIcon[s])
+    .sort((a, b) => Number(!!brand[skillIcon[b]]) - Number(!!brand[skillIcon[a]]))
+    .slice(0, 4);
 
 const round = 6;
 const applied = ['About: AI statement + 3 “how I think” cards'];
@@ -40,6 +53,49 @@ const applied = ['About: AI statement + 3 “how I think” cards'];
     </p>
 
     <!-- Add <Question> / <Choice> blocks here -->
+    <Question n={1} title="“How it works” in the project window" anchor={`how-${mtb.id}`} why="The steps are left-aligned in each column. Centred, each icon sits in the middle with its text underneath.">
+      <Choice label="Current" name="Left-aligned" note="Icons and text line up on the left of each column. Reads like a list." preview={`/?project=${mtb.id}`}>
+        <div class="fit"><div class="fit-in"><Workflow steps={mtb.data.workflow} /></div></div>
+      </Choice>
+      <Choice label="A" name="Centred" note="Icon in the middle of each column, text centred below. More balanced and poster-like. Phones keep the vertical list." preview={`/lab/preview/wf-center/?project=${mtb.id}`}>
+        <div class="fit wf-center"><div class="fit-in"><Workflow steps={mtb.data.workflow} /></div></div>
+      </Choice>
+    </Question>
+
+    <Question n={2} title="Tool logos on project tiles" anchor="work" why="Small grey logos under each project line. Some (Python, Telegram) are instantly recognisable, others are generic symbols.">
+      <Choice label="Current" name="All tool logos" note="Up to four logos per tile. Shows the stack, but adds a row of small symbols to every tile." preview="/">
+        <ul class="mtiles">
+          {pair.map((p) => (
+            <li style={`--c:${p.data.accent}`}>
+              <ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={34} />
+              <span><b>{p.data.title}</b><small>{p.data.summary}</small>
+                <em class="tech">{tech(p).map((n) => <Icon name={skillIcon[n]} size={12} />)}</em></span>
+            </li>
+          ))}
+        </ul>
+      </Choice>
+      <Choice label="A" name="No logos" note="Just icon, title and one line. Calmer, and the stack is still in each project window and the Skills section." preview="/lab/preview/tiles-none/" mine>
+        <ul class="mtiles">
+          {pair.map((p) => (
+            <li style={`--c:${p.data.accent}`}>
+              <ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={34} />
+              <span><b>{p.data.title}</b><small>{p.data.summary}</small></span>
+            </li>
+          ))}
+        </ul>
+      </Choice>
+      <Choice label="B" name="Brand logos only" note="Keeps only logos people recognise (Python, Telegram, React…) and drops the generic symbols." preview="/lab/preview/tiles-brand/">
+        <ul class="mtiles">
+          {pair.map((p) => (
+            <li style={`--c:${p.data.accent}`}>
+              <ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={34} />
+              <span><b>{p.data.title}</b><small>{p.data.summary}</small>
+                <em class="tech">{tech(p).filter((n) => brand[skillIcon[n]]).map((n) => <Icon name={skillIcon[n]} size={12} />)}</em></span>
+            </li>
+          ))}
+        </ul>
+      </Choice>
+    </Question>
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -164,6 +220,18 @@ const applied = ['About: AI statement + 3 “how I think” cards'];
     build();
   }
   document.addEventListener('astro:page-load', initLab);
+
+  // Real components rendered at desktop width, scaled down to fit a card.
+  function fitPreviews() {
+    document.querySelectorAll<HTMLElement>('.fit').forEach((box) => {
+      const inner = box.firstElementChild as HTMLElement;
+      const k = box.clientWidth / inner.offsetWidth;
+      inner.style.transform = `scale(${k})`;
+      box.style.height = `${inner.offsetHeight * k}px`;
+    });
+  }
+  document.addEventListener('astro:page-load', fitPreviews);
+  addEventListener('resize', fitPreviews);
 </script>
 
 <style>
@@ -238,6 +306,62 @@ const applied = ['About: AI statement + 3 “how I think” cards'];
     font-size: 9px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  /* Scaled real-component previews */
+  .fit {
+    overflow: hidden;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg-elev);
+  }
+  .fit-in {
+    width: 760px;
+    padding: 22px;
+    transform-origin: 0 0;
+  }
+
+  /* Mini project tiles */
+  .mtiles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .mtiles li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background:
+      radial-gradient(90% 140% at 0% 50%, color-mix(in oklab, var(--c) 9%, transparent), transparent 60%),
+      var(--bg);
+  }
+  .mtiles li > span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .mtiles b {
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  .mtiles small {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.35;
+  }
+  .tech {
+    display: flex;
+    gap: 7px;
+    margin-top: 5px;
+    font-style: normal;
     color: var(--text-faint);
   }
 

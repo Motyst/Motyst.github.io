@@ -40,7 +40,7 @@ const tech = (p: Project) =>
                 <span class="s">{p.data.summary ?? p.data.tagline}</span>
                 <span class="tech">
                   {tech(p).map((name) => (
-                    <span title={name}>
+                    <span title={name} class:list={{ nb: !brand[skillIcon[name]] }}>
                       <Icon name={skillIcon[name]} size={15} />
                       <span class="sr-only">{name}</span>
                     </span>
@@ -139,6 +139,11 @@ const tech = (p: Project) =>
   }
   .tile:hover .tech {
     color: var(--text-dim);
+  }
+  /* Lab variants: no logos / brand logos only */
+  :global(html[data-lab='tiles-none']) .tech,
+  :global(html[data-lab='tiles-brand']) .tech .nb {
+    display: none;
   }
 
   .go {

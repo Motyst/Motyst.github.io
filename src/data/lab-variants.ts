@@ -1,7 +1,12 @@
 /**
  * Design lab variants. Each id gets a full preview page at
  * /lab/preview/<id>/ (the real homepage with that one change applied).
- * Components read the `variant` prop and switch to the matching version.
+ * The id is also set as <html data-lab="<id>">, so a component can style a
+ * variant with :global(html[data-lab='<id>']) … or read a `variant` prop.
  * Once a pick is applied for real, remove its ids and content from here.
  */
-export const labVariants: string[] = [];
+export const labVariants: string[] = [
+  'wf-center', // "How it works" steps centred (Workflow.astro)
+  'tiles-none', // project tiles without tool logos (WorkSection.astro)
+  'tiles-brand', // project tiles with brand logos only (WorkSection.astro)
+];
