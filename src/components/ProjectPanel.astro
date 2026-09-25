@@ -82,8 +82,7 @@ const media = [data.cover, ...data.gallery].filter(
       {
         data.workflow.length > 0 && (
           <section class="flow" id={`how-${id}`}>
-            <h3 class="eyebrow">How it works</h3>
-            <Workflow steps={data.workflow} />
+            <Workflow steps={data.workflow} title="How it works" />
           </section>
         )
       }

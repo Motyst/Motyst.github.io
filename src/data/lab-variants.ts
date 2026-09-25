@@ -5,8 +5,4 @@
  * variant with :global(html[data-lab='<id>']) … or read a `variant` prop.
  * Once a pick is applied for real, remove its ids and content from here.
  */
-export const labVariants: string[] = [
-  'wf-center', // "How it works" steps centred (Workflow.astro)
-  'tiles-none', // project tiles without tool logos (WorkSection.astro)
-  'tiles-brand', // project tiles with brand logos only (WorkSection.astro)
-];
+export const labVariants: string[] = [];

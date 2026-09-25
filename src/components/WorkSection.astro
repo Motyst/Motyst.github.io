@@ -1,9 +1,7 @@
 ---
 import ProjectIcon from './ProjectIcon.astro';
 import ProjectDialog from './ProjectDialog.astro';
-import Icon from './Icon.astro';
 import type { Project } from '@/lib/projects';
-import { brand, skillIcon } from '@/data/ui-icons';
 
 interface Props {
   projects: Project[];
@@ -11,12 +9,6 @@ interface Props {
 
 const { projects } = Astro.props;
 
-// Up to 4 tool logos per tile: brand logos (Python, Telegram…) first.
-const tech = (p: Project) =>
-  p.data.skills
-    .filter((s) => skillIcon[s])
-    .sort((a, b) => Number(!!brand[skillIcon[b]]) - Number(!!brand[skillIcon[a]]))
-    .slice(0, 4);
 ---
 
 <section class="section" id="work">
@@ -38,14 +30,6 @@ const tech = (p: Project) =>
               <span class="txt">
                 <span class="t">{p.data.title}</span>
                 <span class="s">{p.data.summary ?? p.data.tagline}</span>
-                <span class="tech">
-                  {tech(p).map((name) => (
-                    <span title={name} class:list={{ nb: !brand[skillIcon[name]] }}>
-                      <Icon name={skillIcon[name]} size={15} />
-                      <span class="sr-only">{name}</span>
-                    </span>
-                  ))}
-                </span>
               </span>
               <span class="go" aria-hidden="true">
                 ↗
@@ -125,25 +109,6 @@ const tech = (p: Project) =>
     font-size: 0.88rem;
     color: var(--text-dim);
     line-height: 1.4;
-  }
-
-  .tech {
-    display: flex;
-    gap: 0.6rem;
-    margin-top: 0.45rem;
-    color: var(--text-faint);
-    transition: color 0.25s;
-  }
-  .tech > span {
-    display: grid;
-  }
-  .tile:hover .tech {
-    color: var(--text-dim);
-  }
-  /* Lab variants: no logos / brand logos only */
-  :global(html[data-lab='tiles-none']) .tech,
-  :global(html[data-lab='tiles-brand']) .tech .nb {
-    display: none;
   }
 
   .go {
