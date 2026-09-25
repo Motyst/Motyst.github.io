@@ -24,6 +24,12 @@ const skillIdeas = [
   { id: 'skills-core', label: 'B', name: 'Daily drivers + the rest', note: 'Six big tiles for the tools you lean on most, each with a short line, then everything else as one quiet list. Clear priorities; the six notes are my guesses for you to edit.' },
   { id: 'skills-stack', label: 'C', name: 'Layered stack', note: 'One band per layer, top to bottom like a system diagram: the brains, where people meet it, the plumbing, shipping it. Shows how the pieces fit together.' },
 ];
+const shotIdeas = [
+  { id: 'current', label: 'Current', name: 'Framed, fits', note: 'Everything down to "How it works" fits, but on a laptop-height window the screenshot is only about 310 × 195 px.' },
+  { id: 'shot-compact', label: 'A', name: 'Compact window', mine: true, note: 'Slimmer header, tighter spacing, caption and dots float over the stage. Same rule (everything fits) with a screenshot about 60% bigger, and it keeps the browser frame.' },
+  { id: 'shot-tall', label: 'B', name: 'Big, scroll for the rest', note: 'The screenshot uses the full width (about 700 × 440 px). "How it works" starts just below the fold, one scroll away.' },
+  { id: 'shot-bleed', label: 'C', name: 'Edge to edge', note: 'No frame: the screenshot fills the whole stage and is cropped from the top, with the caption over it. Biggest and most immersive, but the bottom of each shot is cut (click to see it all).' },
+];
 ---
 
 <Base title="Design lab" noindex>
@@ -57,6 +63,16 @@ const skillIdeas = [
                 <SkillsSection projects={projects} variant={o.id} />
               </div>
             </div>
+          </Choice>
+        ))
+      }
+    </Question>
+
+    <Question n={2} title="Screenshot size in the project window" why="On a laptop-height window the framed screenshot comes out small. Each card is the real Helm window at 1450 × 728; open Full page to try your own size.">
+      {
+        shotIdeas.map((o) => (
+          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/?project=helm' : `/lab/preview/${o.id}/?project=helm`}>
+            <img class="shot" src={`/lab/shots/${o.id}.webp`} alt={`Helm window, ${o.name}`} loading="lazy" />
           </Choice>
         ))
       }
@@ -293,6 +309,12 @@ const skillIdeas = [
   }
   .fit :global(.container) {
     padding: 0;
+  }
+
+  .shot {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--line);
   }
 
   /* ---------- Reply ---------- */

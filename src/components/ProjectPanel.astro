@@ -334,4 +334,33 @@ const media = [data.cover, ...data.gallery].filter(
       font-size: 1.2rem;
     }
   }
+  /* ---------- Design lab variants (round 9: screenshot size) ---------- */
+  /* A compact + C edge to edge: slimmer header and spacing, so the image gets the height */
+  :global(html[data-lab='shot-compact']) .head,
+  :global(html[data-lab='shot-bleed']) .head {
+    padding-block: 0.75rem;
+  }
+  :global(html[data-lab='shot-compact']) .head :global(.icon),
+  :global(html[data-lab='shot-bleed']) .head :global(.icon) {
+    width: 44px;
+    height: 44px;
+  }
+  :global(html[data-lab='shot-compact']) h2,
+  :global(html[data-lab='shot-bleed']) h2 {
+    font-size: 1.45rem;
+  }
+  :global(html[data-lab='shot-compact']) .scroll,
+  :global(html[data-lab='shot-bleed']) .scroll {
+    padding-top: 1.1rem;
+    gap: 1.1rem;
+    --stage-h: clamp(220px, min(90vh, 900px) - 278px, 620px);
+  }
+  :global(html[data-lab='shot-compact']) .tagline,
+  :global(html[data-lab='shot-bleed']) .tagline {
+    font-size: 1.02rem;
+  }
+  /* B bigger: sized by width, "How it works" starts just below */
+  :global(html[data-lab='shot-tall']) .scroll {
+    --stage-h: 78vh;
+  }
 </style>
