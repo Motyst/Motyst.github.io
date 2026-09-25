@@ -66,6 +66,10 @@ const { n, title, why, anchor } = Astro.props;
     .cols {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+    /* Four options: a 2×2 grid, so each preview stays large */
+    .cols:has(> :nth-child(4)) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   textarea {
     display: block;
