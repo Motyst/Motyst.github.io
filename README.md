@@ -50,6 +50,7 @@ gallery:
   - type: image
     src: /media/my-app/screen-1.png
     caption: The main screen.
+    frame: phone        # browser (default) | phone | none, how the project window frames it
   - type: youtube
     src: VIDEO_ID       # just the ID after "v="
   - type: embed         # any iframe-able URL (Figma, CodePen, live demo…)

@@ -115,7 +115,7 @@ const { projects } = Astro.props;
     dialog.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       const t = e.target as HTMLElement;
-      if (t.closest('input, textarea, video, [data-strip]')) return;
+      if (t.closest('input, textarea, video, [data-show]')) return;
       e.preventDefault();
       step(e.key === 'ArrowRight' ? 1 : -1);
     });
@@ -125,21 +125,6 @@ const { projects } = Astro.props;
       document.documentElement.style.overflow = '';
       current = null;
       setParam(null);
-    });
-
-    // Media strips: arrows + counter
-    dialog.querySelectorAll<HTMLElement>('[data-strip]').forEach((strip) => {
-      const box = strip.parentElement!;
-      const count = box.querySelector<HTMLElement>('[data-strip-count]');
-      const total = strip.children.length;
-      box.querySelectorAll<HTMLButtonElement>('[data-strip-go]').forEach((b) =>
-        b.addEventListener('click', () =>
-          strip.scrollBy({ left: Number(b.dataset.stripGo) * strip.clientWidth, behavior: 'smooth' }),
-        ),
-      );
-      strip.addEventListener('scroll', () => {
-        if (count) count.textContent = `${Math.round(strip.scrollLeft / strip.clientWidth) + 1} / ${total}`;
-      });
     });
 
     const initial = new URLSearchParams(location.search).get('project');

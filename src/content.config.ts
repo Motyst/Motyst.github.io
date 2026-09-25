@@ -15,6 +15,8 @@ const media = z.object({
   poster: z.string().optional(),
   caption: z.string().optional(),
   alt: z.string().optional(),
+  /** How the project window frames it: a browser window, a phone, or none. */
+  frame: z.enum(['browser', 'phone', 'none']).optional(),
 });
 
 const projects = defineCollection({

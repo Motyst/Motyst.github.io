@@ -1,0 +1,346 @@
+---
+/**
+ * Screenshots and videos in the project window. Each item sits in a frame
+ * (a browser window, a phone, or none) on an accent-tinted stage, with
+ * arrows, a caption and dots. Swipe or scroll to move between items.
+ *
+ * The stage height comes from `--stage-h`, set by the parent so the window
+ * shows everything down to "How it works" without scrolling.
+ */
+import Media from './Media.astro';
+import type { Project } from '@/lib/projects';
+
+type Item = NonNullable<Project['data']['cover']>;
+
+interface Props {
+  items: Item[];
+  title: string;
+  accent: string;
+}
+
+const { items, title, accent } = Astro.props;
+/** Images and videos default to a browser window; embeds bring their own chrome. */
+const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video' ? 'browser' : 'none');
+---
+
+<div class="show" data-show style={`--c: ${accent}`}>
+  <div class="stage">
+    <div class="track" data-track>
+      {
+        items.map((m, i) => (
+          <figure class="slide" data-caption={m.caption ?? ''}>
+            <div class={`win ${frameOf(m)}`}>
+              {frameOf(m) === 'browser' && (
+                <span class="bar" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+              )}
+              <Media item={m} title={title} accent={accent} mode="full" eager={i === 0} />
+            </div>
+          </figure>
+        ))
+      }
+    </div>
+    {
+      items.length > 1 && (
+        <>
+          <button type="button" class="nav prev" data-go="-1" aria-label="Previous screenshot">
+            ←
+          </button>
+          <button type="button" class="nav next" data-go="1" aria-label="Next screenshot">
+            →
+          </button>
+        </>
+      )
+    }
+  </div>
+
+  <div class="under">
+    <p class="cap" data-cap aria-live="polite">{items[0]?.caption}</p>
+    {
+      items.length > 1 && (
+        <div class="dots">
+          {items.map((m, i) => (
+            <button type="button" class:list={['dot', { on: i === 0 }]} data-to={i} aria-label={`Show ${m.caption ?? `item ${i + 1}`}`} />
+          ))}
+        </div>
+      )
+    }
+  </div>
+
+  <dialog class="zoom" data-zoom aria-label="Enlarged screenshot">
+    <img alt="" />
+  </dialog>
+</div>
+
+<script>
+  function initShowcases() {
+    document.querySelectorAll<HTMLElement>('[data-show]:not([data-ready])').forEach((show) => {
+      show.dataset.ready = '';
+      const track = show.querySelector<HTMLElement>('[data-track]')!;
+      const slides = [...track.children] as HTMLElement[];
+      const cap = show.querySelector<HTMLElement>('[data-cap]')!;
+      const dots = [...show.querySelectorAll<HTMLButtonElement>('[data-to]')];
+      const prev = show.querySelector<HTMLButtonElement>('[data-go="-1"]');
+      const next = show.querySelector<HTMLButtonElement>('[data-go="1"]');
+
+      const index = () => Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+      const go = (i: number) => track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+      const sync = () => {
+        const i = index();
+        cap.textContent = slides[i]?.dataset.caption ?? '';
+        dots.forEach((t, n) => t.classList.toggle('on', n === i));
+        if (prev) prev.disabled = i === 0;
+        if (next) next.disabled = i === slides.length - 1;
+      };
+
+      prev?.addEventListener('click', () => go(index() - 1));
+      next?.addEventListener('click', () => go(index() + 1));
+      dots.forEach((t) => t.addEventListener('click', () => go(Number(t.dataset.to))));
+      track.addEventListener('scroll', sync, { passive: true });
+      sync();
+
+      // ← / → move between screenshots while focus is in here
+      show.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        e.preventDefault();
+        go(index() + (e.key === 'ArrowRight' ? 1 : -1));
+      });
+
+      // Click a screenshot to see it full size; click or Esc to close
+      const zoom = show.querySelector<HTMLDialogElement>('[data-zoom]')!;
+      const big = zoom.querySelector('img')!;
+      track.querySelectorAll<HTMLImageElement>('img').forEach((img) =>
+        img.addEventListener('click', () => {
+          big.src = img.currentSrc || img.src;
+          big.alt = img.alt;
+          zoom.showModal();
+        }),
+      );
+      zoom.addEventListener('click', () => zoom.close());
+      zoom.addEventListener('keydown', (e) => e.stopPropagation());
+    });
+  }
+  document.addEventListener('astro:page-load', initShowcases);
+</script>
+
+<style>
+  .show {
+    container-type: inline-size;
+    /* Leave room for the caption row below the stage */
+    --stage: min(var(--stage-h, 420px) - 3rem, 100cqw * 0.62 + 2rem);
+  }
+
+  .stage {
+    position: relative;
+    height: var(--stage);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background:
+      radial-gradient(55% 80% at 50% 60%, color-mix(in oklab, var(--c) 24%, transparent), transparent 72%),
+      var(--bg-soft);
+  }
+  /* Faint grid, as on the icon banners */
+  .stage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse at center, #000 10%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .track {
+    position: relative;
+    display: flex;
+    height: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .track::-webkit-scrollbar {
+    display: none;
+  }
+  .slide {
+    flex: 0 0 100%;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: clamp(0.9rem, 3cqw, 1.6rem) clamp(1rem, 7cqw, 4.5rem);
+    scroll-snap-align: center;
+    min-width: 0;
+  }
+
+  .win {
+    --pad: clamp(0.9rem, 3cqw, 1.6rem);
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .show .win :global(.media) {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(var(--stage) - 2 * var(--pad) - var(--bar, 0px));
+    object-fit: contain;
+  }
+
+  /* A browser window: dark title bar with three dots */
+  .browser {
+    --bar: 1.6rem;
+    border-radius: 10px;
+    border: 1px solid rgb(255 255 255 / 0.14);
+    background: #1c1c21;
+    box-shadow:
+      0 30px 70px -28px rgb(0 0 0 / 0.9),
+      0 18px 80px -40px color-mix(in oklab, var(--c) 80%, transparent);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: var(--bar);
+    padding-inline: 0.65rem;
+    flex: none;
+  }
+  .bar i {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.18);
+  }
+
+  /* A phone: rounded bezel */
+  .phone {
+    --bar: 12px;
+    padding: 6px;
+    border-radius: 26px;
+    background: #0b0b0e;
+    border: 1px solid rgb(255 255 255 / 0.14);
+    box-shadow:
+      0 30px 70px -28px rgb(0 0 0 / 0.9),
+      0 18px 80px -40px color-mix(in oklab, var(--c) 80%, transparent);
+  }
+  .show .win :global(img) {
+    cursor: zoom-in;
+  }
+  .show .phone :global(.media) {
+    border-radius: 20px;
+  }
+
+  /* No frame: the image already has its own shapes */
+  .show .none :global(.media) {
+    border-radius: 10px;
+    filter: drop-shadow(0 24px 40px rgb(0 0 0 / 0.6));
+  }
+
+  .nav {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: rgb(17 17 20 / 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text);
+    font: inherit;
+    cursor: pointer;
+    transition:
+      opacity 0.2s,
+      border-color 0.2s;
+  }
+  .nav:hover {
+    border-color: var(--text-dim);
+  }
+  .nav:disabled {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .prev {
+    left: 0.75rem;
+  }
+  .next {
+    right: 0.75rem;
+  }
+
+  .under {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.7rem;
+    min-height: 2.25rem;
+  }
+  .cap {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    min-width: 0;
+  }
+  .dots {
+    display: flex;
+    gap: 0.45rem;
+    flex: none;
+  }
+  .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--line-strong);
+    cursor: pointer;
+    transition:
+      width 0.3s var(--ease),
+      background 0.2s;
+  }
+  .dot:hover {
+    background: var(--text-faint);
+  }
+  .dot.on {
+    width: 1.5rem;
+    background: var(--c);
+  }
+
+  .zoom {
+    max-width: 96vw;
+    max-height: 94vh;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    background: none;
+    overflow: hidden;
+    cursor: zoom-out;
+  }
+  .zoom::backdrop {
+    background: rgb(4 4 6 / 0.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .zoom img {
+    display: block;
+    max-width: 96vw;
+    max-height: 94vh;
+    width: auto;
+    height: auto;
+  }
+
+  /* Narrow windows: swipe instead of arrows */
+  @container (max-width: 520px) {
+    .nav {
+      display: none;
+    }
+  }
+</style>

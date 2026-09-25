@@ -24,6 +24,7 @@ gallery:
     caption: The board, one bin per project
   - type: image
     src: /media/helm/themes.webp
+    frame: none
     alt: Helm's Focus view on a phone in six themes, each with its own landscape
     caption: Six themes on a phone
 skills: [TypeScript, React, Node.js, Hono, SQLite, MCP, Claude Code, OpenAI API, LLMs, Voice AI, Human-in-the-loop, Real-time Systems, PWA, Docker, Raspberry Pi, Tailscale]

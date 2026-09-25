@@ -6,7 +6,7 @@
 import { render } from 'astro:content';
 import ProjectIcon from './ProjectIcon.astro';
 import ProjectBanner from './ProjectBanner.astro';
-import Media from './Media.astro';
+import Showcase from './Showcase.astro';
 import Workflow from './Workflow.astro';
 import LinkButton from './LinkButton.astro';
 import Icon from './Icon.astro';
@@ -39,43 +39,26 @@ const media = [data.cover, ...data.gallery].filter(
     </header>
 
     <div class="scroll" tabindex="-1">
-      <p class="tagline">{data.tagline}</p>
-
-      <div class="media">
+      <div class="intro">
+        <p class="tagline">{data.tagline}</p>
         {
-          media.length === 0 ? (
-            <ProjectBanner icon={data.icon} title={data.title} accent={data.accent} />
-          ) : (
-            <div class="strip" data-strip>
-              {media.map((m) => (
-                <figure>
-                  <Media item={m} title={data.title} accent={data.accent} mode="full" />
-                  {m.caption && <figcaption>{m.caption}</figcaption>}
-                </figure>
+          data.links.length > 0 && (
+            <div class="links">
+              {data.links.map((l) => (
+                <LinkButton {...l} />
               ))}
-            </div>
-          )
-        }
-        {
-          media.length > 1 && (
-            <div class="strip-nav">
-              <button type="button" data-strip-go="-1" aria-label="Previous">←</button>
-              <span class="mono" data-strip-count>
-                1 / {media.length}
-              </span>
-              <button type="button" data-strip-go="1" aria-label="Next">→</button>
             </div>
           )
         }
       </div>
 
       {
-        data.links.length > 0 && (
-          <div class="links">
-            {data.links.map((l) => (
-              <LinkButton {...l} />
-            ))}
+        media.length === 0 ? (
+          <div class="banner-box">
+            <ProjectBanner icon={data.icon} title={data.title} accent={data.accent} />
           </div>
+        ) : (
+          <Showcase items={media} title={data.title} accent={data.accent} />
         )
       }
 
@@ -210,61 +193,33 @@ const media = [data.cover, ...data.gallery].filter(
     outline: none;
   }
 
+  /* Media height leaves room for everything down to "How it works" */
+  .scroll {
+    --stage-h: clamp(200px, min(90vh, 900px) - 335px, 520px);
+  }
+
+  .intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+  }
   .tagline {
+    flex: 1 1 32ch;
     font-size: clamp(1.05rem, 2vw, 1.2rem);
     color: var(--text-dim);
     max-width: 60ch;
   }
 
-  .media {
+  .banner-box {
     border-radius: var(--radius);
     overflow: hidden;
     border: 1px solid var(--line);
-    background: var(--bg-soft);
   }
-  .strip {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-  .strip::-webkit-scrollbar {
-    display: none;
-  }
-  .strip figure {
-    flex: 0 0 100%;
-    scroll-snap-align: center;
-    margin: 0;
-  }
-  .strip :global(.media.full) {
-    width: 100%;
-    max-height: 60vh;
-    object-fit: contain;
-  }
-  figcaption {
-    padding: 0.6rem 0.9rem;
-    font-size: 0.82rem;
-    color: var(--text-faint);
-    border-top: 1px solid var(--line);
-  }
-  .strip-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 0.5rem;
-    border-top: 1px solid var(--line);
-    font-size: 0.75rem;
-    color: var(--text-faint);
-  }
-  .strip-nav button {
-    background: none;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    color: var(--text-dim);
-    width: 2rem;
-    height: 2rem;
-    cursor: pointer;
+  .banner-box :global(.banner) {
+    aspect-ratio: auto;
+    height: min(var(--stage-h), 44vw);
   }
 
   .links {
