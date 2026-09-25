@@ -7,12 +7,14 @@ interface Props {
   n: number;
   title: string;
   why: string;
+  /** Section id the full-page preview scrolls to, e.g. 'about'. */
+  anchor?: string;
 }
 
-const { n, title, why } = Astro.props;
+const { n, title, why, anchor } = Astro.props;
 ---
 
-<section class="cmp" data-q={title} data-n={n}>
+<section class="cmp" data-q={title} data-n={n} data-anchor={anchor}>
   <div class="cmp-head">
     <span class="num">{n}</span>
     <div>

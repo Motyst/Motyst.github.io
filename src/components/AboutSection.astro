@@ -1,6 +1,16 @@
 ---
 import Icon from './Icon.astro';
 import { profile } from '@/data/profile';
+import { aboutVariants } from '@/data/lab-variants';
+
+interface Props {
+  /** Design lab preview only (see src/data/lab-variants.ts). */
+  variant?: string;
+}
+
+const lab = aboutVariants[Astro.props.variant as keyof typeof aboutVariants];
+const principles = lab?.principles ?? profile.principles;
+const quote = lab?.quote;
 
 const initials = profile.name
   .split(' ')
@@ -24,9 +34,10 @@ const initials = profile.name
       <div class="bio">
         {profile.bio.map((p) => <p>{p}</p>)}
       </div>
-      <ul class="principles">
+      {quote && <blockquote class="quote">{quote}</blockquote>}
+      <ul class:list={['principles', { grid: principles.length === 4 }]}>
         {
-          profile.principles.map((pr) => (
+          principles.map((pr) => (
             <li style={`--p: ${pr.color}`}>
               <span class="pi">
                 <Icon name={pr.icon} size={18} />
@@ -110,6 +121,28 @@ const initials = profile.name
     }
   }
 
+  /* A short statement */
+  .quote {
+    position: relative;
+    margin: 1.75rem 0 0;
+    padding: 0.2rem 0 0.2rem 1.25rem;
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: -0.015em;
+    color: var(--text);
+  }
+  .quote::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #a78bfa, #4cc9f0 55%, #fb7185);
+  }
+
   /* How I work */
   .principles {
     display: grid;
@@ -117,6 +150,14 @@ const initials = profile.name
     list-style: none;
     margin: 1.75rem 0 0;
     padding: 0;
+  }
+  @media (min-width: 640px) {
+    .principles.grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .principles.grid li {
+      align-items: flex-start;
+    }
   }
   .principles li {
     display: flex;

@@ -87,9 +87,17 @@ in `src/data/profile.ts`. Until then the About section shows your initials.
 
 `/lab/` is an unlisted page (not linked, not indexed) for comparing design
 ideas side by side. Click the options you like, add comments and press
-**Copy reply** to paste your picks into the chat. To start a new round, edit
-`src/pages/lab/index.astro`: bump `round`, update `applied` and swap the
-`<Question>` / `<Choice>` blocks.
+**Copy reply** to paste your picks into the chat.
+
+Double-click an option (or press **Full page**) to see the whole page with that
+option applied, as a desktop or phone screen. Those pages live at
+`/lab/preview/<variant>/`: add the variant id to `src/data/lab-variants.ts`, make
+the component switch on its `variant` prop, and pass `preview="/lab/preview/<id>/"`
+to the `<Choice>` (use `preview="/"` for Current, and `anchor` on the `<Question>`
+to scroll to the right section).
+
+To start a new round, edit `src/pages/lab/index.astro`: bump `round`, update
+`applied` and swap the `<Question>` / `<Choice>` blocks.
 
 ## Deploying
 

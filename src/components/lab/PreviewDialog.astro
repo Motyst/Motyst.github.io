@@ -1,0 +1,476 @@
+---
+/**
+ * Full-page preview for the design lab. Double-click an option card (or
+ * press its "Full page" button) to see the whole page with that option,
+ * as a desktop (1280px) or phone (390px) screen scaled to fit.
+ * ← / → switch between the options of the same question, Esc closes.
+ */
+import Icon from '../Icon.astro';
+---
+
+<dialog class="pv" id="lab-preview" aria-label="Full page preview">
+  <header class="top">
+    <div class="title">
+      <span class="key" data-pv-key></span>
+      <span class="names">
+        <b data-pv-name></b>
+        <small data-pv-q></small>
+      </span>
+    </div>
+
+    <div class="seg" role="group" aria-label="Screen size">
+      <button type="button" data-mode="desktop" aria-label="Desktop"><Icon name="monitor" size={15} /> <span>Desktop</span></button>
+      <button type="button" data-mode="mobile" aria-label="Mobile"><Icon name="smartphone" size={15} /> <span>Mobile</span></button>
+    </div>
+
+    <div class="acts">
+      <button type="button" class="pick" data-pv-choose></button>
+      <a class="icon-btn" data-pv-open target="_blank" rel="noopener" title="Open in a new tab" aria-label="Open in a new tab">
+        <Icon name="external-link" size={16} />
+      </a>
+      <button type="button" class="icon-btn" data-pv-close title="Close (Esc)" aria-label="Close">✕</button>
+    </div>
+  </header>
+
+  <div class="stage" data-stage>
+    <div class="device" data-device>
+      <p class="loading">Loading page…</p>
+      <iframe title="Page preview" data-frame></iframe>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <button type="button" class="step" data-pv-step="-1" aria-label="Previous option">←</button>
+    <span class="opts" data-pv-opts></span>
+    <button type="button" class="step" data-pv-step="1" aria-label="Next option">→</button>
+  </footer>
+</dialog>
+
+<script>
+  function initPreview() {
+    const dialog = document.getElementById('lab-preview') as HTMLDialogElement | null;
+    if (!dialog) return;
+    const $ = <T extends HTMLElement>(sel: string) => dialog.querySelector<T>(sel)!;
+    const stage = $('[data-stage]');
+    const device = $('[data-device]');
+    const frame = $<HTMLIFrameElement>('[data-frame]');
+    const chooseBtn = $<HTMLButtonElement>('[data-pv-choose]');
+    const opts = $('[data-pv-opts]');
+
+    let current: HTMLElement | null = null;
+    let mode: 'desktop' | 'mobile' = innerWidth < 700 ? 'mobile' : 'desktop';
+    try {
+      const saved = localStorage.getItem('lab-preview-mode');
+      if (saved === 'desktop' || saved === 'mobile') mode = saved;
+    } catch {}
+
+    const SIZES = { desktop: [1280, 800], mobile: [390, 844] } as const;
+
+    function fit() {
+      const W = stage.clientWidth;
+      const H = stage.clientHeight;
+      const [vw, vh] = SIZES[mode];
+      let s: number;
+      if (mode === 'desktop') {
+        s = Math.min(1, W / vw);
+        frame.style.width = `${vw}px`;
+        frame.style.height = `${H / s}px`;
+        device.style.width = `${vw * s}px`;
+        device.style.height = `${H}px`;
+      } else {
+        s = Math.min(1, H / vh, W / vw);
+        frame.style.width = `${vw}px`;
+        frame.style.height = `${vh}px`;
+        device.style.width = `${vw * s}px`;
+        device.style.height = `${vh * s}px`;
+      }
+      frame.style.transform = `scale(${s})`;
+      device.dataset.mode = mode;
+      dialog!.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.mode === mode)),
+      );
+    }
+
+    const siblings = (opt: HTMLElement) => [...opt.closest('[data-q]')!.querySelectorAll<HTMLElement>('.opt[data-preview]')];
+
+    const url = (opt: HTMLElement) => {
+      const anchor = opt.closest<HTMLElement>('[data-q]')?.dataset.anchor;
+      return opt.dataset.preview + (anchor ? `#${anchor}` : '');
+    };
+
+    // Scroll the page inside the frame back to the section being compared.
+    function toAnchor() {
+      const anchor = current?.closest<HTMLElement>('[data-q]')?.dataset.anchor;
+      const doc = frame.contentDocument;
+      if (!anchor || !doc) return;
+      doc.documentElement.style.scrollBehavior = 'auto';
+      doc.getElementById(anchor)?.scrollIntoView();
+      doc.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
+    }
+
+    function syncChoose() {
+      if (!current) return;
+      const on = current.classList.contains('chosen');
+      chooseBtn.classList.toggle('on', on);
+      chooseBtn.textContent = on ? `✓ Chosen` : `Choose ${current.dataset.label}`;
+    }
+
+    function show(opt: HTMLElement) {
+      current = opt;
+      const q = opt.closest<HTMLElement>('[data-q]')!;
+      $('[data-pv-key]').textContent = opt.dataset.label!;
+      $('[data-pv-key]').classList.toggle('cur', opt.dataset.label === 'Current');
+      $('[data-pv-name]').textContent = opt.dataset.name!;
+      $('[data-pv-q]').textContent = `${q.dataset.n}. ${q.dataset.q}`;
+      $<HTMLAnchorElement>('[data-pv-open]').href = url(opt);
+      opts.replaceChildren(
+        ...siblings(opt).map((o) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.textContent = o.dataset.label!;
+          b.className = o === opt ? 'on' : '';
+          b.addEventListener('click', () => show(o));
+          return b;
+        }),
+      );
+      device.classList.add('is-loading');
+      frame.src = url(opt);
+      syncChoose();
+    }
+
+    function open(opt: HTMLElement) {
+      if (!dialog!.open) {
+        dialog!.showModal();
+        document.documentElement.style.overflow = 'hidden';
+      }
+      fit();
+      show(opt);
+    }
+
+    frame.addEventListener('load', () => {
+      device.classList.remove('is-loading');
+      toAnchor();
+    });
+
+    document.querySelectorAll<HTMLElement>('.opt[data-preview]').forEach((opt) => {
+      opt.querySelector('[data-full]')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        open(opt);
+      });
+      opt.addEventListener('dblclick', (e) => {
+        if ((e.target as HTMLElement).closest('button, textarea, a')) return;
+        getSelection()?.removeAllRanges();
+        open(opt);
+      });
+    });
+
+    dialog.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) =>
+      b.addEventListener('click', () => {
+        mode = b.dataset.mode as typeof mode;
+        try {
+          localStorage.setItem('lab-preview-mode', mode);
+        } catch {}
+        fit();
+        setTimeout(toAnchor, 150);
+      }),
+    );
+
+    const step = (d: number) => {
+      if (!current) return;
+      const list = siblings(current);
+      show(list[(list.indexOf(current) + d + list.length) % list.length]);
+    };
+    dialog.querySelectorAll<HTMLButtonElement>('[data-pv-step]').forEach((b) =>
+      b.addEventListener('click', () => step(Number(b.dataset.pvStep))),
+    );
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        step(e.key === 'ArrowRight' ? 1 : -1);
+      }
+    });
+
+    // Choosing here clicks the card, so the lab's reply updates as usual.
+    chooseBtn.addEventListener('click', () => {
+      if (current && !current.classList.contains('chosen')) current.click();
+      syncChoose();
+    });
+
+    $('[data-pv-close]').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      document.documentElement.style.overflow = '';
+      frame.removeAttribute('src');
+      current = null;
+    });
+    addEventListener('resize', () => dialog.open && fit());
+  }
+  document.addEventListener('astro:page-load', initPreview);
+</script>
+
+<style>
+  .pv {
+    width: min(1400px, 100vw - 2rem);
+    height: min(96vh, 1100px);
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elev);
+    color: var(--text);
+    overflow: hidden;
+    box-shadow: 0 40px 120px -30px rgb(0 0 0 / 0.8);
+  }
+  .pv[open] {
+    display: flex;
+    flex-direction: column;
+    animation: pop 0.3s var(--ease);
+  }
+  .pv::backdrop {
+    background: rgb(4 4 6 / 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.985);
+    }
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-width: 0;
+  }
+  .key {
+    display: grid;
+    place-items: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.5rem;
+    border-radius: 9px;
+    background: var(--text);
+    color: var(--bg);
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .key.cur {
+    background: var(--bg-soft);
+    color: var(--text-dim);
+    border: 1px solid var(--line-strong);
+  }
+  .names {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.25;
+  }
+  .names b {
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .names small {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+
+  .seg {
+    display: flex;
+    padding: 3px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: var(--bg);
+  }
+  .seg button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--text-dim);
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .seg button[aria-pressed='true'] {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .acts {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .pick {
+    padding: 0.5rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--text);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .pick:hover {
+    border-color: var(--text-dim);
+  }
+  .pick.on {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+  }
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--text-dim);
+    font: inherit;
+    cursor: pointer;
+  }
+  .icon-btn:hover {
+    color: var(--text);
+    border-color: var(--text-dim);
+  }
+
+  .stage {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    place-items: center;
+    padding: 0.75rem;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.06) 1px, transparent 0) 0 0 / 18px 18px,
+      var(--bg);
+  }
+  .device {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    background: var(--bg);
+    box-shadow: 0 30px 80px -30px rgb(0 0 0 / 0.9);
+  }
+  .device[data-mode='mobile'] {
+    border-radius: 26px;
+    border-width: 2px;
+  }
+  .device iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
+    transform-origin: 0 0;
+    background: var(--bg);
+    transition: opacity 0.2s;
+  }
+  .device.is-loading iframe {
+    opacity: 0;
+  }
+  .loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    color: var(--text-faint);
+    font-size: 0.9rem;
+  }
+
+  .foot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem;
+    border-top: 1px solid var(--line);
+  }
+  .step {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--text-dim);
+    font: inherit;
+    cursor: pointer;
+  }
+  .step:hover {
+    color: var(--text);
+  }
+  .opts {
+    display: flex;
+    gap: 0.35rem;
+  }
+  .opts :global(button) {
+    min-width: 2.2rem;
+    height: 2.2rem;
+    padding: 0 0.7rem;
+    border-radius: 10px;
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--text-dim);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .opts :global(button.on) {
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--bg);
+  }
+
+  @media (max-width: 700px) {
+    .pv {
+      width: 100vw;
+      height: 100dvh;
+      border-radius: 0;
+      border: 0;
+    }
+    .top {
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    .title {
+      flex-basis: 100%;
+      order: -1;
+    }
+    .seg button span {
+      display: none;
+    }
+    .acts {
+      flex: 0 0 auto;
+      margin-left: auto;
+    }
+    .stage {
+      padding: 0.5rem;
+    }
+  }
+</style>

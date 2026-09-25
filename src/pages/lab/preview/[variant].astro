@@ -1,0 +1,27 @@
+---
+/**
+ * Design lab preview: the real homepage with one lab variant applied.
+ * Opened inside the lab's full-page preview window.
+ */
+import Base from '@/layouts/Base.astro';
+import Hero from '@/components/Hero.astro';
+import WorkSection from '@/components/WorkSection.astro';
+import SkillsSection from '@/components/SkillsSection.astro';
+import AboutSection from '@/components/AboutSection.astro';
+import { getProjects } from '@/lib/projects';
+import { labVariants } from '@/data/lab-variants';
+
+export function getStaticPaths() {
+  return labVariants.map((variant) => ({ params: { variant } }));
+}
+
+const { variant } = Astro.params;
+const projects = await getProjects();
+---
+
+<Base title={`Preview ${variant}`} noindex>
+  <Hero projects={projects} />
+  <WorkSection projects={projects} />
+  <SkillsSection projects={projects} />
+  <AboutSection variant={variant} />
+</Base>

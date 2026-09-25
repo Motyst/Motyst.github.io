@@ -1,20 +1,25 @@
 ---
 /**
  * One option inside a lab Question. Click the card (or its button) to
- * choose it. `mine` marks Claude's recommendation.
+ * choose it. `mine` marks Claude's recommendation. With `preview` (a page
+ * path, '/' for the live site), double-click or "Full page" opens the whole
+ * page with this option applied, on desktop and mobile.
  */
+import Icon from '../Icon.astro';
+
 interface Props {
   /** 'Current', 'A', 'B'… Shown big on the card and used in the reply. */
   label: string;
   name: string;
   note: string;
   mine?: boolean;
+  preview?: string;
 }
 
-const { label, name, note, mine = false } = Astro.props;
+const { label, name, note, mine = false, preview } = Astro.props;
 ---
 
-<figure class="opt" data-label={label} data-name={name}>
+<figure class="opt" data-label={label} data-name={name} data-note={note} data-preview={preview}>
   <figcaption>
     <span class="key" class:list={{ cur: label === 'Current' }}>{label}</span>
     <b>{name}</b>
@@ -24,11 +29,20 @@ const { label, name, note, mine = false } = Astro.props;
     <slot />
   </div>
   <p class="note">{note}</p>
-  <button type="button" class="choose" data-choose aria-pressed="false">
-    <span class="box" aria-hidden="true"></span>
-    <span class="off">Choose {label}</span>
-    <span class="on">Chosen</span>
-  </button>
+  <div class="actions">
+    {
+      preview && (
+        <button type="button" class="full" data-full title="See the whole page with this option (or double-click the card)">
+          <Icon name="layout-dashboard" size={15} /> Full page
+        </button>
+      )
+    }
+    <button type="button" class="choose" data-choose aria-pressed="false">
+      <span class="box" aria-hidden="true"></span>
+      <span class="off">Choose {label}</span>
+      <span class="on">Chosen</span>
+    </button>
+  </div>
 </figure>
 
 <style>
@@ -94,7 +108,33 @@ const { label, name, note, mine = false } = Astro.props;
     color: var(--text-faint);
     margin-top: auto;
   }
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .full {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 12px;
+    border: 1px solid var(--line-strong);
+    background: none;
+    color: var(--text-dim);
+    font: inherit;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      color 0.2s,
+      border-color 0.2s;
+  }
+  .full:hover {
+    color: var(--text);
+    border-color: var(--text-dim);
+  }
   .choose {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;

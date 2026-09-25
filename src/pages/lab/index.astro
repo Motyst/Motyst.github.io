@@ -9,8 +9,11 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-// import Question from '@/components/lab/Question.astro';
-// import Choice from '@/components/lab/Choice.astro';
+import Question from '@/components/lab/Question.astro';
+import Choice from '@/components/lab/Choice.astro';
+import PreviewDialog from '@/components/lab/PreviewDialog.astro';
+import { aboutVariants } from '@/data/lab-variants';
+import { profile } from '@/data/profile';
 
 const round = 5;
 const applied = ['Fading hairlines between sections'];
@@ -23,6 +26,7 @@ const applied = ['Fading hairlines between sections'];
       <h1>Pick what you like</h1>
       <ol class="how">
         <li>Click an option to choose it</li>
+        <li>Double-click it (or press <b>Full page</b>) to see the whole page, on desktop and mobile</li>
         <li>Add a comment if you want</li>
         <li>Copy the reply and paste it into the chat</li>
       </ol>
@@ -38,6 +42,27 @@ const applied = ['Fading hairlines between sections'];
     </p>
 
     <!-- Add <Question> / <Choice> blocks here -->
+    <Question n={1} title="Your outlook in About" anchor="about" why="Adding how you think: results first, systems thinking, and AI as leverage.">
+      <Choice label="Current" name="How I work (3 cards)" note="Bio plus the three practical points that are live now." preview="/">
+        <div class="frame ab">
+          <p class="t">A bit about me</p><i></i><i class="s"></i>
+          <div class="rows">{profile.principles.map((p) => <span style={`--p:${p.color}`}><em></em>{p.title}</span>)}</div>
+        </div>
+      </Choice>
+      <Choice label="A" name="How I think (4 cards)" note="Your outlook as four cards in a 2 × 2 grid: results, systems, AI as leverage, human in the loop." preview="/lab/preview/about-a/">
+        <div class="frame ab">
+          <p class="t">A bit about me</p><i></i><i class="s"></i>
+          <div class="grid4">{aboutVariants['about-a'].principles.map((p) => <span style={`--p:${p.color}`}><em></em>{p.title}</span>)}</div>
+        </div>
+      </Choice>
+      <Choice label="B" name="Statement + 3 cards" note="One bold line about AI as leverage, then three cards. The most personal and memorable." preview="/lab/preview/about-b/" mine>
+        <div class="frame ab">
+          <p class="t">A bit about me</p><i class="s"></i>
+          <p class="q">{aboutVariants['about-b'].quote}</p>
+          <div class="rows">{aboutVariants['about-b'].principles.map((p) => <span style={`--p:${p.color}`}><em></em>{p.title}</span>)}</div>
+        </div>
+      </Choice>
+    </Question>
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -47,6 +72,8 @@ const applied = ['Fading hairlines between sections'];
         <Icon name="copy" size={16} /> <span>Copy reply</span>
       </button>
     </section>
+
+    <PreviewDialog />
 
     <div class="bar">
       <span data-count></span>
@@ -124,7 +151,8 @@ const applied = ['Fading hairlines between sections'];
     } catch {}
 
     lab.querySelectorAll<HTMLElement>('.opt').forEach((opt) =>
-      opt.addEventListener('click', () => {
+      opt.addEventListener('click', (e) => {
+        if ((e.target as HTMLElement).closest('[data-full]')) return;
         choose(opt);
         build();
       }),
@@ -234,6 +262,64 @@ const applied = ['Fading hairlines between sections'];
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text-faint);
+  }
+
+  /* About previews */
+  .frame.ab {
+    height: 200px;
+    padding: 12px 14px;
+  }
+  .ab .t {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .ab > i {
+    display: block;
+    height: 5px;
+    margin-top: 5px;
+    border-radius: 4px;
+    background: var(--bg-soft);
+  }
+  .ab > i.s {
+    width: 60%;
+  }
+  .ab .q {
+    margin-top: 8px;
+    padding-left: 8px;
+    border-left: 2px solid #a78bfa;
+    font-size: 10px;
+    line-height: 1.4;
+    color: var(--text);
+  }
+  .ab .rows,
+  .ab .grid4 {
+    display: grid;
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .ab .grid4 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ab .rows span,
+  .ab .grid4 span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 7px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--bg-elev);
+    font-size: 9.5px;
+    font-weight: 500;
+  }
+  .ab em {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    background: color-mix(in oklab, var(--p) 40%, transparent);
+    border: 1px solid var(--p);
   }
 
   /* ---------- Reply ---------- */
