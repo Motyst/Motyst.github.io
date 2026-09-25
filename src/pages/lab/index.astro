@@ -15,6 +15,12 @@ import PreviewDialog from '@/components/lab/PreviewDialog.astro';
 
 const round = 10;
 const applied: string[] = ['Skills with project dots', 'Screenshots beside the description'];
+/** Before/after images for the last change (files in public/lab/compare). Clear when no longer needed. */
+const compare = [
+  { src: '/lab/compare/compare-helm-page.jpg', label: 'Full project page, Helm' },
+  { src: '/lab/compare/compare-mtb-page.jpg', label: 'Full project page, Mental Training Bot' },
+  { src: '/lab/compare/compare-window-text-side.jpg', label: 'Project window, text right vs left' },
+];
 ---
 
 <Base title="Design lab" noindex>
@@ -33,6 +39,22 @@ const applied: string[] = ['Skills with project dots', 'Screenshots beside the d
         {applied.map((a) => <em><Icon name="check" size={13} /> {a}</em>)}
       </p>}
     </header>
+
+    {
+      compare.length > 0 && (
+        <section class="compare">
+          <h2>Before and after</h2>
+          {compare.map((c) => (
+            <figure>
+              <figcaption>{c.label}</figcaption>
+              <a href={c.src} target="_blank" rel="noopener">
+                <img src={c.src} alt={c.label} loading="lazy" />
+              </a>
+            </figure>
+          ))}
+        </section>
+      )
+    }
 
     <p class="empty">
       No open questions right now. Ask for new ideas in the chat and they will show up here as{' '}
@@ -272,6 +294,28 @@ const applied: string[] = ['Skills with project dots', 'Screenshots beside the d
   }
   .fit :global(.container) {
     padding: 0;
+  }
+
+  /* ---------- Before / after ---------- */
+  .compare {
+    margin-top: 3rem;
+  }
+  .compare h2 {
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+  }
+  .compare figure {
+    margin: 1.25rem 0 0;
+  }
+  .compare figcaption {
+    margin-bottom: 0.5rem;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+  .compare img {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--line);
   }
 
   /* ---------- Reply ---------- */
