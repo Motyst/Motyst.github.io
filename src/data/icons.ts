@@ -129,4 +129,15 @@ export const icons: Record<string, ProjectIconArt> = {
       <circle cx="50" cy="50" r="8.5" fill="#22c55e" stroke="#3b0a45" stroke-width="2.5" />
       <path d="M46.4 50.2l2.5 2.5 4.6-5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />`,
   },
+  /** Helm: a ship's wheel, with a sparkle badge for the AI agents on board. */
+  wheel: {
+    bg: 'linear-gradient(150deg, #10b981 0%, #022c22 100%)',
+    art: `
+      <path d="M36.0 30.0L53.0 30.0M34.2 34.2L46.3 46.3M30.0 36.0L30.0 53.0M25.8 34.2L13.7 46.3M24.0 30.0L7.0 30.0M25.8 25.8L13.7 13.7M30.0 24.0L30.0 7.0M34.2 25.8L46.3 13.7" stroke="#fcd34d" stroke-width="3.2" stroke-linecap="round" />
+      <g fill="#fbbf24"><circle cx="54.5" cy="30.0" r="3" /><circle cx="47.3" cy="47.3" r="3" /><circle cx="30.0" cy="54.5" r="3" /><circle cx="12.7" cy="47.3" r="3" /><circle cx="5.5" cy="30.0" r="3" /><circle cx="12.7" cy="12.7" r="3" /><circle cx="30.0" cy="5.5" r="3" /><circle cx="47.3" cy="12.7" r="3" /></g>
+      <circle cx="30" cy="30" r="16" fill="none" stroke="#fde68a" stroke-width="4.5" />
+      <circle cx="30" cy="30" r="6.5" fill="#f59e0b" stroke="#fde68a" stroke-width="2.5" />
+      <circle cx="50" cy="50" r="9" fill="#f8fafc" stroke="#022c22" stroke-width="2.5" />
+      <path d="M50 44.2l1.5 4.3 4.3 1.5-4.3 1.5-1.5 4.3-1.5-4.3-4.3-1.5 4.3-1.5z" fill="#059669" />`,
+  },
 };

@@ -5,7 +5,7 @@
  * listed inside its project window. Unlisted skills are left off the homepage.
  */
 export const skillCategories: Record<string, string[]> = {
-  'AI & LLMs': ['Claude API', 'LLMs', 'Prompt Engineering', 'OpenAI API', 'Voice AI', 'Whisper', 'Claude Code', 'AI Workflow Design'],
+  'AI & LLMs': ['Claude API', 'Claude Code', 'MCP', 'LLMs', 'OpenAI API', 'Prompt Engineering', 'Voice AI', 'Whisper', 'AI Workflow Design'],
   'Bots & Automation': [
     'Telegram Bot API',
     'Automation',
@@ -17,7 +17,7 @@ export const skillCategories: Record<string, string[]> = {
     'Analytics',
   ],
   'Backend & Data': ['Python', 'FastAPI', 'Async Python', 'REST APIs', 'WebSockets', 'SQLite', 'SQLAlchemy', 'Real-time Systems'],
-  'Frontend & Ops': ['TypeScript', 'React', 'Cloudflare Workers', 'Streamlit', 'Linux', 'VPS Deployment', 'Product Design'],
+  'Frontend & Ops': ['TypeScript', 'React', 'Docker', 'Cloudflare Workers', 'Streamlit', 'Linux', 'VPS Deployment', 'Product Design'],
 };
 
 export const maxPerGroup = 6;
