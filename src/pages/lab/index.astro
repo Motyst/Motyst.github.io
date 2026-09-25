@@ -9,11 +9,11 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-import Question from '@/components/lab/Question.astro';
-import Choice from '@/components/lab/Choice.astro';
+// import Question from '@/components/lab/Question.astro';
+// import Choice from '@/components/lab/Choice.astro';
 
-const round = 4;
-const applied = ['Role as a gradient subtitle under your name'];
+const round = 5;
+const applied = ['Fading hairlines between sections'];
 ---
 
 <Base title="Design lab" noindex>
@@ -38,29 +38,6 @@ const applied = ['Role as a gradient subtitle under your name'];
     </p>
 
     <!-- Add <Question> / <Choice> blocks here -->
-    <Question n={1} title="Lines between sections" why="Right now only empty space separates Work, Skills and About.">
-      <Choice label="Current" name="Space only" note="Clean. On a long dark page the sections can blend together.">
-        <div class="frame secs">
-          <div class="sec-mock"><p class="k">Selected work</p><p class="t">Things I've built</p><i></i><i class="s"></i></div>
-          <div class="sep none"></div>
-          <div class="sec-mock"><p class="k">Skills</p><p class="t">What I work with</p><i></i></div>
-        </div>
-      </Choice>
-      <Choice label="A" name="Fading hairline" note="A 1px grey line that fades out at both ends. Barely there, but gives each section a clear start." mine>
-        <div class="frame secs">
-          <div class="sec-mock"><p class="k">Selected work</p><p class="t">Things I've built</p><i></i><i class="s"></i></div>
-          <div class="sep fade"></div>
-          <div class="sec-mock"><p class="k">Skills</p><p class="t">What I work with</p><i></i></div>
-        </div>
-      </Choice>
-      <Choice label="B" name="Colour hairline" note="The same line, tinted in the violet, cyan and pink of the glow and your role subtitle. A bit more personality.">
-        <div class="frame secs">
-          <div class="sec-mock"><p class="k">Selected work</p><p class="t">Things I've built</p><i></i><i class="s"></i></div>
-          <div class="sep color"></div>
-          <div class="sec-mock"><p class="k">Skills</p><p class="t">What I work with</p><i></i></div>
-        </div>
-      </Choice>
-    </Question>
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -257,41 +234,6 @@ const applied = ['Role as a gradient subtitle under your name'];
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text-faint);
-  }
-
-  /* Section line previews */
-  .frame.secs {
-    height: 190px;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 14px;
-  }
-  .sec-mock .t {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    margin: 2px 0 6px;
-  }
-  .sec-mock i {
-    display: block;
-    height: 6px;
-    margin-top: 5px;
-    border-radius: 4px;
-    background: var(--bg-soft);
-  }
-  .sec-mock i.s {
-    width: 60%;
-  }
-  .sep {
-    height: 1px;
-  }
-  .sep.fade {
-    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.14) 20%, rgb(255 255 255 / 0.14) 80%, transparent);
-  }
-  .sep.color {
-    background: linear-gradient(90deg, transparent, rgb(167 139 250 / 0.5) 20%, rgb(76 201 240 / 0.45) 50%, rgb(251 113 133 / 0.45) 80%, transparent);
   }
 
   /* ---------- Reply ---------- */
