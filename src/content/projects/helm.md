@@ -23,10 +23,15 @@ gallery:
     alt: The board with one coloured bin per project, tasks grouped by Now, Soon and Someday
     caption: The board, one bin per project
   - type: image
-    src: /media/helm/themes.webp
+    src: /media/helm/themes-1.webp
     frame: none
-    alt: Helm's Focus view on a phone in six themes, each with its own landscape
-    caption: Six themes on a phone
+    alt: Helm's Focus view on phones in the Harbor, Desert and Beach themes
+    caption: Themes on a phone, Harbor, Desert and Beach
+  - type: image
+    src: /media/helm/themes-2.webp
+    frame: none
+    alt: Helm's Focus view on phones in the Deep forest, Prairie and Night themes
+    caption: Deep forest, Prairie and Night
 skills: [TypeScript, React, Node.js, Hono, SQLite, MCP, Claude Code, OpenAI API, LLMs, Voice AI, Human-in-the-loop, Real-time Systems, PWA, Docker, Raspberry Pi, Tailscale]
 workflow:
   - title: Capture

@@ -335,32 +335,58 @@ const media = [data.cover, ...data.gallery].filter(
     }
   }
   /* ---------- Design lab variants (round 9: screenshot size) ---------- */
-  /* A compact + C edge to edge: slimmer header and spacing, so the image gets the height */
+  /* A compact + B side by side: slimmer header and spacing, so the image gets the height */
   :global(html[data-lab='shot-compact']) .head,
-  :global(html[data-lab='shot-bleed']) .head {
+  :global(html[data-lab='shot-side']) .head {
     padding-block: 0.75rem;
   }
   :global(html[data-lab='shot-compact']) .head :global(.icon),
-  :global(html[data-lab='shot-bleed']) .head :global(.icon) {
+  :global(html[data-lab='shot-side']) .head :global(.icon) {
     width: 44px;
     height: 44px;
   }
   :global(html[data-lab='shot-compact']) h2,
-  :global(html[data-lab='shot-bleed']) h2 {
+  :global(html[data-lab='shot-side']) h2 {
     font-size: 1.45rem;
   }
   :global(html[data-lab='shot-compact']) .scroll,
-  :global(html[data-lab='shot-bleed']) .scroll {
+  :global(html[data-lab='shot-side']) .scroll {
     padding-top: 1.1rem;
     gap: 1.1rem;
     --stage-h: clamp(220px, min(90vh, 900px) - 278px, 620px);
   }
-  :global(html[data-lab='shot-compact']) .tagline,
-  :global(html[data-lab='shot-bleed']) .tagline {
+  :global(html[data-lab='shot-compact']) .tagline {
     font-size: 1.02rem;
   }
-  /* B bigger: sized by width, "How it works" starts just below */
-  :global(html[data-lab='shot-tall']) .scroll {
-    --stage-h: 78vh;
+
+  /* B: screenshots on the left, the description beside them */
+  @media (min-width: 761px) {
+    :global(html[data-lab='shot-side']) .scroll {
+      grid-template-columns: minmax(0, 2.6fr) minmax(0, 1fr);
+      column-gap: 1.5rem;
+      --stage-h: clamp(240px, min(90vh, 900px) - 196px, 640px);
+    }
+    :global(html[data-lab='shot-side']) .scroll > :global(*) {
+      grid-column: 1 / -1;
+    }
+    :global(html[data-lab='shot-side']) .scroll > :global(.show),
+    :global(html[data-lab='shot-side']) .scroll > .banner-box {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    :global(html[data-lab='shot-side']) .scroll > .intro {
+      grid-column: 2;
+      grid-row: 1;
+      flex-direction: column;
+      align-content: flex-start;
+      align-self: center;
+      gap: 1.25rem;
+    }
+    :global(html[data-lab='shot-side']) .intro .tagline {
+      flex: none;
+      font-size: 1.12rem;
+      line-height: 1.55;
+      color: var(--text);
+    }
   }
 </style>

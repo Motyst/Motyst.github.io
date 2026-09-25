@@ -128,6 +128,7 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
 
 <style>
   .show {
+    position: relative;
     container-type: inline-size;
     /* Leave room for the caption row below the stage */
     --stage: min(var(--stage-h, 420px) - 3rem, 100cqw * 0.62 + 2rem);
@@ -344,67 +345,49 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     }
   }
   /* ---------- Design lab variants (round 9: screenshot size) ---------- */
-  /* A + C: caption and dots float over the bottom of the stage */
-  :global(html[data-lab='shot-compact']) .show,
-  :global(html[data-lab='shot-bleed']) .show {
-    position: relative;
-    --stage: min(var(--stage-h, 420px), 100cqw * 0.62 + 4rem);
-  }
-  :global(html[data-lab='shot-compact']) .under,
-  :global(html[data-lab='shot-bleed']) .under {
-    position: absolute;
-    left: 1px;
-    right: 1px;
-    bottom: 1px;
-    margin: 0;
-    min-height: 0;
-    padding: 1.4rem 1rem 0.6rem;
-    border-radius: 0 0 var(--radius) var(--radius);
-    background: linear-gradient(transparent, rgb(9 9 11 / 0.88) 60%);
-    pointer-events: none;
-  }
-  :global(html[data-lab='shot-compact']) .dots,
-  :global(html[data-lab='shot-bleed']) .dots {
-    pointer-events: auto;
-  }
-  :global(html[data-lab='shot-compact']) .cap,
-  :global(html[data-lab='shot-bleed']) .cap {
-    color: var(--text);
-  }
-  :global(html[data-lab='shot-compact']) .slide {
-    padding: 0.7rem clamp(0.8rem, 7cqw, 3.75rem) 2.5rem;
-  }
-  :global(html[data-lab='shot-compact']) .win {
-    --pad: 1.6rem;
-  }
-  :global(html[data-lab='shot-compact']) .browser {
+  :global(html[data-lab='shot-compact']) .browser,
+  :global(html[data-lab='shot-side']) .browser {
     --bar: 1.25rem;
   }
-
-  /* C: the screenshot fills the stage edge to edge, cropped from the top */
-  :global(html[data-lab='shot-bleed']) .slide:has(.browser) {
-    padding: 0;
-    place-items: stretch;
-  }
-  :global(html[data-lab='shot-bleed']) .browser {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background: none;
-  }
-  :global(html[data-lab='shot-bleed']) .browser .bar {
-    display: none;
-  }
-  :global(html[data-lab='shot-bleed']) .show .browser :global(.media) {
-    width: 100%;
-    height: 100%;
-    max-height: none;
-    object-fit: cover;
-    object-position: top center;
-  }
-  :global(html[data-lab='shot-bleed']) .slide:has(.none) {
-    padding-bottom: 2.5rem;
+  /* A + B on wider windows: caption and dots float over the bottom of the stage */
+  @container (min-width: 521px) {
+    :global(html[data-lab='shot-compact']) .stage,
+    :global(html[data-lab='shot-side']) .stage {
+      --stage: min(var(--stage-h, 420px), 100cqw * 0.62 + 4rem);
+    }
+    :global(html[data-lab='shot-side']) .stage {
+      --stage: min(var(--stage-h, 420px), (100cqw - 2rem) * 0.625 + 4.8rem);
+    }
+    :global(html[data-lab='shot-compact']) .under,
+    :global(html[data-lab='shot-side']) .under {
+      position: absolute;
+      left: 1px;
+      right: 1px;
+      bottom: 1px;
+      margin: 0;
+      min-height: 0;
+      padding: 1.4rem 1rem 0.6rem;
+      border-radius: 0 0 var(--radius) var(--radius);
+      background: linear-gradient(transparent, rgb(9 9 11 / 0.88) 60%);
+      pointer-events: none;
+    }
+    :global(html[data-lab='shot-compact']) .dots,
+    :global(html[data-lab='shot-side']) .dots {
+      pointer-events: auto;
+    }
+    :global(html[data-lab='shot-compact']) .cap,
+    :global(html[data-lab='shot-side']) .cap {
+      color: var(--text);
+    }
+    :global(html[data-lab='shot-compact']) .slide {
+      padding: 0.7rem clamp(0.8rem, 7cqw, 3.75rem) 2.5rem;
+    }
+    :global(html[data-lab='shot-side']) .slide {
+      padding: 0.8rem 1rem 2.6rem;
+    }
+    :global(html[data-lab='shot-compact']) .win,
+    :global(html[data-lab='shot-side']) .win {
+      --pad: 1.65rem;
+    }
   }
 </style>
