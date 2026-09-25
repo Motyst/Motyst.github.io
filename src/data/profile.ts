@@ -11,11 +11,29 @@ export const profile = {
   bio: [
     "I'm a developer in Dublin building bots, automations and AI-powered systems in Python and TypeScript. Since January 2026 I've been building independently, from live Telegram bots to multi-network publishing pipelines, working with Claude, ChatGPT, Gemini and Grok every day.",
   ],
-  /** "How I work" points in the About section. Icons: src/data/ui-icons.ts */
+  /** A short statement shown under the bio. Set to '' to hide. */
+  statement:
+    'AI is incredible leverage. Point it at a real problem, build a solid system around it, and one person can deliver what used to take a team.',
+  /** "How I think" cards in the About section. Icons: src/data/ui-icons.ts or step-icons.ts */
   principles: [
-    { icon: 'user-check', color: '#34d399', title: 'Human in the loop', text: 'Review queues and approval steps, so nothing ships unchecked.' },
-    { icon: 'server', color: '#7c9cff', title: 'Built for production', text: 'Systems that run every day for real users, not demos.' },
-    { icon: 'zap', color: '#fbbf24', title: 'Automate the boring part', text: 'Machines do the repetitive work, people make the calls.' },
+    {
+      icon: 'target',
+      color: '#fb7185',
+      title: 'Results first',
+      text: 'I judge a project by what it changes: hours saved, posts published, risk avoided. Clever code comes second.',
+    },
+    {
+      icon: 'workflow',
+      color: '#22d3ee',
+      title: 'Systems thinking',
+      text: 'I look at the whole pipeline, not single tasks. Get the system right and good results keep coming.',
+    },
+    {
+      icon: 'user-check',
+      color: '#34d399',
+      title: 'Human in the loop',
+      text: 'Machines do the heavy lifting, people make the calls. Every system has a checkpoint.',
+    },
   ],
   /** Your photo for the About section, e.g. '/me.jpg' in /public. '' shows your initials. */
   photo: '',

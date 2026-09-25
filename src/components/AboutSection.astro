@@ -1,16 +1,13 @@
 ---
 import Icon from './Icon.astro';
 import { profile } from '@/data/profile';
-import { aboutVariants } from '@/data/lab-variants';
 
 interface Props {
   /** Design lab preview only (see src/data/lab-variants.ts). */
   variant?: string;
 }
 
-const lab = aboutVariants[Astro.props.variant as keyof typeof aboutVariants];
-const principles = lab?.principles ?? profile.principles;
-const quote = lab?.quote;
+const { principles, statement: quote } = profile;
 
 const initials = profile.name
   .split(' ')

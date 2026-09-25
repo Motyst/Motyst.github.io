@@ -99,10 +99,13 @@ import Icon from '../Icon.astro';
     };
 
     // Scroll the page inside the frame back to the section being compared.
+    // Phones use overlay scrollbars, so hide the desktop one in mobile mode.
     function toAnchor() {
       const anchor = current?.closest<HTMLElement>('[data-q]')?.dataset.anchor;
       const doc = frame.contentDocument;
-      if (!anchor || !doc) return;
+      if (!doc) return;
+      doc.documentElement.style.scrollbarWidth = mode === 'mobile' ? 'none' : '';
+      if (!anchor) return;
       doc.documentElement.style.scrollBehavior = 'auto';
       doc.getElementById(anchor)?.scrollIntoView();
       doc.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
@@ -382,6 +385,8 @@ import Icon from '../Icon.astro';
     border-width: 2px;
   }
   .device iframe {
+    /* The global max-width: 100% on iframes would squeeze the page before scaling */
+    max-width: none;
     position: absolute;
     top: 0;
     left: 0;
