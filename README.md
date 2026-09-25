@@ -83,6 +83,13 @@ Set `draft: true` to hide a project without deleting it.
 Put a square photo in `public/` (e.g. `public/me.jpg`) and set `photo: '/me.jpg'`
 in `src/data/profile.ts`. Until then the About section shows your initials.
 
+## Share image
+
+`public/og.png` is the preview picture shown when the site is shared on
+LinkedIn, WhatsApp, Telegram and so on. It's drawn by `src/pages/lab/og.astro`
+from your profile and project icons. After changing either, start the site
+(`npm run dev`) and run `npm run og` in a second terminal to save a fresh copy.
+
 ## Design lab
 
 `/lab/` is an unlisted page (not linked, not indexed) for comparing design

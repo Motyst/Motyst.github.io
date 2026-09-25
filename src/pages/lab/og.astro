@@ -1,0 +1,135 @@
+---
+/**
+ * The social share image (og:image), drawn as a 1200×630 page.
+ * Edit this page, then run `npm run og` to save it to public/og.png.
+ * Unlisted: /lab/ is kept out of the sitemap and search engines.
+ */
+import ProjectIcon from '@/components/ProjectIcon.astro';
+import { getProjects } from '@/lib/projects';
+import { profile } from '@/data/profile';
+import '@/styles/global.css';
+
+const projects = await getProjects();
+const site = new URL(Astro.site ?? 'https://motyst.github.io').host;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Share image</title>
+  </head>
+  <body>
+    <div class="card" id="og">
+      <div class="text">
+        <h1>{profile.name}<span class="dot">.</span></h1>
+        <p class="role">
+          <span class="grad">{profile.role}</span> <span class="city">· {profile.location.split(',')[0]}</span>
+        </p>
+        <p class="lead">{profile.headline}</p>
+        <p class="url">{site}</p>
+      </div>
+      <ul class="icons">
+        {
+          projects.slice(0, 6).map((p) => (
+            <li>
+              <ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={128} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </body>
+</html>
+
+<style>
+  body {
+    margin: 0;
+    background: #000;
+  }
+  body::before {
+    display: none;
+  }
+  .card {
+    position: relative;
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 3rem;
+    padding: 0 80px;
+    background:
+      radial-gradient(40% 60% at 6% 0%, rgb(167 139 250 / 0.3), transparent 70%),
+      radial-gradient(36% 55% at 55% -10%, rgb(76 201 240 / 0.2), transparent 70%),
+      radial-gradient(40% 60% at 100% 100%, rgb(251 113 133 / 0.22), transparent 70%),
+      var(--bg);
+  }
+  /* Fading hairline, as between sections on the site */
+  .card::after {
+    content: '';
+    position: absolute;
+    left: 80px;
+    right: 80px;
+    bottom: 64px;
+    height: 1px;
+    background: linear-gradient(90deg, rgb(255 255 255 / 0.16), rgb(255 255 255 / 0.16) 60%, transparent);
+  }
+  h1 {
+    font-size: 92px;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .dot {
+    color: #a78bfa;
+  }
+  .role {
+    margin-top: 18px;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .grad {
+    background: linear-gradient(90deg, #a78bfa, #4cc9f0 55%, #fb7185);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .city {
+    color: var(--text-faint);
+    font-weight: 500;
+  }
+  .lead {
+    margin-top: 26px;
+    max-width: 21ch;
+    font-size: 30px;
+    line-height: 1.35;
+    color: var(--text-dim);
+  }
+  .url {
+    position: absolute;
+    left: 80px;
+    bottom: 24px;
+    font-family: var(--font-mono);
+    font-size: 20px;
+    color: var(--text-faint);
+  }
+  .icons {
+    display: grid;
+    grid-template-columns: repeat(2, 128px);
+    gap: 26px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    rotate: -6deg;
+  }
+  .icons li:nth-child(odd) {
+    translate: 0 -24px;
+  }
+  .icons li:nth-child(even) {
+    translate: 0 16px;
+  }
+</style>
