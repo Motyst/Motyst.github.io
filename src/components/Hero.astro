@@ -37,7 +37,6 @@ const spots = [
     </p>
     <p class="lead reveal" style="--delay: 120ms">{profile.headline}</p>
     <div class="actions reveal" style="--delay: 180ms">
-      <a href="#work" class="btn btn-primary">See my work <Icon name="arrow-down" size={16} /></a>
       <div class="mailchip">
         <a href={`mailto:${profile.email}`} class="mail-go">
           <Icon name="mail" size={16} /> Email me
@@ -310,14 +309,6 @@ const spots = [
   .copied .toast {
     opacity: 1;
     translate: -50% 0;
-  }
-
-  /* Phones: main button on its own row, email + GitHub below */
-  @media (max-width: 480px) {
-    .actions .btn-primary {
-      flex-basis: 100%;
-      justify-content: center;
-    }
   }
 
   .round {
