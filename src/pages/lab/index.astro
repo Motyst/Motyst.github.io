@@ -9,26 +9,12 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-import Question from '@/components/lab/Question.astro';
-import Choice from '@/components/lab/Choice.astro';
+// import Question from '@/components/lab/Question.astro';
+// import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
-import SkillsSection from '@/components/SkillsSection.astro';
-import { getProjects } from '@/lib/projects';
 
-const round = 9;
-const applied: string[] = ['Project grid: same-size tiles, last row centred'];
-const projects = await getProjects();
-const skillIdeas = [
-  { id: undefined, label: 'Current', name: 'Four boxes of chips', note: 'Tidy, but it reads like a keyword list: every tool looks equally important and nothing ties it back to the work.' },
-  { id: 'skills-proof', label: 'A', name: 'Skills with project dots', mine: true, note: 'Same four groups, but each skill shows a coloured dot for every project that uses it (hover to see which). Proves the "all used in the projects above" line and needs no new text.' },
-  { id: 'skills-core', label: 'B', name: 'Daily drivers + the rest', note: 'Six big tiles for the tools you lean on most, each with a short line, then everything else as one quiet list. Clear priorities; the six notes are my guesses for you to edit.' },
-  { id: 'skills-stack', label: 'C', name: 'Layered stack', note: 'One band per layer, top to bottom like a system diagram: the brains, where people meet it, the plumbing, shipping it. Shows how the pieces fit together.' },
-];
-const shotIdeas = [
-  { id: 'current', label: 'Current', name: 'Framed, fits', note: 'Everything down to "How it works" fits, but on a laptop-height window the screenshot is only about 310 × 195 px.' },
-  { id: 'shot-compact', label: 'A', name: 'Compact window', note: 'Slimmer header, tighter spacing, caption and dots float over the stage. Same rule (everything fits) with a screenshot about 55% bigger (about 490 × 305 px).' },
-  { id: 'shot-side', label: 'B', name: 'Side by side', mine: true, note: 'Screenshots on the left, the description and Source code on the right, so the image also takes the space the text used above it. About 575 × 360 px at this size (nearly twice the current), and everything still fits. Phones stack as now.' },
-];
+const round = 10;
+const applied: string[] = ['Skills with project dots', 'Screenshots beside the description'];
 ---
 
 <Base title="Design lab" noindex>
@@ -53,29 +39,7 @@ const shotIdeas = [
       <b>Current / A / B</b> cards to choose from.
     </p>
 
-    <Question n={1} title="What I work with" anchor="skills" why="The Skills section is four boxes of chips. A few ways to make it say more about how you actually build.">
-      {
-        skillIdeas.map((o) => (
-          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id ? `/lab/preview/${o.id}/` : '/'}>
-            <div class="fit">
-              <div class="fit-in">
-                <SkillsSection projects={projects} variant={o.id} />
-              </div>
-            </div>
-          </Choice>
-        ))
-      }
-    </Question>
-
-    <Question n={2} title="Screenshot size in the project window" why="On a laptop-height window the framed screenshot comes out small. Each card is the real Helm window at 1450 × 728; open Full page to try your own size.">
-      {
-        shotIdeas.map((o) => (
-          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/?project=helm' : `/lab/preview/${o.id}/?project=helm`}>
-            <img class="shot" src={`/lab/shots/${o.id}.webp`} alt={`Helm window, ${o.name}`} loading="lazy" />
-          </Choice>
-        ))
-      }
-    </Question>
+    <!-- Add <Question> / <Choice> blocks here -->
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -308,12 +272,6 @@ const shotIdeas = [
   }
   .fit :global(.container) {
     padding: 0;
-  }
-
-  .shot {
-    width: 100%;
-    border-radius: 12px;
-    border: 1px solid var(--line);
   }
 
   /* ---------- Reply ---------- */

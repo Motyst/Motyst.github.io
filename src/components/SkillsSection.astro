@@ -2,36 +2,13 @@
 import Icon from './Icon.astro';
 import { groupSkills, type Project } from '@/lib/projects';
 import { groupStyle, skillIcon } from '@/data/ui-icons';
-import { skillCategories } from '@/data/skills';
 
 interface Props {
   projects: Project[];
-  /** Design lab preview only (see src/data/lab-variants.ts). */
-  variant?: string;
 }
 
-const { projects, variant } = Astro.props;
+const { projects } = Astro.props;
 const groups = groupSkills(projects);
-
-// Lab round 9 ideas. Remove once a pick is applied.
-const core = [
-  { name: 'Claude Code', also: 'Claude API', label: 'Claude Code & API', note: 'Agents that write, research and code' },
-  { name: 'Python', note: 'Bots, scrapers and APIs' },
-  { name: 'TypeScript', also: 'React', note: 'Web apps and dashboards' },
-  { name: 'Telegram Bot API', note: 'Where people use my bots' },
-  { name: 'Human-in-the-loop', note: 'AI drafts, a person approves' },
-  { name: 'Docker', also: 'Linux', note: 'Self-hosted and always on' },
-];
-const coreColor = (name: string) =>
-  groupStyle[Object.keys(skillCategories).find((k) => skillCategories[k].includes(name)) ?? '']?.color ?? '#7c9cff';
-const coreNames = new Set(core.flatMap((c) => [c.name, c.also]));
-const rest = groups.flatMap((g) => g.skills).filter((s) => !coreNames.has(s.name));
-const layer: Record<string, string> = {
-  'AI & LLMs': 'The brains',
-  'Bots & Automation': 'Where people meet it',
-  'Backend & Data': 'The plumbing',
-  'Frontend & Ops': 'Shipping it',
-};
 ---
 
 <section class="section" id="skills">
@@ -44,91 +21,36 @@ const layer: Record<string, string> = {
       <p>The core of my toolkit, all used in the projects above.</p>
     </div>
 
-    {
-      variant === 'skills-core' ? (
-        <div class="core">
-          <ul class="drivers">
-            {core.map((c, i) => (
-              <li class="reveal" style={`--delay: ${i * 50}ms; --g: ${coreColor(c.name)}`}>
-                <span class="di">
-                  <Icon name={skillIcon[c.name] ?? 'sparkles'} size={22} />
+    <div class="groups">
+      {
+        groups.map((g, i) => {
+          const style = groupStyle[g.category] ?? { icon: 'sparkles', color: '#7c9cff' };
+          return (
+            <div class="group reveal" style={`--delay: ${i * 60}ms; --g: ${style.color}`}>
+              <div class="group-head">
+                <span class="badge">
+                  <Icon name={style.icon} size={20} />
                 </span>
-                <span>
-                  <b>{c.label ?? (c.also ? `${c.name} · ${c.also}` : c.name)}</b>
-                  <small>{c.note}</small>
-                </span>
-              </li>
-            ))}
-          </ul>
-          <p class="also reveal">
-            <span class="eyebrow">Also</span>
-            {rest.map((s) => (
-              <span>{s.name}</span>
-            ))}
-          </p>
-        </div>
-      ) : variant === 'skills-stack' ? (
-        <ol class="stack">
-          {groups.map((g, i) => {
-            const style = groupStyle[g.category] ?? { icon: 'sparkles', color: '#7c9cff' };
-            return (
-              <li class="band reveal" style={`--delay: ${i * 60}ms; --g: ${style.color}`}>
-                <div class="band-head">
-                  <span class="badge">
-                    <Icon name={style.icon} size={20} />
-                  </span>
-                  <span>
-                    <h3>{g.category}</h3>
-                    <small>{layer[g.category]}</small>
-                  </span>
-                </div>
-                <ul>
-                  {g.skills.map((s) => (
-                    <li>
-                      {skillIcon[s.name] && <Icon name={skillIcon[s.name]} size={14} class="si" />}
-                      {s.name}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            );
-          })}
-        </ol>
-      ) : (
-        <div class="groups">
-          {
-            groups.map((g, i) => {
-              const style = groupStyle[g.category] ?? { icon: 'sparkles', color: '#7c9cff' };
-              return (
-                <div class="group reveal" style={`--delay: ${i * 60}ms; --g: ${style.color}`}>
-                  <div class="group-head">
-                    <span class="badge">
-                      <Icon name={style.icon} size={20} />
+                <h3>{g.category}</h3>
+              </div>
+              <ul>
+                {g.skills.map((s) => (
+                  <li title={`Used in ${s.projects.map((p) => p.data.title).join(', ')}`}>
+                    {skillIcon[s.name] && <Icon name={skillIcon[s.name]} size={14} class="si" />}
+                    {s.name}
+                    <span class="dots" aria-label={`Used in ${s.projects.length} ${s.projects.length === 1 ? 'project' : 'projects'}`}>
+                      {s.projects.map((p) => (
+                        <i style={`--c: ${p.data.accent}`} />
+                      ))}
                     </span>
-                    <h3>{g.category}</h3>
-                  </div>
-                  <ul class:list={{ proof: variant === 'skills-proof' }}>
-                    {g.skills.map((s) => (
-                      <li title={variant === 'skills-proof' ? `Used in ${s.projects.map((p) => p.data.title).join(', ')}` : undefined}>
-                        {skillIcon[s.name] && <Icon name={skillIcon[s.name]} size={14} class="si" />}
-                        {s.name}
-                        {variant === 'skills-proof' && (
-                          <span class="dots" aria-label={`${s.projects.length} projects`}>
-                            {s.projects.map((p) => (
-                              <i style={`--c: ${p.data.accent}`} />
-                            ))}
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })
-          }
-        </div>
-      )
-    }
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })
+      }
+    </div>
   </div>
 </section>
 
@@ -185,58 +107,36 @@ const layer: Record<string, string> = {
     letter-spacing: -0.01em;
   }
 
+  /* One skill per row, with a coloured dot for each project that uses it */
   ul {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
+    flex-direction: column;
+    gap: 0.15rem;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
   li {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.32em 0.7em;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgb(255 255 255 / 0.025);
-    font-size: 0.8rem;
+    padding: 0.4em 0.1em;
+    border-bottom: 1px dashed var(--line);
+    font-size: 0.85rem;
     color: var(--text-dim);
-    transition:
-      border-color 0.2s,
-      color 0.2s;
+    cursor: default;
+    transition: color 0.2s;
+  }
+  li:last-child {
+    border-bottom: 0;
   }
   li:hover {
-    border-color: color-mix(in oklab, var(--g) 50%, transparent);
     color: var(--text);
   }
   li :global(.si) {
     flex: none;
     color: var(--g);
-  }
-
-  /* ---------- Lab round 9 ideas (remove once a pick is applied) ---------- */
-
-  /* A: coloured dots for the projects that use each skill */
-  .proof {
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap: 0.15rem;
-  }
-  .proof li {
-    display: flex;
-    padding: 0.4em 0.1em;
-    border: 0;
-    border-radius: 0;
-    background: none;
-    border-bottom: 1px dashed var(--line);
-    font-size: 0.85rem;
-    cursor: default;
-  }
-  .proof li:last-child {
-    border-bottom: 0;
   }
   .dots {
     display: flex;
@@ -249,131 +149,5 @@ const layer: Record<string, string> = {
     border-radius: 50%;
     background: var(--c);
     box-shadow: 0 0 6px -1px var(--c);
-  }
-
-  /* B: daily drivers, then everything else */
-  .drivers {
-    display: grid;
-    gap: 0.9rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  @media (min-width: 640px) {
-    .drivers {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  @media (min-width: 960px) {
-    .drivers {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-  .drivers li {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    padding: 1.1rem 1.2rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    background:
-      radial-gradient(120% 90% at 0% 0%, color-mix(in oklab, var(--g) 12%, transparent), transparent 65%),
-      var(--bg-elev);
-    font-size: 1rem;
-    color: var(--text);
-    transition: border-color 0.3s;
-  }
-  .drivers li:hover {
-    border-color: color-mix(in oklab, var(--g) 35%, transparent);
-  }
-  .di {
-    display: grid;
-    place-items: center;
-    flex: none;
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
-    color: var(--g);
-    background: color-mix(in oklab, var(--g) 14%, var(--bg-elev));
-    border: 1px solid color-mix(in oklab, var(--g) 40%, transparent);
-    box-shadow: 0 8px 22px -12px var(--g);
-  }
-  .drivers b {
-    display: block;
-    font-size: 1rem;
-    letter-spacing: -0.01em;
-  }
-  .drivers small {
-    color: var(--text-dim);
-    font-size: 0.85rem;
-  }
-  .also {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.35rem 0;
-    margin-top: 1.5rem;
-    color: var(--text-dim);
-    font-size: 0.88rem;
-  }
-  .also .eyebrow {
-    margin: 0 0.9rem 0 0;
-  }
-  .also span:not(.eyebrow, :last-child)::after {
-    content: '·';
-    margin: 0 0.55rem;
-    color: var(--text-faint);
-  }
-
-  /* C: one band per layer, joined by a line like a stack diagram */
-  .stack {
-    position: relative;
-    display: grid;
-    gap: 0.6rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .band {
-    position: relative;
-    display: grid;
-    gap: 0.9rem 1.5rem;
-    align-items: center;
-    padding: 1rem 1.2rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    background:
-      linear-gradient(90deg, color-mix(in oklab, var(--g) 10%, transparent), transparent 45%),
-      var(--bg-elev);
-    font-size: 1rem;
-    color: var(--text);
-  }
-  .band:hover {
-    border-color: color-mix(in oklab, var(--g) 35%, transparent);
-  }
-  @media (min-width: 760px) {
-    .band {
-      grid-template-columns: 240px 1fr;
-    }
-  }
-  /* Short connector between bands, under the badge */
-  .band + .band::before {
-    content: '';
-    position: absolute;
-    left: calc(1.2rem + 19px);
-    top: calc(-0.6rem - 1px);
-    width: 1px;
-    height: 0.6rem;
-    background: var(--line-strong);
-  }
-  .band-head {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  .band-head small {
-    display: block;
-    color: var(--text-faint);
-    font-size: 0.8rem;
   }
 </style>

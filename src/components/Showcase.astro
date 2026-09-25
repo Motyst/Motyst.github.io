@@ -196,7 +196,7 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
 
   /* A browser window: dark title bar with three dots */
   .browser {
-    --bar: 1.6rem;
+    --bar: 1.25rem;
     border-radius: 10px;
     border: 1px solid rgb(255 255 255 / 0.14);
     background: #1c1c21;
@@ -344,22 +344,13 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
       display: none;
     }
   }
-  /* ---------- Design lab variants (round 9: screenshot size) ---------- */
-  :global(html[data-lab='shot-compact']) .browser,
-  :global(html[data-lab='shot-side']) .browser {
-    --bar: 1.25rem;
-  }
-  /* A + B on wider windows: caption and dots float over the bottom of the stage */
+  /* Wider showcases: caption and dots float over the bottom of the stage,
+     so the screenshot gets that height too */
   @container (min-width: 521px) {
-    :global(html[data-lab='shot-compact']) .stage,
-    :global(html[data-lab='shot-side']) .stage {
-      --stage: min(var(--stage-h, 420px), 100cqw * 0.62 + 4rem);
-    }
-    :global(html[data-lab='shot-side']) .stage {
+    .stage {
       --stage: min(var(--stage-h, 420px), (100cqw - 2rem) * 0.625 + 4.8rem);
     }
-    :global(html[data-lab='shot-compact']) .under,
-    :global(html[data-lab='shot-side']) .under {
+    .under {
       position: absolute;
       left: 1px;
       right: 1px;
@@ -371,22 +362,16 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
       background: linear-gradient(transparent, rgb(9 9 11 / 0.88) 60%);
       pointer-events: none;
     }
-    :global(html[data-lab='shot-compact']) .dots,
-    :global(html[data-lab='shot-side']) .dots {
+    .dots {
       pointer-events: auto;
     }
-    :global(html[data-lab='shot-compact']) .cap,
-    :global(html[data-lab='shot-side']) .cap {
+    .cap {
       color: var(--text);
     }
-    :global(html[data-lab='shot-compact']) .slide {
-      padding: 0.7rem clamp(0.8rem, 7cqw, 3.75rem) 2.5rem;
-    }
-    :global(html[data-lab='shot-side']) .slide {
+    .slide {
       padding: 0.8rem 1rem 2.6rem;
     }
-    :global(html[data-lab='shot-compact']) .win,
-    :global(html[data-lab='shot-side']) .win {
+    .win {
       --pad: 1.65rem;
     }
   }
