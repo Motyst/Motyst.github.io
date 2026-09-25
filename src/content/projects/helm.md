@@ -8,7 +8,24 @@ status: live
 role: Solo developer, built with Claude Code
 order: 1.5
 accent: '#10b981'
-private: true
+cover:
+  type: image
+  src: /media/helm/desktop-focus.webp
+  alt: Helm's Focus view on a desktop, with the task in progress, its subtasks and what's up next
+  caption: Focus, the view to leave open all day
+gallery:
+  - type: image
+    src: /media/helm/desktop-assistant.webp
+    alt: The assistant panel suggesting an order for open tasks, with a reason for each
+    caption: The assistant suggests an order
+  - type: image
+    src: /media/helm/desktop-board.webp
+    alt: The board with one coloured bin per project, tasks grouped by Now, Soon and Someday
+    caption: The board, one bin per project
+  - type: image
+    src: /media/helm/themes.webp
+    alt: Helm's Focus view on a phone in six themes, each with its own landscape
+    caption: Six themes on a phone
 skills: [TypeScript, React, Node.js, Hono, SQLite, MCP, Claude Code, OpenAI API, LLMs, Voice AI, Human-in-the-loop, Real-time Systems, PWA, Docker, Raspberry Pi, Tailscale]
 workflow:
   - title: Capture
@@ -32,6 +49,10 @@ highlights:
   - Runs on a Raspberry Pi at home, reached privately from my phone
   - About 114 automated tests across 5 packages
   - Six themes with woodblock-print style landscapes
+links:
+  - label: Source code
+    url: https://github.com/Motyst/helm
+    kind: repo
 ---
 
 A self-hosted task board built to stay open all day and answer one question at a glance: what am I doing now, and what's next? The main screen isn't a list but a **Focus view** with one task in progress, and starting another pauses the first. Quick entry understands shorthand, and voice capture turns one spoken ramble into separate task drafts.
