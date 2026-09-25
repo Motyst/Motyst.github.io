@@ -9,21 +9,12 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-import Question from '@/components/lab/Question.astro';
-import Choice from '@/components/lab/Choice.astro';
+// import Question from '@/components/lab/Question.astro';
+// import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
-import ProjectIcon from '@/components/ProjectIcon.astro';
-import { getProjects } from '@/lib/projects';
 
-const round = 8;
-const applied: string[] = [];
-const projects = await getProjects();
-const sketch = [
-  { id: 'current', label: 'Current', name: 'Last row stretches', preview: '/', note: 'Three per row. With 7 projects the last one fills the whole row, so it looks bigger and more important than the rest.' },
-  { id: 'grid-centred', label: 'A', name: 'Same size, last row centred', mine: true, note: 'Every tile is the same size and a short last row sits in the middle. Works for any number of projects, so nothing to rethink when you add one.' },
-  { id: 'grid-bento', label: 'B', name: 'Bento with featured projects', note: 'Projects marked featured (Mental Training Bot, Publishing Automation) get a wide tile with their full tagline. Fits 7 exactly; other counts may need a tweak.' },
-  { id: 'grid-list', label: 'C', name: 'One per row list', note: 'A clean index: title and summary on one line. Scales to any number and reads fastest, but the page gets longer and less visual.' },
-];
+const round = 9;
+const applied: string[] = ['Project grid: same-size tiles, last row centred'];
 ---
 
 <Base title="Design lab" noindex>
@@ -48,25 +39,7 @@ const sketch = [
       <b>Current / A / B</b> cards to choose from.
     </p>
 
-    <Question n={1} title="Project grid with 7 projects" anchor="work" why="Three tiles per row leaves one project alone on the last row, stretched across the full width.">
-      {
-        sketch.map((o) => (
-          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/' : `/lab/preview/${o.id}/`}>
-            <ul class={`sk sk-${o.id}`}>
-              {projects.map((p) => (
-                <li class:list={{ feat: p.data.featured }} style={`--c:${p.data.accent}`}>
-                  <ProjectIcon icon={p.data.icon} title={p.data.title} accent={p.data.accent} size={o.id === 'grid-list' ? 18 : 22} />
-                  <span>
-                    <b>{p.data.title}</b>
-                    {(o.id === 'grid-list' || (o.id === 'grid-bento' && p.data.featured)) && <small>{o.id === 'grid-bento' ? p.data.tagline : p.data.summary}</small>}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </Choice>
-        ))
-      }
-    </Question>
+    <!-- Add <Question> / <Choice> blocks here -->
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -292,81 +265,6 @@ const sketch = [
     width: 760px;
     padding: 22px;
     transform-origin: 0 0;
-  }
-
-  /* ---------- Mini project grids ---------- */
-  .sk {
-    list-style: none;
-    margin: 0;
-    padding: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--bg);
-  }
-  .sk li {
-    flex: 1 1 calc((100% - 12px) / 3);
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    min-width: 0;
-    padding: 8px;
-    border: 1px solid var(--line);
-    border-radius: 9px;
-    background:
-      radial-gradient(90% 140% at 0% 50%, color-mix(in oklab, var(--c) 12%, transparent), transparent 60%),
-      var(--bg-elev);
-  }
-  .sk li > span {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-  .sk b {
-    font-size: 10.5px;
-    font-weight: 600;
-    line-height: 1.25;
-  }
-  .sk small {
-    font-size: 9.5px;
-    color: var(--text-dim);
-    line-height: 1.3;
-  }
-  .sk-grid-centred {
-    justify-content: center;
-  }
-  .sk-grid-centred li {
-    flex-grow: 0;
-  }
-  .sk-grid-bento {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-flow: dense;
-  }
-  .sk-grid-bento .feat {
-    grid-column: span 2;
-    padding: 10px;
-  }
-  .sk-grid-list li {
-    flex-basis: 100%;
-    padding: 5px 8px;
-  }
-  .sk-grid-list li > span {
-    flex-direction: row;
-    align-items: baseline;
-    gap: 10px;
-  }
-  .sk-grid-list b {
-    flex: none;
-    width: 42%;
-  }
-  .sk-grid-list small {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   /* ---------- Reply ---------- */
