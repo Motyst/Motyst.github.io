@@ -112,4 +112,21 @@ export const icons: Record<string, ProjectIconArt> = {
       <path d="M40 7h15a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5h-7l-5 4.5V25h-3a5 5 0 0 1-5-5v-8a5 5 0 0 1 5-5z" fill="#fff" />
       <g stroke="#e11d48" stroke-width="2.4" stroke-linecap="round"><path d="M41.5 14v4M45.5 11.5v9M49.5 13v6M53.5 15v2" /></g>`,
   },
+  /** Course Content Studio: stacked lesson slides with artwork and an approval badge. */
+  'slide-stack': {
+    bg: 'linear-gradient(150deg, #c026d3 0%, #3b0a45 100%)',
+    art: `
+      <rect x="16" y="9" width="36" height="25" rx="4.5" fill="#f0abfc" opacity=".45" />
+      <rect x="12" y="14" width="38" height="27" rx="5" fill="#f5d0fe" opacity=".75" />
+      <rect x="7" y="20" width="42" height="30" rx="5.5" fill="#1e1b4b" />
+      <rect x="10" y="23" width="36" height="17" rx="3" fill="#312e81" />
+      <circle cx="37" cy="28.5" r="3.6" fill="#fcd34d" />
+      <path d="M10 40l9.5-9.5 6 6 4.5-4.5 16 8z" fill="#a78bfa" />
+      <path d="M10 40l9.5-9.5 6 6z" fill="#7c3aed" />
+      <rect x="10" y="43.5" width="18" height="2.6" rx="1.3" fill="#e9d5ff" />
+      <rect x="31" y="43.5" width="9" height="2.6" rx="1.3" fill="#a78bfa" />
+      <path d="M53 5.5l1.3 4 4 1.3-4 1.3-1.3 4-1.3-4-4-1.3 4-1.3z" fill="#fde68a" />
+      <circle cx="50" cy="50" r="8.5" fill="#22c55e" stroke="#3b0a45" stroke-width="2.5" />
+      <path d="M46.4 50.2l2.5 2.5 4.6-5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />`,
+  },
 };
