@@ -8,9 +8,16 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="bottom">
       <span>© {year} {profile.name}</span>
+      <button type="button" class="top" data-to-top>Back to top ↑</button>
     </div>
   </div>
 </footer>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelector('[data-to-top]')?.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+  });
+</script>
 
 <style>
   .footer {
@@ -26,5 +33,18 @@ const year = new Date().getFullYear();
     border-top: 1px solid var(--line);
     font-size: 0.85rem;
     color: var(--text-faint);
+  }
+
+  .top {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--text-dim);
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .top:hover {
+    color: var(--text);
   }
 </style>

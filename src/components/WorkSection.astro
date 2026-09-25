@@ -1,13 +1,22 @@
 ---
 import ProjectIcon from './ProjectIcon.astro';
 import ProjectDialog from './ProjectDialog.astro';
+import Icon from './Icon.astro';
 import type { Project } from '@/lib/projects';
+import { brand, skillIcon } from '@/data/ui-icons';
 
 interface Props {
   projects: Project[];
 }
 
 const { projects } = Astro.props;
+
+// Up to 4 tool logos per tile: brand logos (Python, Telegram…) first.
+const tech = (p: Project) =>
+  p.data.skills
+    .filter((s) => skillIcon[s])
+    .sort((a, b) => Number(!!brand[skillIcon[b]]) - Number(!!brand[skillIcon[a]]))
+    .slice(0, 4);
 ---
 
 <section class="section" id="work">
@@ -29,6 +38,14 @@ const { projects } = Astro.props;
               <span class="txt">
                 <span class="t">{p.data.title}</span>
                 <span class="s">{p.data.summary ?? p.data.tagline}</span>
+                <span class="tech">
+                  {tech(p).map((name) => (
+                    <span title={name}>
+                      <Icon name={skillIcon[name]} size={15} />
+                      <span class="sr-only">{name}</span>
+                    </span>
+                  ))}
+                </span>
               </span>
               <span class="go" aria-hidden="true">
                 ↗
@@ -110,6 +127,20 @@ const { projects } = Astro.props;
     line-height: 1.4;
   }
 
+  .tech {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.45rem;
+    color: var(--text-faint);
+    transition: color 0.25s;
+  }
+  .tech > span {
+    display: grid;
+  }
+  .tile:hover .tech {
+    color: var(--text-dim);
+  }
+
   .go {
     margin-left: auto;
     align-self: flex-start;
@@ -123,25 +154,27 @@ const { projects } = Astro.props;
     transform: translate(2px, -2px);
   }
 
-  /* Phones: two columns of app-style tiles so every project fits on screen */
+  /* Phones: one project per row so the full line stays readable */
   @media (max-width: 560px) {
     .tiles {
       gap: 0.6rem;
     }
     .tiles > li {
-      flex: 1 1 calc(50% - 0.3rem);
+      flex-basis: 100%;
     }
     .tile {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.8rem;
-      padding: 1rem;
+      gap: 0.9rem;
+      padding: 0.9rem 1rem;
+    }
+    .tile :global(.icon) {
+      width: 52px;
+      height: 52px;
     }
     .t {
-      font-size: 0.95rem;
+      font-size: 0.98rem;
     }
     .s {
-      font-size: 0.8rem;
+      font-size: 0.84rem;
     }
     .go {
       position: absolute;

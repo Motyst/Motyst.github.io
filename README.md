@@ -17,7 +17,7 @@ npm run preview        # serve the built site
 
 | What                            | File                              |
 | ------------------------------- | --------------------------------- |
-| Your name, bio, email, GitHub   | `src/data/profile.ts`             |
+| Name, bio, email, GitHub, photo, “How I work” | `src/data/profile.ts` |
 | Projects                        | `src/content/projects/*.md`       |
 | Project screenshots/videos      | `public/media/<project>/`         |
 | Skill groups shown on homepage  | `src/data/skills.ts`              |
@@ -77,6 +77,11 @@ The homepage Skills section only shows skills listed in `src/data/skills.ts`
 (in that order, max 6 per group). Every skill is still shown in its project window.
 
 Set `draft: true` to hide a project without deleting it.
+
+## Your photo
+
+Put a square photo in `public/` (e.g. `public/me.jpg`) and set `photo: '/me.jpg'`
+in `src/data/profile.ts`. Until then the About section shows your initials.
 
 ## Design lab
 

@@ -20,7 +20,7 @@ const initials = profile.name
 <header class="header" transition:persist>
   <nav class="pill" aria-label="Main">
     <a href="/" class="av" aria-label="Home" title={profile.name}>{initials}</a>
-    {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+    {nav.map((item) => <a href={item.href} data-section={item.href.split('#')[1]}>{item.label}</a>)}
   </nav>
 </header>
 
@@ -42,6 +42,29 @@ const initials = profile.name
     );
     header.addEventListener('focusin', () => header.classList.remove('away'));
   }
+
+  // Light up the link of the section currently in the middle of the screen.
+  let spy: IntersectionObserver | undefined;
+  document.addEventListener('astro:page-load', () => {
+    spy?.disconnect();
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('.pill [data-section]')];
+    const mark = (id: string | null) => links.forEach((a) => a.classList.toggle('on', a.dataset.section === id));
+    mark(null);
+    const sections = links.map((a) => document.getElementById(a.dataset.section!)).filter(Boolean) as HTMLElement[];
+    if (!sections.length) return;
+    const visible = new Set<string>();
+    spy = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) visible.add(e.target.id);
+          else visible.delete(e.target.id);
+        }
+        mark(sections.find((s) => visible.has(s.id))?.id ?? null);
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    sections.forEach((s) => spy!.observe(s));
+  });
 </script>
 
 <style>
@@ -85,6 +108,10 @@ const initials = profile.name
   .pill a:hover {
     color: var(--text);
     background: rgb(255 255 255 / 0.06);
+  }
+  .pill a.on {
+    color: var(--text);
+    background: rgb(255 255 255 / 0.1);
   }
 
   .pill .av {
