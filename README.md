@@ -107,6 +107,11 @@ to scroll to the right section).
 To start a new round, edit `src/pages/lab/index.astro`: bump `round`, update
 `applied` and swap the `<Question>` / `<Choice>` blocks.
 
+## Design archive
+
+Designs that were set aside but may come back (with the code to restore them)
+are kept in [`docs/design-archive.md`](docs/design-archive.md).
+
 ## Deploying
 
 Live at **https://motyst.github.io**. Every push to `main` builds and deploys
