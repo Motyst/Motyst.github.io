@@ -73,6 +73,8 @@ const color = (i: number) => stepColors[i % stepColors.length];
     padding: 0;
     display: grid;
     gap: var(--gap);
+    /* Equal rows, so every connector between steps is the same length */
+    grid-auto-rows: 1fr;
   }
 
   li {

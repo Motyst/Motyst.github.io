@@ -43,6 +43,13 @@ const ogImage = new URL(image, Astro.site).href;
     <meta property="og:image:alt" content={`${profile.name}, ${profile.role}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <ClientRouter />
+    <script is:inline>
+      // Design lab: ?lab=<id> previews a variant on any page (see src/data/lab-variants.ts)
+      (() => {
+        const lab = new URLSearchParams(location.search).get('lab');
+        if (lab) document.documentElement.dataset.lab = lab;
+      })();
+    </script>
   </head>
   <body>
     <Header />

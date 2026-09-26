@@ -72,6 +72,22 @@ const media = [data.cover, ...data.gallery].filter(
       </div>
     </section>
 
+    {
+      data.workflow.length > 0 && (
+        <section class="section">
+          <div class="container">
+            <div class="section-head reveal">
+              <div>
+                <span class="eyebrow">Workflow</span>
+                <h2>How it works</h2>
+              </div>
+            </div>
+            <Workflow steps={data.workflow} />
+          </div>
+        </section>
+      )
+    }
+
     <section class="section">
       <div class="container body">
       <div class="prose reveal">
@@ -119,22 +135,6 @@ const media = [data.cover, ...data.gallery].filter(
       </aside>
       </div>
     </section>
-
-    {
-      data.workflow.length > 0 && (
-        <section class="section">
-          <div class="container">
-            <div class="section-head reveal">
-              <div>
-                <span class="eyebrow">Workflow</span>
-                <h2>How it works</h2>
-              </div>
-            </div>
-            <Workflow steps={data.workflow} />
-          </div>
-        </section>
-      )
-    }
 
     {
       next.id !== id && (
