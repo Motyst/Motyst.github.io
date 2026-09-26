@@ -76,7 +76,8 @@ const ogImage = new URL(image, Astro.site).href;
               }
             }
           },
-          { rootMargin: '0px 0px -8% 0px' },
+          // Reveal as soon as any part is on screen, so nothing near the fold stays hidden
+          { rootMargin: '0px' },
         );
         items.forEach((el) => io.observe(el));
       }
