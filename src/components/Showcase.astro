@@ -130,12 +130,16 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     --stage: min(var(--stage-h, 420px) - 3rem, 100cqw * 0.62 + 2rem);
   }
 
+  /* The box, with a soft aura in the project colour around it */
   .stage {
     position: relative;
     height: var(--stage);
-    border: 1px solid var(--line);
+    border: 1px solid color-mix(in oklab, var(--c) 28%, transparent);
     border-radius: var(--radius);
     overflow: hidden;
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--c) 8%, transparent),
+      0 30px 110px -30px color-mix(in oklab, var(--c) 52%, transparent);
     background:
       radial-gradient(55% 80% at 50% 60%, color-mix(in oklab, var(--c) 24%, transparent), transparent 72%),
       var(--bg-soft);
@@ -359,39 +363,5 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     .win {
       --pad: 2rem;
     }
-  }
-  /* ---------- Design lab variants (round 10: project colour glow) ---------- */
-  /* A: coloured light around the inside edges of the box */
-  :global(html[data-lab='glow-edge']) .stage {
-    border-color: color-mix(in oklab, var(--c) 40%, transparent);
-    box-shadow:
-      inset 0 0 70px -12px color-mix(in oklab, var(--c) 55%, transparent),
-      inset 0 1px 0 color-mix(in oklab, var(--c) 50%, transparent);
-  }
-
-  /* B: an aura around the whole box that spills onto the page */
-  :global(html[data-lab='glow-aura']) .stage {
-    border-color: color-mix(in oklab, var(--c) 35%, transparent);
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--c) 12%, transparent),
-      0 30px 110px -30px color-mix(in oklab, var(--c) 75%, transparent);
-  }
-
-  /* C: no box; the screenshot floats in a halo of colour */
-  :global(html[data-lab='glow-float']) .stage {
-    border-color: transparent;
-    overflow: visible;
-    background: none;
-  }
-  :global(html[data-lab='glow-float']) .stage::before {
-    inset: -4% -3% 6%;
-    background: color-mix(in oklab, var(--c) 70%, transparent);
-    mask-image: none;
-    border-radius: 30%;
-    filter: blur(70px);
-    opacity: 0.6;
-  }
-  :global(html[data-lab='glow-float']) .under {
-    background: none;
   }
 </style>

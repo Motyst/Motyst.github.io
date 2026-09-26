@@ -9,18 +9,12 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-import Question from '@/components/lab/Question.astro';
-import Choice from '@/components/lab/Choice.astro';
+// import Question from '@/components/lab/Question.astro';
+// import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
 
-const round = 10;
-const glowIdeas = [
-  { id: 'current', label: 'Current', name: 'Tint inside the box', note: 'Still there, but the bigger screenshots now cover almost all of it, so only a thin edge of colour shows.' },
-  { id: 'glow-edge', label: 'A', name: 'Glowing edge', note: 'The box border and its inside edges light up in the project colour. Subtle, tidy, stays inside the box.' },
-  { id: 'glow-aura', label: 'B', name: 'Aura around the box', mine: true, note: 'A soft glow in the project colour spills out around the whole box onto the page. Clearly visible, still framed.' },
-  { id: 'glow-float', label: 'C', name: 'Floating in a halo', note: 'No box at all: the screenshot floats in a cloud of the project colour. The most atmospheric, but less structured.' },
-];
-const applied: string[] = ['Skills with project dots', 'Screenshots beside the description'];
+const round = 11;
+const applied: string[] = ['Colour aura around screenshots (30% softer)'];
 /** Before/after images for the last change (files in public/lab/compare). Clear when no longer needed. */
 const compare: { src: string; label: string }[] = [];
 ---
@@ -63,15 +57,7 @@ const compare: { src: string; label: string }[] = [];
       <b>Current / A / B</b> cards to choose from.
     </p>
 
-    <Question n={1} title="Project colour glow around screenshots" why="The colour glow behind the screenshots is now mostly hidden by the bigger images. Three ways to bring it back, on Helm's full page (the project window gets the same).">
-      {
-        glowIdeas.map((o) => (
-          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/work/helm/' : `/work/helm/?lab=${o.id}`}>
-            <img class="shot" src={`/lab/glow/${o.id}.webp`} alt={`Helm page, ${o.name}`} loading="lazy" />
-          </Choice>
-        ))
-      }
-    </Question>
+    <!-- Add <Question> / <Choice> blocks here -->
 
     <section class="reply">
       <h2>Your reply</h2>
