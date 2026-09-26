@@ -39,9 +39,9 @@ const media = [data.cover, ...data.gallery].filter(
   <article style={`--accent: ${data.accent}`}>
     <section class="section head">
       <div class="container">
-        <a href="/#work" class="back mono">← All work</a>
         <div class="top">
           <div class="intro">
+            <a href="/#work" class="back mono">← All work</a>
             <div class="title-row">
               <ProjectIcon icon={data.icon} title={data.title} accent={data.accent} size={60} />
               <h1>{data.title}</h1>
@@ -166,7 +166,7 @@ const media = [data.cover, ...data.gallery].filter(
     display: inline-block;
     font-size: 0.8rem;
     color: var(--text-faint);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     transition: color 0.2s, transform 0.3s var(--ease);
   }
 
@@ -179,7 +179,7 @@ const media = [data.cover, ...data.gallery].filter(
   .top {
     display: grid;
     gap: 2rem;
-    align-items: center;
+    align-items: start;
     --stage-h: clamp(260px, 62vh, 500px);
   }
   @media (min-width: 900px) {

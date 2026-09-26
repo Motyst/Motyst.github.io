@@ -1,8 +1,8 @@
 ---
 /**
  * Screenshots and videos in the project window. Each item sits in a frame
- * (a browser window, a phone, or none) on an accent-tinted stage, with
- * arrows, a caption and dots. Swipe or scroll to move between items.
+ * (a browser window, a phone, or none) on an accent-tinted stage, with a
+ * caption, arrows and dots below it. Swipe or scroll to move between items.
  *
  * The stage height comes from `--stage-h`, set by the parent so the window
  * shows everything down to "How it works" without scrolling.
@@ -43,28 +43,24 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
         ))
       }
     </div>
-    {
-      items.length > 1 && (
-        <>
-          <button type="button" class="nav prev" data-go="-1" aria-label="Previous screenshot">
-            ←
-          </button>
-          <button type="button" class="nav next" data-go="1" aria-label="Next screenshot">
-            →
-          </button>
-        </>
-      )
-    }
   </div>
 
   <div class="under">
     <p class="cap" data-cap aria-live="polite">{items[0]?.caption}</p>
     {
       items.length > 1 && (
-        <div class="dots">
-          {items.map((m, i) => (
-            <button type="button" class:list={['dot', { on: i === 0 }]} data-to={i} aria-label={`Show ${m.caption ?? `item ${i + 1}`}`} />
-          ))}
+        <div class="ctrl">
+          <button type="button" class="nav" data-go="-1" aria-label="Previous screenshot">
+            ←
+          </button>
+          <div class="dots">
+            {items.map((m, i) => (
+              <button type="button" class:list={['dot', { on: i === 0 }]} data-to={i} aria-label={`Show ${m.caption ?? `item ${i + 1}`}`} />
+            ))}
+          </div>
+          <button type="button" class="nav" data-go="1" aria-label="Next screenshot">
+            →
+          </button>
         </div>
       )
     }
@@ -243,21 +239,23 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     filter: drop-shadow(0 24px 40px rgb(0 0 0 / 0.6));
   }
 
+  .ctrl {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex: none;
+  }
   .nav {
-    position: absolute;
-    top: 50%;
-    translate: 0 -50%;
     display: grid;
     place-items: center;
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
     border: 1px solid var(--line-strong);
     background: rgb(17 17 20 / 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     color: var(--text);
     font: inherit;
+    font-size: 0.85rem;
     cursor: pointer;
     transition:
       opacity 0.2s,
@@ -267,14 +265,8 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     border-color: var(--text-dim);
   }
   .nav:disabled {
-    opacity: 0;
-    pointer-events: none;
-  }
-  .prev {
-    left: 0.75rem;
-  }
-  .next {
-    right: 0.75rem;
+    opacity: 0.3;
+    cursor: default;
   }
 
   .under {
@@ -293,7 +285,6 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
   .dots {
     display: flex;
     gap: 0.45rem;
-    flex: none;
   }
   .dot {
     width: 0.5rem;
@@ -338,12 +329,6 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     height: auto;
   }
 
-  /* Narrow windows: swipe instead of arrows */
-  @container (max-width: 520px) {
-    .nav {
-      display: none;
-    }
-  }
   /* Wider showcases: caption and dots float over the bottom of the stage,
      so the screenshot gets that height too */
   @container (min-width: 521px) {
@@ -362,7 +347,7 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
       background: linear-gradient(transparent, rgb(9 9 11 / 0.88) 60%);
       pointer-events: none;
     }
-    .dots {
+    .ctrl {
       pointer-events: auto;
     }
     .cap {
