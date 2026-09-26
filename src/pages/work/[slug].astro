@@ -221,11 +221,6 @@ const media = [data.cover, ...data.gallery].filter(
     border-radius: var(--radius);
     overflow: hidden;
   }
-  /* No outline around the screenshot box here, just the colour aura */
-  .visual :global(.stage) {
-    border-color: transparent;
-    box-shadow: 0 30px 110px -30px color-mix(in oklab, var(--c) 52%, transparent);
-  }
   .banner-box :global(.banner) {
     aspect-ratio: 16 / 9;
     max-height: var(--stage-h);

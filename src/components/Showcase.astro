@@ -24,6 +24,7 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
 ---
 
 <div class="show" data-show style={`--c: ${accent}`}>
+  <div class="aura" aria-hidden="true"></div>
   <div class="stage">
     <div class="track" data-track>
       {
@@ -130,19 +131,36 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     --stage: min(var(--stage-h, 420px) - 3rem, 100cqw * 0.62 + 2rem);
   }
 
-  /* The box, with a soft aura in the project colour around it */
+  /* The box, no outline */
   .stage {
     position: relative;
     height: var(--stage);
-    border: 1px solid color-mix(in oklab, var(--c) 28%, transparent);
+    border: 1px solid transparent;
     border-radius: var(--radius);
     overflow: hidden;
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--c) 8%, transparent),
-      0 30px 110px -30px color-mix(in oklab, var(--c) 52%, transparent);
-    background:
-      radial-gradient(55% 80% at 50% 60%, color-mix(in oklab, var(--c) 24%, transparent), transparent 72%),
-      var(--bg-soft);
+    background: var(--bg-soft);
+  }
+
+  /* A soft aura in the project colour around the box, slowly breathing */
+  .aura {
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--stage);
+    border-radius: var(--radius);
+    box-shadow: 0 30px 110px -30px color-mix(in oklab, var(--c) 52%, transparent);
+    pointer-events: none;
+    animation: breathe 9s ease-in-out infinite alternate;
+  }
+  @keyframes breathe {
+    to {
+      opacity: 0.55;
+      transform: translateY(-8px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .aura {
+      animation: none;
+    }
   }
   /* Faint grid, as on the icon banners */
   .stage::before {
@@ -334,7 +352,8 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
   @container (min-width: 521px) {
     /* The caption bar gets its own strip at the bottom of the box, so the
        screenshot always sits above it and the arrows stay centred in it */
-    .stage {
+    .stage,
+    .aura {
       --under: 3.25rem;
       --stage: min(var(--stage-h, 420px), (100cqw - 2rem) * 0.625 + 1.25rem + 0.8rem + var(--under));
     }
