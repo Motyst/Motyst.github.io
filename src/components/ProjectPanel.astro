@@ -187,7 +187,8 @@ const media = [data.cover, ...data.gallery].filter(
     outline: none;
   }
 
-  /* Screenshots get the height that leaves everything down to "How it works" in view */
+  /* Screenshots get the height that leaves everything down to the "How it works"
+     step icons and titles in view */
   .scroll {
     --stage-h: clamp(220px, min(90vh, 900px) - 278px, 620px);
   }
@@ -212,7 +213,7 @@ const media = [data.cover, ...data.gallery].filter(
     .scroll {
       grid-template-columns: minmax(0, 1fr) minmax(0, 2.6fr);
       column-gap: 1.5rem;
-      --stage-h: clamp(240px, min(90vh, 900px) - 196px, 640px);
+      --stage-h: clamp(240px, min(90vh, 900px) - 313px, 640px);
     }
     .scroll > :global(*) {
       grid-column: 1 / -1;

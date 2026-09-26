@@ -180,7 +180,8 @@ const media = [data.cover, ...data.gallery].filter(
     display: grid;
     gap: 2rem;
     align-items: start;
-    --stage-h: clamp(260px, 62vh, 500px);
+    /* Screenshots and banners leave the "How it works" heading in view */
+    --stage-h: clamp(260px, 100vh - 330px, 500px);
   }
   @media (min-width: 900px) {
     .top {
@@ -223,6 +224,8 @@ const media = [data.cover, ...data.gallery].filter(
   }
   .banner-box :global(.banner) {
     aspect-ratio: 16 / 9;
+    max-height: var(--stage-h);
+    width: 100%;
   }
 
   .body {
