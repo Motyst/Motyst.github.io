@@ -179,6 +179,10 @@ const color = (i: number) => stepColors[i % stepColors.length];
     strong {
       justify-content: center;
     }
+    /* A little air under the step name (the project window cuts off just above the description) */
+    .txt {
+      gap: 0.6rem;
+    }
     li:not(:last-child)::before {
       left: calc(50% + var(--b) / 2 + 8px);
       right: calc(-1 * var(--gap) - 50% + var(--b) / 2 + 8px);
