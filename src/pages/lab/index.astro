@@ -9,19 +9,12 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-import Question from '@/components/lab/Question.astro';
-import Choice from '@/components/lab/Choice.astro';
+// import Question from '@/components/lab/Question.astro';
+// import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
 
-const round = 16;
-const applied: string[] = ['Light mode: white screenshot box with no outline'];
-
-type Opt = { id: string; label: string; name: string; note: string; mine?: boolean };
-const photoIdeas: Opt[] = [
-  { id: 'current', label: 'Current', name: 'Head only', note: 'Tight on your head, cut at the chin.' },
-  { id: 'photo-a', label: 'A', name: 'Head and collar', mine: true, note: 'Zoomed out a little: your head sits smaller in the circle with the collar and a bit of shirt showing. Less cramped, still clearly you.' },
-  { id: 'photo-b', label: 'B', name: 'Head and shoulders', note: 'Zoomed out more: jacket and shoulders show, more like a portrait. Your face gets smaller.' },
-];
+const round = 17;
+const applied: string[] = ['Photo: head and shoulders crop'];
 /** Before/after images for the last change (files in public/lab/compare). Clear when no longer needed. */
 const compare: { src: string; label: string }[] = [];
 ---
@@ -59,15 +52,12 @@ const compare: { src: string; label: string }[] = [];
       )
     }
 
-    <Question n={1} title="Photo crop" anchor="about" why="The same photo, zoomed out by different amounts. The sides are extended with the photo's own black background, so there is no visible edge. Each picture shows the About section in dark and in light mode; Full page follows your device setting.">
-      {
-        photoIdeas.map((o) => (
-          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/' : `/?lab=${o.id}`}>
-            <img class="shot" src={`/lab/photo/${o.id}.webp`} alt={`About section, ${o.name}`} loading="lazy" />
-          </Choice>
-        ))
-      }
-    </Question>
+    <p class="empty">
+      No open questions right now. Ask for new ideas in the chat and they will show up here as{' '}
+      <b>Current / A / B</b> cards to choose from.
+    </p>
+
+    <!-- Add <Question> / <Choice> blocks here -->
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -300,12 +290,6 @@ const compare: { src: string; label: string }[] = [];
   }
   .fit :global(.container) {
     padding: 0;
-  }
-
-  .shot {
-    width: 100%;
-    border-radius: 12px;
-    border: 1px solid var(--line);
   }
 
   /* ---------- Before / after ---------- */

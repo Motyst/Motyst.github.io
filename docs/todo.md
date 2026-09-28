@@ -15,6 +15,10 @@ Ideas and content to come back to. Remove items once they're done.
   `src/data/profile.ts` (an empty list hides it).
 - **Screenshots** for Privet and Course Content Studio (`frame: phone` for phone
   shots), ideally matching each project's "How it works" steps.
+- **A better photo.** The current one (dark, in profile, looking down) is a
+  stand-in. Ideal: face or three-quarter view looking at the camera, head and
+  shoulders with space around, a neutral mid-tone background that works in both
+  light and dark mode, and the original file rather than a phone copy.
 - **Real numbers** in project highlights (time saved, posts published, users).
 - **LinkedIn and a CV (PDF)** in the hero. No phone number on the site.
 
