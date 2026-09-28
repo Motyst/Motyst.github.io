@@ -34,10 +34,29 @@ const initials = profile.name
   if (header && !header.dataset.ready) {
     header.dataset.ready = '1';
     let last = scrollY;
+    // A jump from one of the bar's own links scrolls down too: keep the bar in view
+    // until that scroll has been still for a moment
+    let holding = false;
+    let settle = 0;
+    const holdOn = (ms: number) => {
+      clearTimeout(settle);
+      settle = window.setTimeout(() => (holding = false), ms);
+    };
+    header.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('a')) return;
+      holding = true;
+      header.classList.remove('away');
+      holdOn(600);
+    });
     addEventListener(
       'scroll',
       () => {
         const y = scrollY;
+        if (holding) {
+          last = y;
+          holdOn(250);
+          return;
+        }
         if (Math.abs(y - last) < 6) return;
         header.classList.toggle('away', y > last && y > 120);
         last = y;
