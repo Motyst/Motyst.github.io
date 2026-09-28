@@ -214,21 +214,14 @@ p {
   max-width: 44ch;
 }
 
-/* Section labels as a small sentence, not code-style caps */
-.section-head .eyebrow {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  letter-spacing: -0.005em;
-  text-transform: none;
-  color: var(--label);
-}
-
+/* Small labels above headings: spaced-out capitals in the normal font */
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--label);
   display: block;
   margin-bottom: 0.9rem;
 }
@@ -340,31 +333,3 @@ button.chip:hover {
 }
 
 
-/* ---------- Design lab round 14: small labels everywhere ---------- */
-/* A: small sentence-case labels (like the homepage now) */
-html[data-lab='labels-a'] :is(.eyebrow, .wf-title) {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  text-transform: none;
-  color: var(--label);
-}
-/* B: code-style capitals everywhere (as the homepage was before round 12) */
-html[data-lab='labels-b'] :is(.eyebrow, .wf-title) {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-/* C: capitals in the normal font, spaced out */
-html[data-lab='labels-c'] :is(.eyebrow, .wf-title) {
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--label);
-}
