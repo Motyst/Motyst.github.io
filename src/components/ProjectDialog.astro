@@ -146,8 +146,8 @@ const { projects } = Astro.props;
     color: var(--text);
     overflow: hidden;
     box-shadow:
-      0 40px 120px -30px rgb(0 0 0 / 0.8),
-      0 0 0 1px rgb(255 255 255 / 0.02);
+      0 40px 120px -30px var(--shadow),
+      0 0 0 1px var(--tint);
   }
   .modal[open] {
     display: flex;
@@ -155,7 +155,7 @@ const { projects } = Astro.props;
     animation: pop 0.35s var(--ease);
   }
   .modal::backdrop {
-    background: rgb(4 4 6 / 0.72);
+    background: var(--scrim);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     animation: fade 0.3s ease;

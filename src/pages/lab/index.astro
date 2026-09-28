@@ -9,12 +9,12 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-// import Question from '@/components/lab/Question.astro';
-// import Choice from '@/components/lab/Choice.astro';
+import Question from '@/components/lab/Question.astro';
+import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
 
 const round = 13;
-const applied: string[] = ['Hero: bigger name, smaller role line', 'Section headings: sentence labels', 'Heading font: Manrope'];
+const applied: string[] = ['Hero: bigger name, smaller role and subtitle', 'Section headings: sentence labels', 'Heading font: Manrope'];
 /** Before/after images for the last change (files in public/lab/compare). Clear when no longer needed. */
 const compare: { src: string; label: string }[] = [];
 ---
@@ -52,12 +52,29 @@ const compare: { src: string; label: string }[] = [];
       )
     }
 
-    <p class="empty">
-      No open questions right now. Ask for new ideas in the chat and they will show up here as{' '}
-      <b>Current / A / B</b> cards to choose from.
-    </p>
+    <Question n={1} title="Light mode" why="The same design on a light background: white cards, dark text, softer colour glows. Screenshots, icons and project colours stay the same. Press Full page to scroll the whole homepage and open projects. To see a project page in light, add ?lab=light to its address (for example /work/helm/?lab=light).">
+      <Choice label="Current" name="Dark" note="The site as it is now." preview="/">
+        <div class="shots">
+          <img class="shot" src="/lab/light/d-home.webp" alt="Homepage, dark" loading="lazy" />
+          <img class="shot" src="/lab/light/d-panel.webp" alt="Helm project window, dark" loading="lazy" />
+        </div>
+      </Choice>
+      <Choice label="A" name="Light" note="Soft off-white page, white cards with thin grey outlines, near-black headings. The gradient role and ring get deeper colours so they stay readable on white." preview="/?lab=light">
+        <div class="shots">
+          <img class="shot" src="/lab/light/l-home.webp" alt="Homepage, light" loading="lazy" />
+          <img class="shot" src="/lab/light/l-panel.webp" alt="Helm project window, light" loading="lazy" />
+        </div>
+      </Choice>
+    </Question>
 
-    <!-- Add <Question> / <Choice> blocks here -->
+    <Question n={2} title="If light mode goes live, who sees which?" why="Only matters if you like light mode. Either way there would be a small sun and moon button in the top bar to switch, and the site remembers the choice.">
+      <Choice label="A" name="Follow the device" mine note="Visitors whose phone or computer is set to light mode see light, everyone else sees dark. The usual choice today.">
+        <p class="txt">Device on light: light site<br />Device on dark: dark site<br />Switch button in the top bar</p>
+      </Choice>
+      <Choice label="B" name="Dark for everyone" note="Dark stays the look of the site. Light is only there for people who press the switch.">
+        <p class="txt">Everyone starts on dark<br />Switch button in the top bar</p>
+      </Choice>
+    </Question>
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -290,6 +307,27 @@ const compare: { src: string; label: string }[] = [];
   }
   .fit :global(.container) {
     padding: 0;
+  }
+
+  .shots {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .shot {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  .txt {
+    display: grid;
+    place-items: center;
+    min-height: 8rem;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px dashed var(--line-strong);
+    text-align: center;
+    line-height: 1.8;
+    color: var(--text-dim);
   }
 
   /* ---------- Before / after ---------- */

@@ -86,13 +86,13 @@ const initials = profile.name
     font-size: 0.85rem;
     letter-spacing: -0.005em;
     text-transform: none;
-    color: rgb(255 255 255 / 0.75);
+    color: var(--label);
   }
   h2 {
     font-size: clamp(2rem, 5vw, 3.25rem);
     line-height: 1;
     letter-spacing: -0.045em;
-    color: #fff;
+    color: var(--heading);
   }
 
   /* Photo (or initials until a photo is added) */
@@ -107,7 +107,7 @@ const initials = profile.name
     aspect-ratio: 1;
     border-radius: 50%;
     padding: 3px;
-    background: linear-gradient(135deg, #a78bfa, #4cc9f0 50%, #fb7185);
+    background: linear-gradient(135deg, var(--grad-1), var(--grad-2) 50%, var(--grad-3));
     box-shadow: 0 20px 50px -24px rgb(167 139 250 / 0.7);
   }
   .photo img,
@@ -155,7 +155,7 @@ const initials = profile.name
     bottom: 0;
     width: 3px;
     border-radius: 3px;
-    background: linear-gradient(180deg, #a78bfa, #4cc9f0 55%, #fb7185);
+    background: linear-gradient(180deg, var(--grad-1), var(--grad-2) 55%, var(--grad-3));
   }
 
   /* How I work */

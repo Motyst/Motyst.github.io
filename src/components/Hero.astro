@@ -159,7 +159,7 @@ const spots = [
     line-height: 1.2;
   }
   .grad {
-    background: linear-gradient(90deg, #a78bfa, #4cc9f0 55%, #fb7185);
+    background: linear-gradient(90deg, var(--grad-1), var(--grad-2) 55%, var(--grad-3));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -229,12 +229,12 @@ const spots = [
     padding: 0.3rem;
     border-radius: 999px;
     border: 1px solid var(--line-strong);
-    background: rgb(255 255 255 / 0.02);
+    background: var(--tint);
     font-size: 0.92rem;
     transition: border-color 0.2s;
   }
   .mailchip:hover {
-    border-color: rgb(255 255 255 / 0.3);
+    border-color: var(--line-hover);
   }
   .mail-go {
     display: inline-flex;
@@ -249,7 +249,7 @@ const spots = [
     color: var(--text-dim);
   }
   .mail-go:hover {
-    background: rgb(255 255 255 / 0.06);
+    background: var(--hover);
   }
   .cp {
     display: grid;
@@ -268,7 +268,7 @@ const spots = [
   }
   .cp:hover {
     color: var(--text);
-    background: rgb(255 255 255 / 0.1);
+    background: var(--hover-strong);
   }
   .cp :global(svg) {
     grid-area: 1 / 1;
@@ -326,7 +326,7 @@ const spots = [
   }
   .round:hover {
     color: var(--text);
-    border-color: rgb(255 255 255 / 0.3);
+    border-color: var(--line-hover);
     transform: translateY(-1px);
   }
 

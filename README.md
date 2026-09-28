@@ -112,6 +112,10 @@ To start a new round, edit `src/pages/lab/index.astro`: bump `round`, update
 Designs that were set aside but may come back (with the code to restore them)
 are kept in [`docs/design-archive.md`](docs/design-archive.md).
 
+## To do
+
+Content and ideas to come back to are listed in [`docs/todo.md`](docs/todo.md).
+
 ## Deploying
 
 Live at **https://motyst.github.io**. Every push to `main` builds and deploys

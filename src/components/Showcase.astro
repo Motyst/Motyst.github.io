@@ -216,9 +216,9 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
   .browser {
     --bar: 1.25rem;
     border-radius: 10px;
-    border: 1px solid rgb(255 255 255 / 0.14);
-    background: #1c1c21;
-    box-shadow: 0 30px 70px -28px rgb(0 0 0 / 0.9);
+    border: 1px solid var(--frame-line);
+    background: var(--frame);
+    box-shadow: 0 30px 70px -28px var(--shadow);
   }
   .bar {
     display: flex;
@@ -232,7 +232,7 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
-    background: rgb(255 255 255 / 0.18);
+    background: var(--frame-dot);
   }
 
   /* A phone: rounded bezel */
@@ -270,7 +270,7 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     height: 2rem;
     border-radius: 50%;
     border: 1px solid var(--line-strong);
-    background: rgb(17 17 20 / 0.7);
+    background: var(--glass);
     color: var(--text);
     font: inherit;
     font-size: 0.85rem;
