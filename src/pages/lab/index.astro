@@ -9,12 +9,20 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-// import Question from '@/components/lab/Question.astro';
-// import Choice from '@/components/lab/Choice.astro';
+import Question from '@/components/lab/Question.astro';
+import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
 
 const round = 17;
-const applied: string[] = ['Photo: head and shoulders crop'];
+const applied: string[] = ['Photo: head and shoulders crop', 'Top bar stays in view after jumping to a section'];
+
+type Opt = { id: string; label: string; name: string; note: string; mine?: boolean };
+const nameIdeas: Opt[] = [
+  { id: 'current', label: 'Current', name: '90px', note: 'Your name as it is now (about 90px on a laptop or bigger screen).' },
+  { id: 'name-2', label: 'A', name: '+2px', note: 'Barely different. You would only notice it side by side.' },
+  { id: 'name-5', label: 'B', name: '+5px', mine: true, note: 'Noticeably bolder and still on one line, reaching almost to the icons. The most size you can add without wrapping.' },
+  { id: 'name-10', label: 'C', name: '+10px', note: 'Too wide for one line next to the icons, so it breaks into "Andris / Volkovs." on large screens. A different, stacked look that pushes the rest of the hero down.' },
+];
 /** Before/after images for the last change (files in public/lab/compare). Clear when no longer needed. */
 const compare: { src: string; label: string }[] = [];
 ---
@@ -52,12 +60,15 @@ const compare: { src: string; label: string }[] = [];
       )
     }
 
-    <p class="empty">
-      No open questions right now. Ask for new ideas in the chat and they will show up here as{' '}
-      <b>Current / A / B</b> cards to choose from.
-    </p>
-
-    <!-- Add <Question> / <Choice> blocks here -->
+    <Question n={1} title="Name size" why="Bigger only on laptops and larger screens, where there is room. Phones and small tablets keep today's size, so the name never wraps there. Screenshots at 1440px wide.">
+      {
+        nameIdeas.map((o) => (
+          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/' : `/?lab=${o.id}`}>
+            <img class="shot" src={`/lab/name/${o.id}.webp`} alt={`Homepage top, name ${o.name}`} loading="lazy" />
+          </Choice>
+        ))
+      }
+    </Question>
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -290,6 +301,12 @@ const compare: { src: string; label: string }[] = [];
   }
   .fit :global(.container) {
     padding: 0;
+  }
+
+  .shot {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--line);
   }
 
   /* ---------- Before / after ---------- */
