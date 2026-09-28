@@ -209,7 +209,8 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     width: auto;
     height: auto;
     max-width: 100%;
-    max-height: calc(var(--stage) - var(--under, 0px) - 2 * var(--pad) - var(--bar, 0px));
+    /* 4px: the frame's border and the box's border */
+    max-height: calc(var(--stage) - var(--under, 0px) - 2 * var(--pad) - var(--bar, 0px) - 4px);
     object-fit: contain;
   }
 
@@ -356,7 +357,7 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     .stage,
     .aura {
       --under: 3.25rem;
-      --stage: min(var(--stage-h, 420px), (100cqw - 2rem) * 0.625 + 1.25rem + 0.8rem + var(--under));
+      --stage: min(var(--stage-h, 420px), (100cqw - 2rem) * 0.625 + 1.25rem + 1.3rem + 4px + var(--under));
     }
     .track {
       height: calc(100% - var(--under));
@@ -378,11 +379,12 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     .cap {
       color: var(--text);
     }
+    /* A small gap under the screenshot too, so it never touches the caption strip */
     .slide {
-      padding: 0.8rem 1rem 0;
+      padding: 0.8rem 1rem 0.5rem;
     }
     .win {
-      --pad: 0.4rem; /* counted twice: the 0.8rem above the screenshot */
+      --pad: 0.65rem; /* counted twice: the 0.8rem above plus the 0.5rem below */
     }
   }
 
