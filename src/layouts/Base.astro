@@ -55,6 +55,9 @@ const ogImage = new URL(image, Astro.site).href;
           try {
             saved = localStorage.getItem('theme');
           } catch {}
+          // ?theme=light or ?theme=dark forces one for this page (used by the design lab)
+          const forced = new URLSearchParams(location.search).get('theme');
+          if (forced === 'light' || forced === 'dark') saved = forced;
           document.documentElement.dataset.theme = saved ?? (device.matches ? 'light' : 'dark');
         };
         apply();

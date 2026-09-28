@@ -386,4 +386,36 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
     }
   }
 
+
+  /* ---------- Design lab round 15: the box behind screenshots in light mode ---------- */
+  /* A: white, like the other cards */
+  :global(html[data-theme='light'][data-lab='stage-a']) .stage {
+    background: #fff;
+    border-color: var(--line);
+  }
+  /* B: a very light wash of the project colour */
+  :global(html[data-theme='light'][data-lab='stage-b']) .stage {
+    background:
+      radial-gradient(70% 90% at 50% 45%, color-mix(in oklab, var(--c) 16%, #fff), transparent 75%),
+      color-mix(in oklab, var(--c) 7%, #fff);
+    border-color: color-mix(in oklab, var(--c) 22%, transparent);
+    --line: color-mix(in oklab, var(--c) 14%, transparent);
+  }
+  /* C: the box stays dark, like a screen, even in light mode */
+  :global(html[data-theme='light'][data-lab='stage-c']) .stage {
+    --bg-soft: #141418;
+    --line: rgb(255 255 255 / 0.07);
+    --frame: #1c1c21;
+    --frame-line: rgb(255 255 255 / 0.14);
+    --frame-dot: rgb(255 255 255 / 0.18);
+    --shadow: rgb(0 0 0 / 0.7);
+  }
+  @container (min-width: 521px) {
+    :global(html[data-theme='light'][data-lab='stage-c']) .under {
+      --text: #ededef;
+      --line-strong: rgb(255 255 255 / 0.18);
+      --glass: rgb(23 23 27 / 0.72);
+      --text-dim: #a1a1aa;
+    }
+  }
 </style>

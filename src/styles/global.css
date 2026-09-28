@@ -13,8 +13,9 @@
   --text-faint: #6b6b75;
   --accent: #7c9cff;
   --heading: #fff;
-  --label: rgb(255 255 255 / 0.75);
-  --sub: rgb(255 255 255 / 0.82);
+  /* Solid (not see-through) greys: small text renders crisper */
+  --label: #c0c0c4;
+  --sub: #d2d2d5;
   --tint: rgb(255 255 255 / 0.02);
   --hover: rgb(255 255 255 / 0.06);
   --hover-strong: rgb(255 255 255 / 0.1);
@@ -59,8 +60,8 @@
   --text-faint: #85858f;
   --accent: #4f6bff;
   --heading: #0b0b0f;
-  --label: rgb(12 12 24 / 0.6);
-  --sub: rgb(12 12 24 / 0.74);
+  --label: #686872;
+  --sub: #48484f;
   --tint: rgb(255 255 255 / 0.7);
   --hover: rgb(12 12 24 / 0.05);
   --hover-strong: rgb(12 12 24 / 0.08);

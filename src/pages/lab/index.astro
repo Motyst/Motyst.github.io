@@ -9,12 +9,20 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-// import Question from '@/components/lab/Question.astro';
-// import Choice from '@/components/lab/Choice.astro';
+import Question from '@/components/lab/Question.astro';
+import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
 
 const round = 15;
-const applied: string[] = ['Small labels: clean capitals everywhere'];
+const applied: string[] = ['Small labels: clean capitals everywhere', 'Crisp icon arrows', 'Photo in About'];
+
+type Opt = { id: string; label: string; name: string; note: string; mine?: boolean };
+const stageIdeas: Opt[] = [
+  { id: 'current', label: 'Current', name: 'Light grey', note: 'A cool grey box. Next to the white window and the pale screenshot it reads a bit muddy.' },
+  { id: 'stage-a', label: 'A', name: 'White', note: 'A white box with a thin outline, like every other card on the site. Clean, but the pale screenshot blends into it a little.' },
+  { id: 'stage-b', label: 'B', name: 'Project colour wash', mine: true, note: 'A very light wash of the project colour (green for Helm, orange for Privet…), matching the aura around it. Each project gets its own feel and the screenshot stands out gently.' },
+  { id: 'stage-c', label: 'C', name: 'Dark screen', note: 'The box stays dark in light mode, like a screen on a white desk. The screenshots pop the most, but it is a heavy block on a light page.' },
+];
 /** Before/after images for the last change (files in public/lab/compare). Clear when no longer needed. */
 const compare: { src: string; label: string }[] = [];
 ---
@@ -52,12 +60,15 @@ const compare: { src: string; label: string }[] = [];
       )
     }
 
-    <p class="empty">
-      No open questions right now. Ask for new ideas in the chat and they will show up here as{' '}
-      <b>Current / A / B</b> cards to choose from.
-    </p>
-
-    <!-- Add <Question> / <Choice> blocks here -->
+    <Question n={1} title="Screenshot box in light mode" why="Light mode only (dark mode stays as it is). The previews open Helm's project page in light mode; open a project window from the homepage to see it there too.">
+      {
+        stageIdeas.map((o) => (
+          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/work/helm/?theme=light' : `/work/helm/?theme=light&lab=${o.id}`}>
+            <img class="shot" src={`/lab/stage/${o.id}.webp`} alt={`Helm project window in light mode, ${o.name}`} loading="lazy" />
+          </Choice>
+        ))
+      }
+    </Question>
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -290,6 +301,12 @@ const compare: { src: string; label: string }[] = [];
   }
   .fit :global(.container) {
     padding: 0;
+  }
+
+  .shot {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--line);
   }
 
   /* ---------- Before / after ---------- */
