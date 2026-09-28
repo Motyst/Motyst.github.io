@@ -28,9 +28,13 @@ const initials = profile.name
     </div>
 
     <div>
-      <div class="bio">
-        {profile.bio.map((p) => <p>{p}</p>)}
-      </div>
+      {
+        profile.bio.length > 0 && (
+          <div class="bio">
+            {profile.bio.map((p) => <p>{p}</p>)}
+          </div>
+        )
+      }
       {quote && <blockquote class="quote">{quote}</blockquote>}
       <ul class:list={['principles', { grid: principles.length === 4 }]}>
         {
@@ -139,6 +143,9 @@ const initials = profile.name
     line-height: 1.45;
     letter-spacing: -0.015em;
     color: var(--text);
+  }
+  .quote:first-child {
+    margin-top: 0;
   }
   .quote::before {
     content: '';
