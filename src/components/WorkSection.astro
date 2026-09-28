@@ -1,5 +1,6 @@
 ---
 import ProjectIcon from './ProjectIcon.astro';
+import Icon from './Icon.astro';
 import ProjectDialog from './ProjectDialog.astro';
 import type { Project } from '@/lib/projects';
 
@@ -32,7 +33,7 @@ const { projects } = Astro.props;
                 <span class="s">{p.data.summary ?? p.data.tagline}</span>
               </span>
               <span class="go" aria-hidden="true">
-                ↗
+                <Icon name="arrow-up-right" size={16} />
               </span>
             </button>
           </li>

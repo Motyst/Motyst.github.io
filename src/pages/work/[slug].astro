@@ -41,7 +41,7 @@ const media = [data.cover, ...data.gallery].filter(
       <div class="container">
         <div class="top">
           <div class="intro">
-            <a href="/#work" class="back mono">← All work</a>
+            <a href="/#work" class="back"><Icon name="arrow-left" size={14} /> All work</a>
             <div class="title-row">
               <ProjectIcon icon={data.icon} title={data.title} accent={data.accent} size={60} />
               <h1>{data.title}</h1>
@@ -145,7 +145,7 @@ const media = [data.cover, ...data.gallery].filter(
               <ProjectIcon icon={next.data.icon} title={next.data.title} accent={next.data.accent} size={56} />
               <span>
                 <span class="next-title">
-                  {next.data.title} <span class="arrow">→</span>
+                  {next.data.title} <Icon name="arrow-right" size="0.8em" class="arrow" />
                 </span>
                 <span class="next-tag">{next.data.summary ?? next.data.tagline}</span>
               </span>
@@ -162,10 +162,16 @@ const media = [data.cover, ...data.gallery].filter(
     padding-top: clamp(2rem, 5vw, 3rem);
   }
 
+  /* Same look as the small labels above headings */
   .back {
-    display: inline-block;
-    font-size: 0.8rem;
-    color: var(--text-faint);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--label);
     margin-bottom: 1.25rem;
     transition: color 0.2s, transform 0.3s var(--ease);
   }
@@ -380,12 +386,13 @@ const media = [data.cover, ...data.gallery].filter(
     color: var(--accent);
   }
 
-  .next .arrow {
+  .next :global(.arrow) {
     display: inline-block;
+    vertical-align: -0.05em;
     transition: transform 0.3s var(--ease);
   }
 
-  .next:hover .arrow {
+  .next:hover :global(.arrow) {
     transform: translateX(8px);
   }
 

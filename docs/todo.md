@@ -16,7 +16,6 @@ Ideas and content to come back to. Remove items once they're done.
 - **Screenshots** for Privet and Course Content Studio (`frame: phone` for phone
   shots), ideally matching each project's "How it works" steps.
 - **Real numbers** in project highlights (time saved, posts published, users).
-- **Photo** for the About section (`photo` in `src/data/profile.ts`).
 - **LinkedIn and a CV (PDF)** in the hero. No phone number on the site.
 
 ## Elsewhere

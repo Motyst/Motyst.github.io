@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import { profile } from '@/data/profile';
 
 const year = new Date().getFullYear();
@@ -8,7 +9,7 @@ const year = new Date().getFullYear();
   <div class="container">
     <div class="bottom">
       <span>© {year} {profile.name}</span>
-      <button type="button" class="top" data-to-top>Back to top ↑</button>
+      <button type="button" class="top" data-to-top>Back to top <Icon name="arrow-up" size={14} /></button>
     </div>
   </div>
 </footer>
@@ -35,6 +36,9 @@ const year = new Date().getFullYear();
   }
 
   .top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     padding: 0;
     border: 0;
     background: none;

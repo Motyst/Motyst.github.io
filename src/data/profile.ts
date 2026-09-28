@@ -34,7 +34,7 @@ export const profile = {
     },
   ],
   /** Your photo for the About section, e.g. '/me.jpg' in /public. '' shows your initials. */
-  photo: '',
+  photo: '/me.webp',
   /** Shown as a small status pill in the hero. Set to '' to hide. */
   availability: '',
   /** Show Live / Completed labels on projects. */

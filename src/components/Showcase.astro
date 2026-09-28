@@ -8,6 +8,7 @@
  * shows everything down to "How it works" without scrolling.
  */
 import Media from './Media.astro';
+import Icon from './Icon.astro';
 import type { Project } from '@/lib/projects';
 
 type Item = NonNullable<Project['data']['cover']>;
@@ -52,7 +53,7 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
       items.length > 1 && (
         <div class="ctrl">
           <button type="button" class="nav" data-go="-1" aria-label="Previous screenshot">
-            ←
+            <Icon name="arrow-left" size={16} />
           </button>
           <div class="dots">
             {items.map((m, i) => (
@@ -60,7 +61,7 @@ const frameOf = (m: Item) => m.frame ?? (m.type === 'image' || m.type === 'video
             ))}
           </div>
           <button type="button" class="nav" data-go="1" aria-label="Next screenshot">
-            →
+            <Icon name="arrow-right" size={16} />
           </button>
         </div>
       )

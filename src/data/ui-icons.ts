@@ -67,6 +67,11 @@ export const line: Record<string, string> = {
   'play': `<path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" />`,
   'book-open': `<path d="M12 5v16" /> <path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z" />`,
   'arrow-up-right': `<path d="M7 7h10v10" /> <path d="M7 17 17 7" />`,
+  'arrow-left': `<path d="m12 19-7-7 7-7" /><path d="M19 12H5" />`,
+  'arrow-right': `<path d="M5 12h14" /><path d="m12 5 7 7-7 7" />`,
+  'arrow-up': `<path d="m5 12 7-7 7 7" /><path d="M12 19V5" />`,
+  expand: `<path d="M15 3h6v6" /><path d="m21 3-7 7" /><path d="m3 21 7-7" /><path d="M9 21H3v-6" />`,
+  close: `<path d="M18 6 6 18" /><path d="m6 6 12 12" />`,
 
   image: `<rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />`,
   palette: `<path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z" /><circle cx="13.5" cy="6.5" r=".5" fill="currentColor" /><circle cx="17.5" cy="10.5" r=".5" fill="currentColor" /><circle cx="6.5" cy="12.5" r=".5" fill="currentColor" /><circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />`,
