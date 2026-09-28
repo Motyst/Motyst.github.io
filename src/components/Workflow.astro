@@ -137,7 +137,7 @@ const color = (i: number) => stepColors[i % stepColors.length];
   .step {
     font-size: 0.68rem;
     font-weight: 500;
-    color: var(--c);
+    color: color-mix(in oklab, var(--c), #000 var(--shade));
   }
   .d {
     font-size: 0.85rem;

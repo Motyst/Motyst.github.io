@@ -91,6 +91,12 @@ LinkedIn, WhatsApp, Telegram and so on. It's drawn by `src/pages/lab/og.astro`
 from your profile and project icons. After changing either, start the site
 (`npm run dev`) and run `npm run og` in a second terminal to save a fresh copy.
 
+## Light and dark
+
+The site follows each visitor's device setting. The sun/moon button in the top
+bar switches it and remembers the choice. Light colours are the
+`:root[data-theme='light']` block in `src/styles/global.css`.
+
 ## Design lab
 
 `/lab/` is an unlisted page (not linked, not indexed) for comparing design

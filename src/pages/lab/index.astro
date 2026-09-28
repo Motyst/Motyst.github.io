@@ -13,8 +13,16 @@ import Question from '@/components/lab/Question.astro';
 import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
 
-const round = 13;
-const applied: string[] = ['Hero: bigger name, smaller role and subtitle', 'Section headings: sentence labels', 'Heading font: Manrope'];
+const round = 14;
+const applied: string[] = ['Light mode, following the device setting, with a switch in the top bar', 'Darker step numbers in light mode'];
+
+type Opt = { id: string; label: string; name: string; note: string; mine?: boolean };
+const labelIdeas: Opt[] = [
+  { id: 'current', label: 'Current', name: 'Mixed', note: 'Small normal text on the homepage and above "How it works", code-style capitals everywhere else.' },
+  { id: 'labels-a', label: 'A', name: 'Normal text everywhere', note: 'The homepage style on every page: "Overview", "Highlights", "How it works". Quiet and consistent, the closest to the glass card reference.' },
+  { id: 'labels-b', label: 'B', name: 'Code-style capitals everywhere', note: 'Back to how the homepage was before round 12: small monospace capitals on every label, a technical feel.' },
+  { id: 'labels-c', label: 'C', name: 'Clean capitals everywhere', mine: true, note: 'Keeps the capitals you like, but in the normal font, a little bolder and spaced out. Crisper than the code style and still consistent across the site.' },
+];
 /** Before/after images for the last change (files in public/lab/compare). Clear when no longer needed. */
 const compare: { src: string; label: string }[] = [];
 ---
@@ -52,28 +60,14 @@ const compare: { src: string; label: string }[] = [];
       )
     }
 
-    <Question n={1} title="Light mode" why="The same design on a light background: white cards, dark text, softer colour glows. Screenshots, icons and project colours stay the same. Press Full page to scroll the whole homepage and open projects. To see a project page in light, add ?lab=light to its address (for example /work/helm/?lab=light).">
-      <Choice label="Current" name="Dark" note="The site as it is now." preview="/">
-        <div class="shots">
-          <img class="shot" src="/lab/light/d-home.webp" alt="Homepage, dark" loading="lazy" />
-          <img class="shot" src="/lab/light/d-panel.webp" alt="Helm project window, dark" loading="lazy" />
-        </div>
-      </Choice>
-      <Choice label="A" name="Light" note="Soft off-white page, white cards with thin grey outlines, near-black headings. The gradient role and ring get deeper colours so they stay readable on white." preview="/?lab=light">
-        <div class="shots">
-          <img class="shot" src="/lab/light/l-home.webp" alt="Homepage, light" loading="lazy" />
-          <img class="shot" src="/lab/light/l-panel.webp" alt="Helm project window, light" loading="lazy" />
-        </div>
-      </Choice>
-    </Question>
-
-    <Question n={2} title="If light mode goes live, who sees which?" why="Only matters if you like light mode. Either way there would be a small sun and moon button in the top bar to switch, and the site remembers the choice.">
-      <Choice label="A" name="Follow the device" mine note="Visitors whose phone or computer is set to light mode see light, everyone else sees dark. The usual choice today.">
-        <p class="txt">Device on light: light site<br />Device on dark: dark site<br />Switch button in the top bar</p>
-      </Choice>
-      <Choice label="B" name="Dark for everyone" note="Dark stays the look of the site. Light is only there for people who press the switch.">
-        <p class="txt">Everyone starts on dark<br />Switch button in the top bar</p>
-      </Choice>
+    <Question n={1} title="Small labels above headings" why="Round 12 changed the homepage labels (Selected work, Skills, About) from code-style capitals to small normal text. The project pages and the project window still use the capitals (OVERVIEW, HIGHLIGHTS, HOW IT WORKS), so right now the two styles are mixed. Each picture shows the homepage, a project page and the project window.">
+      {
+        labelIdeas.map((o) => (
+          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/work/helm/' : `/work/helm/?lab=${o.id}`}>
+            <img class="shot" src={`/lab/labels/${o.id}.webp`} alt={`Labels, ${o.name}`} loading="lazy" />
+          </Choice>
+        ))
+      }
     </Question>
 
     <section class="reply">
@@ -309,25 +303,10 @@ const compare: { src: string; label: string }[] = [];
     padding: 0;
   }
 
-  .shots {
-    display: grid;
-    gap: 0.6rem;
-  }
   .shot {
     width: 100%;
     border-radius: 12px;
     border: 1px solid var(--line);
-  }
-  .txt {
-    display: grid;
-    place-items: center;
-    min-height: 8rem;
-    padding: 1rem;
-    border-radius: 12px;
-    border: 1px dashed var(--line-strong);
-    text-align: center;
-    line-height: 1.8;
-    color: var(--text-dim);
   }
 
   /* ---------- Before / after ---------- */

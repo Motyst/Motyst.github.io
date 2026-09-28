@@ -21,6 +21,10 @@ const initials = profile.name
   <nav class="pill" aria-label="Main">
     <a href="/" class="av" aria-label="Home" title={profile.name}>{initials}</a>
     {nav.map((item) => <a href={item.href} data-section={item.href.split('#')[1]}>{item.label}</a>)}
+    <button type="button" class="theme" data-theme-toggle aria-label="Switch between light and dark">
+      <svg class="sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></svg>
+      <svg class="moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
+    </button>
   </nav>
 </header>
 
@@ -41,6 +45,25 @@ const initials = profile.name
       { passive: true },
     );
     header.addEventListener('focusin', () => header.classList.remove('away'));
+
+    // Light / dark switch: remembers the choice (see the theme script in Base.astro)
+    const toggle = header.querySelector<HTMLButtonElement>('[data-theme-toggle]')!;
+    const label = () => {
+      const light = document.documentElement.dataset.theme === 'light';
+      toggle.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+      toggle.title = light ? 'Dark mode' : 'Light mode';
+    };
+    toggle.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = next;
+      try {
+        localStorage.setItem('theme', next);
+      } catch {}
+      label();
+    });
+    label();
+    document.addEventListener('astro:after-swap', label);
+    matchMedia('(prefers-color-scheme: light)').addEventListener('change', label);
   }
 
   // Light up the link of the section currently in the middle of the screen.
@@ -128,6 +151,38 @@ const initials = profile.name
     font-weight: 700;
     letter-spacing: 0.02em;
   }
+  /* Sun in dark mode (switch to light), moon in light mode */
+  .theme {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    margin-left: 0.1rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition:
+      color 0.2s,
+      background 0.2s;
+  }
+  .theme:hover {
+    color: var(--text);
+    background: var(--hover);
+  }
+  .theme svg {
+    grid-area: 1 / 1;
+  }
+  .moon,
+  :global(html[data-theme='light']) .sun {
+    display: none;
+  }
+  :global(html[data-theme='light']) .moon {
+    display: block;
+  }
+
   .pill .av:hover {
     background: var(--heading);
     color: var(--bg);

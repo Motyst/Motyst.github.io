@@ -32,7 +32,8 @@ const ogImage = new URL(image, Astro.site).href;
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#09090b" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f6f6f8" media="(prefers-color-scheme: light)" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
@@ -44,6 +45,25 @@ const ogImage = new URL(image, Astro.site).href;
     <meta name="twitter:card" content="summary_large_image" />
     <ClientRouter />
     <script is:inline>
+      // Light or dark: the visitor's choice from the switch in the top bar if they made one,
+      // otherwise their device setting. Runs before the page paints, and again after each
+      // page change (the router replaces the <html> attributes).
+      (() => {
+        const device = matchMedia('(prefers-color-scheme: light)');
+        const apply = () => {
+          let saved = null;
+          try {
+            saved = localStorage.getItem('theme');
+          } catch {}
+          document.documentElement.dataset.theme = saved ?? (device.matches ? 'light' : 'dark');
+        };
+        apply();
+        if (!window.__theme) {
+          window.__theme = apply;
+          document.addEventListener('astro:after-swap', () => window.__theme());
+          device.addEventListener('change', () => window.__theme());
+        }
+      })();
       // Design lab: ?lab=<id> previews a variant on any page (see src/data/lab-variants.ts)
       (() => {
         const lab = new URLSearchParams(location.search).get('lab');
