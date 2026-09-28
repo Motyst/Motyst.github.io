@@ -25,6 +25,7 @@
   --shadow: rgb(0 0 0 / 0.8);
   --scrim: rgb(4 4 6 / 0.72);
   --frame: #1c1c21;
+  --stage-bg: #17171b;
   --frame-line: rgb(255 255 255 / 0.14);
   --frame-dot: rgb(255 255 255 / 0.18);
   --grad-1: #a78bfa;
@@ -71,6 +72,7 @@
   --shadow: rgb(30 30 60 / 0.18);
   --scrim: rgb(24 24 36 / 0.35);
   --frame: #e6e6eb;
+  --stage-bg: #fff;
   --frame-line: rgb(12 12 24 / 0.12);
   --frame-dot: rgb(12 12 24 / 0.2);
   --grad-1: #7c3aed;

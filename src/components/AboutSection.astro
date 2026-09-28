@@ -80,6 +80,14 @@ const initials = profile.name
     }
   }
 
+  /* Design lab round 16: looser photo crops */
+  :global(html[data-lab='photo-a']) .photo img {
+    content: url('/me-a.webp');
+  }
+  :global(html[data-lab='photo-b']) .photo img {
+    content: url('/me-b.webp');
+  }
+
   /* Same headline style as the other sections */
   h2 {
     font-size: clamp(2rem, 5vw, 3.25rem);
