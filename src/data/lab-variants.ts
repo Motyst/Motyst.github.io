@@ -5,4 +5,4 @@
  * variant with :global(html[data-lab='<id>']) … or read a `variant` prop.
  * Once a pick is applied for real, remove its ids and content from here.
  */
-export const labVariants: string[] = ['type-a', 'type-b', 'type-c', 'heads-a', 'heads-b', 'font-manrope', 'font-instrument'];
+export const labVariants: string[] = [];

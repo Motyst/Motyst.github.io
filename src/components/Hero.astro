@@ -9,8 +9,6 @@ interface Props {
 }
 
 const { projects } = Astro.props;
-const [first, ...rest] = profile.name.split(' ');
-const city = profile.location.split(',')[0];
 // Loose, hand-placed positions for the floating icon cluster (in %).
 const spots = [
   { x: 14, y: 10, s: 92 },
@@ -33,19 +31,9 @@ const spots = [
         </span>
       )
     }
-    {/* Lab round 12 (typography): corner labels, statement headline and card corners, hidden unless a variant shows them */}
-    <p class="meta meta-name reveal">
-      <span>{profile.role} /<br />{profile.location}</span>
-      <span class="plus">+{projects.length} projects</span>
-    </p>
-    <p class="meta meta-statement reveal">
-      <span>{profile.name} /<br />{profile.role}</span>
-      <span class="plus">+{city}</span>
-    </p>
-    <p class="statement reveal" style="--delay: 60ms">{profile.headline}</p>
-    <h1 class="reveal"><span class="w">{first}</span> {rest.join(' ')}<span class="accent">.</span></h1>
+    <h1 class="reveal">{profile.name}<span class="accent">.</span></h1>
     <p class="role reveal" style="--delay: 60ms">
-      <span class="grad">{profile.role}</span> <span class="city">· {city}</span>
+      <span class="grad">{profile.role}</span> <span class="city">· {profile.location.split(',')[0]}</span>
     </p>
     <p class="lead reveal" style="--delay: 120ms">{profile.headline}</p>
     <div class="actions reveal" style="--delay: 180ms">
@@ -74,12 +62,7 @@ const spots = [
         )
       }
     </div>
-    <div class="corners">
-      <a href="#work" class="go" aria-label="See my work"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
-      <svg class="star" aria-hidden="true" viewBox="0 0 24 24" width="30" height="30" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7" /></svg>
-    </div>
   </div>
-  <div class="streaks" aria-hidden="true"></div>
 
   <div class="cluster reveal" style="--delay: 200ms">
     {
@@ -137,7 +120,6 @@ const spots = [
 
 <style>
   .hero {
-    position: relative;
     display: grid;
     gap: 2.5rem;
     align-items: center;
@@ -171,7 +153,7 @@ const spots = [
   /* Role as a gradient subtitle under the name */
   .role {
     margin-top: 0.7rem;
-    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    font-size: clamp(1.15rem, 2.2vw, 1.625rem);
     font-weight: 600;
     letter-spacing: -0.025em;
     line-height: 1.2;
@@ -189,7 +171,7 @@ const spots = [
 
   h1 {
     margin-top: 0;
-    font-size: clamp(2.75rem, 6.5vw, 5rem);
+    font-size: clamp(3rem, 7.2vw, 5.6rem);
     letter-spacing: -0.05em;
     line-height: 0.95;
     font-weight: 650;
@@ -380,134 +362,6 @@ const spots = [
     50% {
       translate: 0 -10px;
     }
-  }
-
-  /* ---------- Design lab round 12: typography from the glass card reference ---------- */
-  .meta,
-  .statement,
-  .corners,
-  .streaks {
-    display: none;
-  }
-  .w {
-    display: inline;
-  }
-
-  /* Shared rules: plain white type, no gradient, small two-line corner labels,
-     a lighter subtitle close under the headline */
-  :global(html[data-lab^='type-']) .meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
-    font-size: 0.85rem;
-    line-height: 1.3;
-    color: rgb(255 255 255 / 0.78);
-    letter-spacing: -0.005em;
-  }
-  :global(html[data-lab^='type-']) .plus {
-    color: #fff;
-    font-weight: 500;
-  }
-  :global(html[data-lab^='type-']) h1 {
-    color: #fff;
-    font-weight: 600;
-    letter-spacing: -0.045em;
-    line-height: 0.95;
-  }
-  :global(html[data-lab^='type-']) .accent {
-    color: #fff;
-    animation: none;
-  }
-  :global(html[data-lab^='type-']) .role {
-    display: none;
-  }
-  :global(html[data-lab^='type-']) .lead {
-    margin-top: 1.25rem;
-    max-width: 30ch;
-    font-size: clamp(1.15rem, 1.9vw, 1.4rem);
-    line-height: 1.35;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    color: rgb(255 255 255 / 0.86);
-  }
-  :global(html[data-lab^='type-']) .actions {
-    margin-top: 2.25rem;
-  }
-
-  /* A: the name as the headline, in two lines, role and city as the corner label */
-  :global(html[data-lab='type-a']) .meta-statement,
-  :global(html[data-lab='type-c']) .meta-statement {
-    display: none;
-  }
-  :global(html[data-lab='type-a']) .w,
-  :global(html[data-lab='type-c']) .w {
-    display: block;
-  }
-  :global(html[data-lab='type-a']) h1,
-  :global(html[data-lab='type-c']) h1 {
-    font-size: clamp(3rem, 7.5vw, 5.75rem);
-  }
-
-  /* B: the headline is a statement, the name moves to the corner label */
-  :global(html[data-lab='type-b']) .meta-name,
-  :global(html[data-lab='type-b']) h1,
-  :global(html[data-lab='type-b']) .lead {
-    display: none;
-  }
-  :global(html[data-lab='type-b']) .statement {
-    display: block;
-    max-width: 17ch;
-    font-size: clamp(2.3rem, 4.9vw, 3.9rem);
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: -0.045em;
-    color: #fff;
-  }
-
-  /* C: A's type on a frosted glass card over soft streaks of project colour,
-     with an arrow and an asterisk in the bottom corners */
-  :global(html[data-lab='type-c']) .text {
-    position: relative;
-    z-index: 1;
-    padding: clamp(1.5rem, 4vw, 2.75rem);
-    border-radius: 28px;
-    border: 1px solid rgb(255 255 255 / 0.13);
-    background: linear-gradient(160deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.015) 60%);
-    backdrop-filter: blur(28px) saturate(1.3);
-    -webkit-backdrop-filter: blur(28px) saturate(1.3);
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.12),
-      0 40px 80px -40px rgb(0 0 0 / 0.8);
-  }
-  :global(html[data-lab='type-c']) .corners {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: clamp(1.75rem, 4vw, 2.5rem);
-    color: #fff;
-  }
-  :global(html[data-lab='type-c']) .go {
-    display: grid;
-    place-items: center;
-    width: 2.6rem;
-    height: 2.6rem;
-    border: 2px solid #fff;
-    border-radius: 50%;
-  }
-  :global(html[data-lab='type-c']) .streaks {
-    display: block;
-    position: absolute;
-    inset: 4% 30% 0 -4%;
-    pointer-events: none;
-    background:
-      radial-gradient(30% 14% at 55% 30%, rgb(249 115 22 / 0.55), transparent 70%),
-      radial-gradient(26% 12% at 70% 72%, rgb(249 115 22 / 0.4), transparent 70%),
-      radial-gradient(40% 60% at 85% 45%, rgb(45 212 191 / 0.22), transparent 70%),
-      radial-gradient(45% 55% at 20% 60%, rgb(167 139 250 / 0.22), transparent 70%);
-    filter: blur(20px);
-    transform: rotate(-18deg);
   }
 
   @media (max-width: 899px) {
