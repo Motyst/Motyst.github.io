@@ -9,12 +9,30 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-// import Question from '@/components/lab/Question.astro';
-// import Choice from '@/components/lab/Choice.astro';
+import Question from '@/components/lab/Question.astro';
+import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
 
-const round = 11;
-const applied: string[] = ['Colour aura around screenshots (30% softer)'];
+const round = 12;
+const applied: string[] = [];
+
+type Opt = { id: string; label: string; name: string; note: string; img: string; mine?: boolean };
+const heroIdeas: Opt[] = [
+  { id: 'current', label: 'Current', name: 'Name with gradient role', img: 'hero-current', note: 'Name on one line with the colour-cycling dot, gradient role and city under it, grey subtitle.' },
+  { id: 'type-a', label: 'A', name: 'Clean editorial', mine: true, img: 'hero-type-a', note: 'The reference type rules: small two-line label up top ("AI Automation Developer / Dublin, Ireland", "+8 projects" on the right), the name big and white on two lines, a lighter, brighter subtitle right under it. No gradient.' },
+  { id: 'type-b', label: 'B', name: 'Statement first', img: 'hero-type-b', note: 'Like the reference card: your headline becomes the big sentence, and your name and role move to the small corner label. Says what you do first, but your name is much smaller.' },
+  { id: 'type-c', label: 'C', name: 'Glass card', img: 'hero-type-c', note: 'A\'s type on a frosted glass card over soft streaks of colour, with a circled arrow (goes to your work) and an asterisk in the bottom corners. The closest to the reference, and the boldest.' },
+];
+const headIdeas: Opt[] = [
+  { id: 'current', label: 'Current', name: 'Mono label, grey subtitle', img: 'heads-current', note: 'Small uppercase code-style label, headline, grey text on the right.' },
+  { id: 'heads-a', label: 'A', name: 'Sentence labels', mine: true, img: 'heads-a', note: 'The label becomes a small normal sentence, the headline ends with a full stop and is pure white, the subtitle is brighter. Same size as now.' },
+  { id: 'heads-b', label: 'B', name: 'Big statements', img: 'heads-b', note: 'Much bigger, tighter headlines with a full stop, like the reference. The label and subtitle stay as they are.' },
+];
+const fontIdeas: Opt[] = [
+  { id: 'current', label: 'Current', name: 'Inter', img: 'font-current', note: 'Neutral and very readable. Used by a lot of sites, so it feels familiar.' },
+  { id: 'font-manrope', label: 'A', name: 'Manrope', mine: true, img: 'font-manrope', note: 'Wider and rounder, closest to the letter shapes in the reference. Headings only, body text stays Inter.' },
+  { id: 'font-instrument', label: 'B', name: 'Instrument Sans', img: 'font-instrument', note: 'Tighter and more editorial, a bit of character. Headings only, body text stays Inter.' },
+];
 /** Before/after images for the last change (files in public/lab/compare). Clear when no longer needed. */
 const compare: { src: string; label: string }[] = [];
 ---
@@ -52,12 +70,35 @@ const compare: { src: string; label: string }[] = [];
       )
     }
 
-    <p class="empty">
-      No open questions right now. Ask for new ideas in the chat and they will show up here as{' '}
-      <b>Current / A / B</b> cards to choose from.
-    </p>
+    <Question n={1} title="Hero text style" why="From the glass card reference: plain white type (no gradients), a big headline ending in a full stop, a small two-line label with a slash in the corner, and a lighter subtitle close under the headline. Three ways to use that at the top of the homepage.">
+      {
+        heroIdeas.map((o) => (
+          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/' : `/?lab=${o.id}`}>
+            <img class="shot" src={`/lab/type/${o.img}.webp`} alt={`Homepage top, ${o.name}`} loading="lazy" />
+          </Choice>
+        ))
+      }
+    </Question>
 
-    <!-- Add <Question> / <Choice> blocks here -->
+    <Question n={2} title="Section headings" anchor="work" why="The same rules for the headings of Work, Skills and About (and the project pages).">
+      {
+        headIdeas.map((o) => (
+          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/' : `/?lab=${o.id}`}>
+            <img class="shot" src={`/lab/type/${o.img}.webp`} alt={`Work heading, ${o.name}`} loading="lazy" />
+          </Choice>
+        ))
+      }
+    </Question>
+
+    <Question n={3} title="Heading font" why="The reference uses a rounder, wider typeface than Inter. Headings only; the body text stays Inter either way. Combines with any pick above.">
+      {
+        fontIdeas.map((o) => (
+          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/' : `/?lab=${o.id}`}>
+            <img class="shot" src={`/lab/type/${o.img}.webp`} alt={`Headings in ${o.name}`} loading="lazy" />
+          </Choice>
+        ))
+      }
+    </Question>
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -290,6 +331,12 @@ const compare: { src: string; label: string }[] = [];
   }
   .fit :global(.container) {
     padding: 0;
+  }
+
+  .shot {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--line);
   }
 
   .shot {
