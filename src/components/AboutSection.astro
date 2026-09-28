@@ -21,10 +21,7 @@ const initials = profile.name
       <div class="photo">
         {profile.photo ? <img src={profile.photo} alt={profile.name} width="160" height="160" loading="lazy" /> : <span>{initials}</span>}
       </div>
-      <div>
-        <span class="eyebrow">About</span>
-        <h2>A bit about me</h2>
-      </div>
+      <h2>A bit about me.</h2>
     </div>
 
     <div>
@@ -76,8 +73,12 @@ const initials = profile.name
     }
   }
 
+  /* Same style as the other section headlines */
   h2 {
     font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+    color: #fff;
   }
 
   /* Photo (or initials until a photo is added) */
