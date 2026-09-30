@@ -7,8 +7,10 @@ export const profile = {
   location: 'Dublin, Ireland',
   /** Short line under your name in the hero. */
   headline: 'I turn repetitive work into bots and AI pipelines that run on their own.',
-  /** Optional sentences above the statement in the About section. Each string is a paragraph; empty hides it. */
-  bio: [] as string[],
+  /** Sentences above the statement in the About section. Each string is a paragraph; empty hides it. */
+  bio: [
+    "I'm a developer in Dublin. I build bots, automations and AI systems in Python and TypeScript. Since January 2026 I've been building on my own, from live Telegram bots to pipelines that publish across many networks. I work with Claude, ChatGPT, Gemini and Grok every day.",
+  ] as string[],
   /** A short statement shown under the bio. Set to '' to hide. */
   statement:
     'AI is incredible leverage. Point it at a real problem, build a solid system around it, and one person can deliver what used to take a team.',

@@ -9,10 +9,6 @@ Ideas and content to come back to. Remove items once they're done.
   and its trade-off, and the result. This is where depth pays off, since the
   reader has already chosen to open the project. Draft one project first as a
   model for the rest.
-- **About section bio (optional).** The bio paragraph was removed because it
-  repeated what the page already shows. If a line comes back, make it about how
-  you think or work, not a list of places and tools. Add it to `bio` in
-  `src/data/profile.ts` (an empty list hides it).
 - **Screenshots** for Privet and Course Content Studio (`frame: phone` for phone
   shots), ideally matching each project's "How it works" steps.
 - **A better photo.** The current one (dark, in profile, looking down) is a
