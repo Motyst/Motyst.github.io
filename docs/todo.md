@@ -24,7 +24,8 @@ Ideas and content to come back to. Remove items once they're done.
 
 ## Elsewhere
 
-- GitHub "About" for the helm repo: description, website link
-  (`https://motyst.github.io/?project=helm`) and topics.
-- Tidy the GitHub profile README and repo descriptions.
+- Tidy the GitHub profile README, and add an "About" (description, and the
+  project's portfolio link as the website) to the repos that have none:
+  Motyst.github.io, video-to-x-posts, polymarket-bot-reward-farm,
+  memory-exercise-telegram-bot, video-transcriber.
 - Consider a custom domain and simple, privacy-friendly analytics.
