@@ -114,6 +114,7 @@ export const skillIcon: Record<string, string> = {
   'Cloudflare Workers': 'cloudflare',
   'Cloudflare D1 & R2': 'database',
   PWA: 'smartphone',
+  'Web Push': 'bell-ring',
   'Web Audio': 'headphones',
   'Spaced Repetition': 'repeat',
   Streamlit: 'streamlit',

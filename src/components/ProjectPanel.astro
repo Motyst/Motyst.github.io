@@ -8,7 +8,6 @@ import ProjectIcon from './ProjectIcon.astro';
 import ProjectBanner from './ProjectBanner.astro';
 import Showcase from './Showcase.astro';
 import Workflow from './Workflow.astro';
-import Thinking from './Thinking.astro';
 import LinkButton from './LinkButton.astro';
 import Icon from './Icon.astro';
 import { skillIcon } from '@/data/ui-icons';
@@ -107,14 +106,6 @@ const media = [data.cover, ...data.gallery].filter(
         </aside>
       </div>
 
-      {
-        data.thinking && (
-          <section class="why-sec">
-            <h3 class="eyebrow">Why I built it</h3>
-            <Thinking thinking={data.thinking} accent={data.accent} />
-          </section>
-        )
-      }
     </div>
 </article>
 
@@ -307,20 +298,6 @@ const media = [data.cover, ...data.gallery].filter(
     padding: 0.1em 0.35em;
     border-radius: 5px;
     background: var(--bg-soft);
-  }
-
-  /* Lab round 18: only shown with ?lab=thinking-… for now */
-  .why-sec {
-    display: none;
-    margin-top: 2.5rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--line);
-  }
-  :global(html[data-lab^='thinking-']) .why-sec {
-    display: block;
-  }
-  .why-sec .eyebrow {
-    margin-bottom: 1.25rem;
   }
 
   .side {

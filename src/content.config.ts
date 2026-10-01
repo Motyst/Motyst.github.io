@@ -50,15 +50,6 @@ const projects = defineCollection({
     workflow: z
       .array(z.object({ title: z.string(), description: z.string(), icon: z.string().optional() }))
       .default([]),
-    /** "Why I built it": the problem, what came before, key choices and the result so far. */
-    thinking: z
-      .object({
-        problem: z.string(),
-        before: z.string(),
-        choices: z.array(z.object({ title: z.string(), text: z.string(), icon: z.string().optional() })).default([]),
-        result: z.string(),
-      })
-      .optional(),
     /** Short outcome bullets or numbers (e.g. "Cut build time by 60%"). */
     highlights: z.array(z.string()).default([]),
     links: z
