@@ -1,0 +1,230 @@
+---
+/**
+ * "Why I built it": the problem, what came before, the key choices and the
+ * result so far. Lab round 18 compares two looks (plain text and cards);
+ * both are hidden unless `?lab=thinking-text` or `?lab=thinking-cards` is set.
+ */
+import Icon from './Icon.astro';
+import { stepColors } from '@/data/step-icons';
+import type { Project } from '@/lib/projects';
+
+interface Props {
+  thinking: NonNullable<Project['data']['thinking']>;
+  accent: string;
+}
+
+const { thinking: t, accent } = Astro.props;
+---
+
+<div class="why" style={`--c: ${accent}`}>
+  <!-- A: plain text -->
+  <div class="t-text">
+    <div class="pair">
+      <div>
+        <h4 class="k">The problem</h4>
+        <p>{t.problem}</p>
+      </div>
+      <div>
+        <h4 class="k">What I used before</h4>
+        <p>{t.before}</p>
+      </div>
+    </div>
+    {
+      t.choices.length > 0 && (
+        <div>
+          <h4 class="k">Choices I made</h4>
+          <ul class="list">
+            {t.choices.map((c) => (
+              <li>
+                <b>{c.title}.</b> {c.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+    <div>
+      <h4 class="k">So far</h4>
+      <p>{t.result}</p>
+    </div>
+  </div>
+
+  <!-- B: cards -->
+  <div class="t-cards">
+    <div class="pair">
+      <div class="card want">
+        <h4 class="k">The problem</h4>
+        <p>{t.problem}</p>
+      </div>
+      <div class="card before">
+        <h4 class="k">What I used before</h4>
+        <p>{t.before}</p>
+      </div>
+    </div>
+    {
+      t.choices.length > 0 && (
+        <div>
+          <h4 class="k">Choices I made</h4>
+          <ul class="tiles">
+            {t.choices.map((c, i) => (
+              <li style={`--t: ${stepColors[i % stepColors.length]}`}>
+                <span class="badge">{c.icon && <Icon name={c.icon} size={18} />}</span>
+                <b>{c.title}</b>
+                <p>{c.text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+    <div class="sofar">
+      <h4 class="k">So far</h4>
+      <p>{t.result}</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .why {
+    container-type: inline-size;
+    color: var(--text-dim);
+    font-size: 0.98rem;
+  }
+  .t-text,
+  .t-cards {
+    display: none;
+    gap: 1.75rem;
+  }
+  :global(html[data-lab='thinking-text']) .t-text,
+  :global(html[data-lab='thinking-cards']) .t-cards {
+    display: grid;
+  }
+
+  /* Small label in the project colour */
+  .k {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--c), #000 var(--shade));
+  }
+  b {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .pair {
+    display: grid;
+    gap: 1.75rem;
+  }
+  @container (min-width: 600px) {
+    .pair {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  /* ---------- A: plain text ---------- */
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.6rem;
+    max-width: 78ch;
+  }
+  .list li {
+    position: relative;
+    padding-left: 1.1rem;
+  }
+  .list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--c);
+  }
+  .t-text p {
+    max-width: 78ch;
+  }
+
+  /* ---------- B: cards ---------- */
+  .t-cards .pair {
+    gap: 1rem;
+  }
+  .card {
+    padding: 1.1rem 1.2rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--tint);
+  }
+  .card.want {
+    border-color: color-mix(in oklab, var(--c) 40%, transparent);
+    background: color-mix(in oklab, var(--c) 8%, transparent);
+  }
+  .card.want p {
+    color: var(--text);
+  }
+  .card.before {
+    border-style: dashed;
+  }
+  .card.before .k {
+    color: var(--label);
+  }
+
+  .tiles {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 1rem;
+  }
+  @container (min-width: 480px) {
+    .tiles {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @container (min-width: 980px) {
+    .tiles {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .tiles li {
+    display: grid;
+    align-content: start;
+    gap: 0.45rem;
+    padding: 1.1rem 1.2rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: var(--tint);
+    font-size: 0.92rem;
+  }
+  .badge {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 0.3rem;
+    border-radius: 11px;
+    color: var(--t);
+    background: color-mix(in oklab, var(--t) 14%, var(--bg-elev));
+    border: 1px solid color-mix(in oklab, var(--t) 40%, transparent);
+  }
+  .tiles b {
+    font-size: 0.98rem;
+  }
+
+  .sofar {
+    padding: 0.2rem 0 0.2rem 1.2rem;
+    border-left: 3px solid var(--c);
+  }
+  .sofar p {
+    color: var(--text);
+    max-width: 78ch;
+  }
+</style>

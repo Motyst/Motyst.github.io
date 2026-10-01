@@ -9,12 +9,18 @@
  */
 import Base from '@/layouts/Base.astro';
 import Icon from '@/components/Icon.astro';
-// import Question from '@/components/lab/Question.astro';
-// import Choice from '@/components/lab/Choice.astro';
+import Question from '@/components/lab/Question.astro';
+import Choice from '@/components/lab/Choice.astro';
 import PreviewDialog from '@/components/lab/PreviewDialog.astro';
 
 const round = 18;
 const applied: string[] = ['Name 5px bigger on laptops and larger screens'];
+type Opt = { id: string; label: string; name: string; note: string; mine?: boolean };
+const whyIdeas: Opt[] = [
+  { id: 'current', label: 'Current', name: 'No "why" part', note: 'The Helm page as it is now: Overview, Highlights and Skills, then the next project.' },
+  { id: 'thinking-text', label: 'A', name: 'Plain text', note: 'Your answers as short labelled paragraphs and a list. Quiet and easy to read, like the Overview above it.' },
+  { id: 'thinking-cards', label: 'B', name: 'Cards', mine: true, note: 'The problem stands out in the project colour, "before" is dashed, and each choice gets its own card with an icon. Easier to scan, and it matches the "How it works" steps.' },
+];
 /** Before/after images for the last change (files in public/lab/compare). Clear when no longer needed. */
 const compare: { src: string; label: string }[] = [];
 ---
@@ -52,12 +58,15 @@ const compare: { src: string; label: string }[] = [];
       )
     }
 
-    <p class="empty">
-      No open questions right now. Ask for new ideas in the chat and they will show up here as{' '}
-      <b>Current / A / B</b> cards to choose from.
-    </p>
-
-    <!-- Add <Question> / <Choice> blocks here -->
+    <Question n={1} title="Why I built it (Helm page)" anchor="overview" why="Your answers about Helm, in your words, as a new part under the Overview. Screenshots of the full project page at 1280px wide. It also shows at the bottom of the project window: open /?project=helm&lab=thinking-text or &lab=thinking-cards and scroll down.">
+      {
+        whyIdeas.map((o) => (
+          <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/work/helm/' : `/work/helm/?lab=${o.id}`}>
+            <img class="shot" src={`/lab/why/${o.id}.webp`} alt={`Helm page, ${o.name}`} loading="lazy" />
+          </Choice>
+        ))
+      }
+    </Question>
 
     <section class="reply">
       <h2>Your reply</h2>
@@ -290,6 +299,12 @@ const compare: { src: string; label: string }[] = [];
   }
   .fit :global(.container) {
     padding: 0;
+  }
+
+  .shot {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--line);
   }
 
   /* ---------- Before / after ---------- */

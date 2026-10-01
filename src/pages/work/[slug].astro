@@ -6,6 +6,7 @@ import ProjectIcon from '@/components/ProjectIcon.astro';
 import ProjectBanner from '@/components/ProjectBanner.astro';
 import LinkButton from '@/components/LinkButton.astro';
 import Workflow from '@/components/Workflow.astro';
+import Thinking from '@/components/Thinking.astro';
 import { getProjects, type Project } from '@/lib/projects';
 import Icon from '@/components/Icon.astro';
 import { skillIcon } from '@/data/ui-icons';
@@ -88,7 +89,7 @@ const media = [data.cover, ...data.gallery].filter(
       )
     }
 
-    <section class="section">
+    <section class="section" id="overview">
       <div class="container body">
       <div class="prose reveal">
         <span class="eyebrow">Overview</span>
@@ -135,6 +136,24 @@ const media = [data.cover, ...data.gallery].filter(
       </aside>
       </div>
     </section>
+
+    {
+      data.thinking && (
+        <section class="section why-sec">
+          <div class="container">
+            <div class="section-head reveal">
+              <div>
+                <span class="eyebrow">The thinking</span>
+                <h2>Why I built it</h2>
+              </div>
+            </div>
+            <div class="reveal">
+              <Thinking thinking={data.thinking} accent={data.accent} />
+            </div>
+          </div>
+        </section>
+      )
+    }
 
     {
       next.id !== id && (
@@ -400,5 +419,12 @@ const media = [data.cover, ...data.gallery].filter(
     display: block;
     margin-top: 0.4rem;
     color: var(--text-dim);
+  }
+  /* Lab round 18: only shown with ?lab=thinking-… for now */
+  .why-sec {
+    display: none;
+  }
+  :global(html[data-lab^='thinking-']) .why-sec {
+    display: block;
   }
 </style>

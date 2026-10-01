@@ -54,6 +54,23 @@ workflow:
   - title: Sync & log
     icon: radio
     description: Every change is logged with who made it and appears live on every device.
+thinking:
+  problem: I wanted one place to log every task the moment it comes into my mind, by voice or by chat. AI sorts each task by project and priority. My AI agents can open the same board and start working on those tasks too.
+  before: I used other task apps for years and always saw their downsides. They were clunky and slow, with too many clicks. Their AI integration was messy.
+  choices:
+    - title: One task at a time
+      icon: target
+      text: The main screen is simple and minimalist, a bit like a Pomodoro timer. I'm still experimenting with it, but for now it works well.
+    - title: Start small with the AI
+      icon: bot
+      text: Agents can add and change tasks, but not delete them yet. I'm testing what's there first and making sure the AI works well with it. I'll add more, like delete, when I need it.
+    - title: Hosted at home
+      icon: server
+      text: It runs on my own Raspberry Pi. It's free, and I was curious what hosting it myself would be like.
+    - title: I decided the features
+      icon: user-check
+      text: I planned the main features. Claude Code did most of the work on making the UI work well and look good.
+  result: I use it every day now and log all my to-dos in it. It's still new, so it's too early to say if it becomes my daily driver. I'm happy with how it turned out. As the main user, I'll keep spotting new efficiencies and adding them.
 highlights:
   - AI agents like Claude Code use it over MCP
   - The AI proposes, I approve, and the log shows both
