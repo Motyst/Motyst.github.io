@@ -335,13 +335,15 @@ button.chip:hover {
   border: 0;
 }
 
-/* Lab round 18: Helm Overview versions, shown with ?lab=overview-merged / overview-own */
+/* Lab round 18: Helm Overview versions, shown with ?lab=overview-merged / overview-own / overview-pro */
 .ov-new,
 .ov-own,
+.ov-pro,
 html[data-lab^='overview-'] .ov-old {
   display: none;
 }
 html[data-lab='overview-merged'] .ov-new,
-html[data-lab='overview-own'] .ov-own {
+html[data-lab='overview-own'] .ov-own,
+html[data-lab='overview-pro'] .ov-pro {
   display: block;
 }
