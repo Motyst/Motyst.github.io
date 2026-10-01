@@ -335,4 +335,11 @@ button.chip:hover {
   border: 0;
 }
 
-
+/* Lab round 18: Helm's merged Overview, shown with ?lab=overview-merged */
+.ov-new,
+html[data-lab='overview-merged'] .ov-old {
+  display: none;
+}
+html[data-lab='overview-merged'] .ov-new {
+  display: block;
+}
