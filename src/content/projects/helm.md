@@ -101,3 +101,12 @@ The main screen is a simple **Focus view**: one task in progress, a bit like a P
 I decided the main features. Claude Code built it in 11 planned steps that I reviewed one by one, and did most of the work on making the UI work well and look good. Every change goes through one service layer and one event log, so all devices stay in sync and every change is logged. It runs on my own **Raspberry Pi** at home. It's free, and I was curious what hosting it myself would be like. I use it every day now and log all my to-dos in it.
 
 </div>
+<div class="ov-own">
+
+I wanted one place to log all my tasks rapidly, the moment they come into my mind, either by voice or chat. AI sorts them by project and priority. My AI agents can access the projects and begin executing those tasks as well. The apps I always used were clunky. They were slow, needed too many clicks and had messy AI integration.
+
+The main screen is a simple, minimalist **Focus view**, a bit like a Pomodoro screen. It shows one task in progress at a time. **AI agents** like Claude Code connect over MCP. They can add and change tasks, but not delete them yet. Delete might come later, when I need it. The assistant in the app suggests the order of tasks, and nothing is saved until I approve it. Every change is logged with who made it.
+
+I decided on most of the main features. AI was mainly responsible for making the UI work well and look good. Claude Code built it step by step, and I reviewed every step. It runs on my own **Raspberry Pi** at home. It's free, and I was simply curious how it would be to host it myself. I use it daily now and log all my to-dos in it. As the main user, I'll easily see new efficiencies I can add.
+
+</div>

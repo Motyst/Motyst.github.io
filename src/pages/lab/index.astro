@@ -18,7 +18,8 @@ const applied: string[] = ['Name 5px bigger on laptops and larger screens'];
 type Opt = { id: string; label: string; name: string; note: string; mine?: boolean };
 const ovIdeas: Opt[] = [
   { id: 'current', label: 'Current', name: 'Overview as it is', note: 'The Overview I wrote: what Helm is, how the AI agents use it and how it is built.' },
-  { id: 'overview-merged', label: 'A', name: 'Your thinking as the Overview', mine: true, note: 'Your answers and the current Overview merged into one, in your words. Same length on the page, no extra section.' },
+  { id: 'overview-merged', label: 'A', name: 'Merged, tidied', note: 'Your answers and the current Overview merged into one. Shorter sentences, but some of the wording is mine.' },
+  { id: 'overview-own', label: 'B', name: 'Merged, in your words', mine: true, note: 'Built from your own answers, sentence by sentence: "log all my tasks rapidly", "begin executing those tasks as well", "simply curious", "main user". Only spelling and grammar fixed.' },
 ];
 /** Before/after images for the last change (files in public/lab/compare). Clear when no longer needed. */
 const compare: { src: string; label: string }[] = [];
@@ -57,7 +58,7 @@ const compare: { src: string; label: string }[] = [];
       )
     }
 
-    <Question n={1} title="Helm Overview" anchor="overview" why="Your thinking replaces the Overview instead of adding a new section. Screenshots of the full project page at 1280px wide. The project window shows the same text: open /?project=helm&lab=overview-merged and scroll down.">
+    <Question n={1} title="Helm Overview" anchor="overview" why="Your thinking replaces the Overview instead of adding a new section. Screenshots of the full project page at 1280px wide. The project window shows the same text: open /?project=helm&lab=overview-own (or overview-merged) and scroll down.">
       {
         ovIdeas.map((o) => (
           <Choice label={o.label} name={o.name} note={o.note} mine={o.mine} preview={o.id === 'current' ? '/work/helm/' : `/work/helm/?lab=${o.id}`}>
