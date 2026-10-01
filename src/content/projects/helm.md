@@ -1,8 +1,8 @@
 ---
 title: Helm
-summary: A focus board you and your AI agents share
+summary: One place for all my tasks, shared with my AI agents
 icon: wheel
-tagline: A self-hosted task board that shows what to do now, and that AI agents like Claude Code can use too, safely and with my approval.
+tagline: One place to rapidly log all my tasks, by voice or chat. My AI agents can work on them too, but only with my approval.
 year: 2026
 status: live
 role: Solo developer, built with Claude Code
@@ -28,10 +28,10 @@ gallery:
     alt: The board with one coloured panel per project, tasks grouped by Now, Soon and Someday
     caption: The board, one panel per project
   - type: image
-    src: /media/helm/phone-timer.webp
+    src: /media/helm/phone-app.webp
     frame: none
-    alt: A countdown timer on a phone, the time's up banner, and timer alerts in Settings
-    caption: A timer that rings every device
+    alt: Helm on a phone, showing the board, a project's menu and the Done log grouped by day
+    caption: On a phone, the board, a project's menu and Done
   - type: image
     src: /media/helm/themes.webp
     frame: none
@@ -44,7 +44,7 @@ workflow:
     description: Type with shorthand like "#work !now ~45", or speak, and an LLM turns the recording into task drafts.
   - title: Focus
     icon: target
-    description: One task in progress, time against its estimate, and a timer that rings every device when it ends.
+    description: One task in progress at a time, with a timer and what's up next. Starting another pauses the first.
   - title: Agents
     icon: bot
     description: Claude Code or any MCP client reads and updates the board, with scoped tokens and no delete.
@@ -57,8 +57,7 @@ workflow:
 highlights:
   - AI agents like Claude Code use it over MCP
   - The AI proposes, I approve, and the log shows both
-  - A shared timer that rings even a locked phone, via Web Push
-  - Runs on a Raspberry Pi at home, reached privately from my phone
+  - Runs at home on my own Raspberry Pi, reached privately from my phone
   - Over 120 automated tests across 4 packages
 links:
   - label: Source code
